@@ -1,0 +1,310 @@
+/* ============ ABOUT PAGE ============ */
+.page-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+    color: white;
+    padding: var(--spacing-xl) 0;
+    margin: var(--spacing-xl) 0;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.page-header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 var(--spacing-md) 0;
+}
+
+.page-header p {
+    font-size: 16px;
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* About Content */
+.about-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+}
+
+.about-section {
+    background: var(--bg-white);
+    padding: var(--spacing-xl);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 51, 0.08);
+}
+
+.about-section h2 {
+    color: var(--primary-color);
+    font-size: 24px;
+    margin-bottom: var(--spacing-lg);
+}
+
+.section-content p {
+    color: var(--text-gray);
+    line-height: 1.8;
+    margin-bottom: var(--spacing-md);
+}
+
+.section-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* Reasons Grid */
+.reasons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+}
+
+.reason-card {
+    background: var(--bg-light);
+    padding: var(--spacing-lg);
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.reason-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 51, 0.1);
+    border-color: var(--primary-color);
+}
+
+.reason-icon {
+    font-size: 40px;
+    margin-bottom: var(--spacing-md);
+}
+
+.reason-card h3 {
+    color: var(--primary-color);
+    font-size: 18px;
+    margin-bottom: var(--spacing-md);
+}
+
+.reason-card p {
+    color: var(--text-gray);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* Pizza Types List */
+.pizza-types {
+    list-style: none;
+    padding: 0;
+    margin-top: var(--spacing-lg);
+}
+
+.pizza-types li {
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: var(--bg-light);
+    margin-bottom: var(--spacing-md);
+    border-left: 4px solid var(--primary-color);
+    border-radius: 4px;
+    color: var(--text-gray);
+}
+
+.pizza-types strong {
+    color: var(--primary-color);
+}
+
+/* Commitment List */
+.commitment-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+}
+
+.commitment-item {
+    display: flex;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    background: var(--bg-light);
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.commitment-number {
+    flex-shrink: 0;
+    width: 50px;
+    height: 50px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.commitment-item h3 {
+    color: var(--primary-color);
+    font-size: 18px;
+    margin: 0 0 var(--spacing-sm) 0;
+}
+
+.commitment-item p {
+    color: var(--text-gray);
+    margin: 0;
+    font-size: 14px;
+}
+
+/* CTA Section */
+.about-cta {
+    text-align: center;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+    color: white;
+}
+
+.about-cta h2 {
+    color: white;
+    margin-bottom: var(--spacing-lg);
+}
+
+.about-cta p {
+    color: white;
+    font-size: 16px;
+    margin-bottom: var(--spacing-lg);
+}
+
+.cta-buttons {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.cta-buttons .btn {
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.cta-buttons .btn-primary {
+    background-color: white;
+    color: var(--primary-color);
+}
+
+.cta-buttons .btn-primary:hover {
+    background-color: var(--bg-light);
+}
+
+.cta-buttons .btn-secondary {
+    background-color: var(--accent-color);
+    color: white;
+    border: 2px solid white;
+}
+
+.cta-buttons .btn-secondary:hover {
+    background-color: transparent;
+    color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .page-header h1 {
+        font-size: 24px;
+    }
+
+    .page-header p {
+        font-size: 14px;
+    }
+
+    .about-section {
+        padding: var(--spacing-lg);
+    }
+
+    .about-section h2 {
+        font-size: 20px;
+    }
+
+    .reasons-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--spacing-md);
+    }
+
+    .reason-card {
+        padding: var(--spacing-md);
+    }
+
+    .reason-icon {
+        font-size: 32px;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .reason-card h3 {
+        font-size: 16px;
+    }
+
+    .commitment-item {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+
+    .commitment-number {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+
+    .cta-buttons {
+        gap: var(--spacing-sm);
+    }
+
+    .cta-buttons .btn {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 576px) {
+    .page-header {
+        padding: var(--spacing-lg) 0;
+        margin: var(--spacing-lg) 0;
+    }
+
+    .page-header h1 {
+        font-size: 18px;
+    }
+
+    .page-header p {
+        font-size: 12px;
+    }
+
+    .about-section {
+        padding: var(--spacing-md);
+    }
+
+    .about-section h2 {
+        font-size: 16px;
+    }
+
+    .reasons-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-content p {
+        font-size: 13px;
+    }
+
+    .pizza-types li {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: 12px;
+    }
+
+    .commitment-item {
+        padding: var(--spacing-md);
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+    }
+
+    .cta-buttons .btn {
+        width: 100%;
+    }
+}

@@ -1,0 +1,59 @@
+/* ============ RESET & VARIABLES ============ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Màu chủ đạo - xanh đen đậm */
+    --primary-color: #000033;
+    --primary-dark: #0a0a1f;
+    --primary-light: #1a1a4d;
+    --accent-color: #4d4d99;
+    --accent-light: #8080cc;
+    
+    /* Màu trạng thái */
+    --success-color: #27ae60;
+    --error-color: #e74c3c;
+    --warning-color: #f39c12;
+    --info-color: #3498db;
+    
+    /* Màu nền và text */
+    --bg-light: #f8f9fa;
+    --bg-white: #ffffff;
+    --text-dark: #000033;
+    --text-gray: #666666;
+    --text-light: #999999;
+    --border-color: #e0e0e0;
+    
+    /* Spacing */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-gray);
+    background-color: var(--bg-light);
+    line-height: 1.6;
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--accent-color);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}

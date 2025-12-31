@@ -1,0 +1,228 @@
+/* ============ HEADER ============ */
+.header {
+    background-color: var(--bg-white);
+    box-shadow: 0 2px 10px rgba(0, 0, 51, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: var(--spacing-md);
+}
+
+.logo {
+    flex-shrink: 0;
+    min-width: 200px;
+}
+
+.logo h1 {
+    font-size: 24px;
+    color: var(--primary-color);
+    font-weight: 700;
+    margin: 0;
+}
+
+.logo a {
+    color: var(--primary-color);
+}
+
+.navbar {
+    flex: 1;
+    min-width: 200px;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: var(--spacing-lg);
+    margin: 0;
+    padding: 0;
+}
+
+.nav-menu a {
+    color: var(--text-gray);
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 4px;
+    transition: all 0.3s ease;
+}
+
+.nav-menu a:hover,
+.nav-menu a.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+.search-form {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-shrink: 0;
+}
+
+.search-input {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    width: 200px;
+    color: var(--text-gray);
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px rgba(0, 0, 51, 0.1);
+}
+
+.search-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: var(--primary-color);
+    transition: color 0.3s;
+}
+
+.search-btn:hover {
+    color: var(--accent-color);
+}
+
+/* Menu phụ (Yêu thích, Giỏ hàng) */
+.secondary-menu {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    flex-shrink: 0;
+}
+
+.secondary-menu .menu-item {
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.secondary-menu {
+    transform: scale(1.2);
+}
+
+/* Menu tài khoản */
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    flex-shrink: 0;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--primary-color);
+    font-weight: 500;
+    padding: var(--spacing-sm) var(--spacing-md);
+    transition: color 0.3s;
+}
+
+.dropdown-btn:hover {
+    color: var(--accent-color);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 2px);
+    background-color: var(--bg-white);
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0, 0, 51, 0.15);
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    z-index: 1000;
+    padding-top: 8px;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: var(--spacing-md) var(--spacing-lg);
+    color: var(--text-gray);
+    transition: all 0.3s;
+}
+
+.dropdown-content a:hover {
+    background-color: var(--bg-light);
+    color: var(--primary-color);
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* ============ FOOTER ============ */
+.footer {
+    background: var(--primary-color);
+    color: white;
+    padding: var(--spacing-xl) 0;
+    margin-top: var(--spacing-xl);
+    text-align: center;
+    border-top: 2px solid var(--primary-light);
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+}
+
+.footer-section h3 {
+    font-size: 16px;
+    margin-bottom: var(--spacing-md);
+}
+
+.footer-section p {
+    margin: var(--spacing-sm) 0;
+    opacity: 0.9;
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section ul li {
+    margin-bottom: var(--spacing-sm);
+}
+
+.footer-section a {
+    color: white;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.footer-section a:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+    text-align: center;
+    font-size: 12px;
+    opacity: 0.8;
+}
