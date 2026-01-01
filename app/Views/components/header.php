@@ -10,21 +10,19 @@
             <nav class="navbar">
                 <ul class="nav-menu">
                     <li><a href="<?php echo SITE_URL; ?>index.php?action=home">Trang chủ</a></li>
-                    <li><a href="<?php echo SITE_URL; ?>index.php?action=home&method=about">Giới thiệu</a></li>
-                    <li><a href="<?php echo SITE_URL; ?>index.php?action=contact">Liên hệ</a></li>
+                    <li <?php if (isset($_SESSION['admin_id'])) echo 'style="display: none;"'; ?>><a href="<?php echo SITE_URL; ?>index.php?action=home&method=about">Giới thiệu</a></li>
+                    <li <?php if (isset($_SESSION['admin_id'])) echo 'style="display: none;"'; ?>><a href="<?php echo SITE_URL; ?>index.php?action=contact">Liên hệ</a></li>
                 </ul>
             </nav>
             
             <!-- Ô tìm kiếm -->
-            <form class="search-form" action="<?php echo SITE_URL; ?>index.php?action=product&method=search" method="GET">
-                <input type="hidden" name="action" value="product">
-                <input type="hidden" name="method" value="search">
-                <input type="text" name="q" class="search-input" placeholder="Tìm kiếm pizza...">
+            <form class="search-form" onsubmit="handleSearch(event)" <?php if (isset($_SESSION['admin_id'])) echo 'style="display: none;"'; ?>>
+                <input type="text" id="searchInput" name="q" class="search-input" placeholder="Tìm kiếm pizza...">
                 <button type="submit" class="search-btn">🔍</button>
             </form>
             
-            <!-- Menu phụ (Yêu thích, Giỏ hàng) - chỉ hiện khi đã login -->
-            <div class="secondary-menu">
+            <!-- Menu phụ (Yêu thích, Giỏ hàng) - chỉ hiện khi đã login user (không admin) -->
+            <div class="secondary-menu" <?php if (isset($_SESSION['admin_id'])) echo 'style="display: none;"'; ?>>
                 <a href="<?php echo SITE_URL; ?>index.php?action=home&method=wishlist" class="menu-item" title="Danh sách yêu thích">❤️</a>
                 <?php if (isset($_SESSION['user_id']) || isset($_SESSION['admin_id'])): ?>
                     <a href="<?php echo SITE_URL; ?>index.php?action=cart&method=view" class="menu-item" title="Giỏ hàng">🛒</a>
@@ -38,7 +36,7 @@
                         <button class="dropdown-btn">👤 <?php echo $_SESSION['ten_nguoi_dung']; ?></button>
                         <div class="dropdown-content">
                             <a href="<?php echo SITE_URL; ?>index.php?action=profile&method=view">Hồ sơ</a>
-                            <a href="<?php echo SITE_URL; ?>index.php?action=order&method=history">Đơn hàng</a>
+                            <a href="<?php echo SITE_URL; ?>index.php?action=profile&method=history">Đơn hàng</a>
                             <a href="<?php echo SITE_URL; ?>index.php?action=auth&method=logout">Đăng xuất</a>
                         </div>
                     </div>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Dec 31, 2025 at 02:43 PM
+-- Generation Time: Jan 01, 2026 at 08:35 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -59,7 +59,13 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`categories_id`, `ten_categories`, `mo_ta_categories`, `ngay_tao_categories`, `ngay_cap_nhap_categories`) VALUES
-(1, 'Pizza', '', '2025-12-31 07:37:30', '2025-12-31 07:37:30');
+(1, 'Pizza', '', '2025-12-31 07:37:30', '2025-12-31 07:37:30'),
+(3, 'Pizza Muffin', '', '2025-12-31 07:45:00', '2025-12-31 07:45:00'),
+(4, 'Gà', '', '2025-12-31 07:45:20', '2025-12-31 07:45:20'),
+(5, 'Mỳ Ý', '', '2025-12-31 07:45:32', '2025-12-31 07:45:32'),
+(6, 'Khai Vị', '', '2025-12-31 07:45:40', '2025-12-31 07:45:40'),
+(7, 'Tráng Miệng', '', '2025-12-31 07:45:48', '2025-12-31 07:45:48'),
+(8, 'Thức Uống', '', '2025-12-31 07:45:54', '2025-12-31 07:45:54');
 
 -- --------------------------------------------------------
 
@@ -95,8 +101,21 @@ CREATE TABLE `orders` (
   `phuong_thuc_thanh_toan` varchar(255) NOT NULL,
   `trang_thai` varchar(50) NOT NULL DEFAULT 'Chờ xác nhận',
   `ngay_tao_order` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `nguoi_mua_id` int(11) NOT NULL
+  `nguoi_mua_id` int(11) NOT NULL,
+  `nguoi_nhan` varchar(255) NOT NULL,
+  `sdt_nguoi_nhan` varchar(10) NOT NULL,
+  `dia-chi_nhan` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`order_id`, `tong_tien`, `phuong_thuc_thanh_toan`, `trang_thai`, `ngay_tao_order`, `nguoi_mua_id`, `nguoi_nhan`, `sdt_nguoi_nhan`, `dia-chi_nhan`) VALUES
+(1, 598000.00, 'Trực tiếp', 'Đã hủy', '2025-12-31 15:57:53', 1, '', '', ''),
+(2, 628000.00, 'Trực tiếp', 'Đã hủy', '2026-01-01 07:20:34', 1, '', '', ''),
+(3, 628000.00, 'Trực tiếp', 'Đã hủy', '2025-12-31 15:57:55', 1, '', '', ''),
+(4, 329000.00, 'Trực tiếp', 'Chờ xác nhận', '2026-01-01 01:30:10', 1, '', '', '');
 
 -- --------------------------------------------------------
 
@@ -114,6 +133,15 @@ CREATE TABLE `order_items` (
   `fk_product_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `order_items`
+--
+
+INSERT INTO `order_items` (`order_item_id`, `so_luong_mua`, `gia_order_items`, `size`, `ngay_dat`, `fk_order_id`, `fk_product_id`) VALUES
+(1, 1, 299000.00, 'Lớn', '2025-12-31 09:57:12', 3, 1),
+(2, 1, 299000.00, 'Vừa', '2025-12-31 09:57:12', 3, 1),
+(3, 1, 299000.00, 'Nhỏ', '2026-01-01 01:30:10', 4, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -130,6 +158,13 @@ CREATE TABLE `products` (
   `danh_muc_product` int(11) NOT NULL,
   `hinh_anh_product` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`product_id`, `ten_product`, `mo_ta_product`, `gia_product`, `ngay_tao_product`, `ngay_cap_nhap_product`, `danh_muc_product`, `hinh_anh_product`) VALUES
+(1, 'Pizza Tôm & Bò Xốt Parmesan', 'Bánh ngoan nhắm', 299000.00, '2026-01-01 05:52:32', '2025-12-31 23:52:32', 1, '1767190336_Pizza Tôm & Bò Xốt Parmesan.jpg');
 
 -- --------------------------------------------------------
 
@@ -153,7 +188,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `ten_nguoi_dung`, `email_user`, `mat_khau`, `so_dien_thoai_user`, `dia_chi`, `ngay_tao_user`, `ngay_cap_nhap_user`) VALUES
-(1, 'an', 'an@gmail.com', '$2y$10$id6NHB9fjcnTqWvhhXNo3Omy8.p.7gd4842neezgpJYxwJUltJgLS', '', '', '2025-12-31 13:31:09', NULL);
+(1, 'an', 'an@gmail.com', '$2y$10$id6NHB9fjcnTqWvhhXNo3Omy8.p.7gd4842neezgpJYxwJUltJgLS', '0363547545', 'ándaksdn·', '2025-12-31 15:51:13', '2025-12-31 09:51:13');
 
 -- --------------------------------------------------------
 
@@ -240,7 +275,7 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `categories_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `categories_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `contacts`
@@ -252,19 +287,19 @@ ALTER TABLE `contacts`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `users`

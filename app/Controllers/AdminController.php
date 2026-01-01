@@ -309,9 +309,11 @@ class AdminController extends Controller
                 $this->addCategory();
             } elseif ($action === 'edit') {
                 $this->updateCategoryFromModal();
+            } elseif ($action === 'delete') {
+                $this->deleteCategoryFromModal();
             }
             
-            // Reload categories after add/edit
+            // Reload categories after add/edit/delete
             $categories = $this->categoryModel->readAll();
             $data = ['categories' => $categories];
         }
@@ -358,6 +360,21 @@ class AdminController extends Controller
             $_SESSION['success'] = 'Cập nhật danh mục thành công';
         } else {
             $_SESSION['error'] = 'Lỗi cập nhật danh mục';
+        }
+    }
+    
+    private function deleteCategoryFromModal()
+    {
+        $categoryId = $_POST['category_id'] ?? null;
+        if (!$categoryId) {
+            $_SESSION['error'] = 'ID danh mục không hợp lệ';
+            return;
+        }
+        
+        if ($this->categoryModel->delete($categoryId)) {
+            $_SESSION['success'] = 'Xóa danh mục thành công';
+        } else {
+            $_SESSION['error'] = 'Lỗi xóa danh mục';
         }
     }
     
@@ -499,10 +516,18 @@ class AdminController extends Controller
         $items = $orderItemModel->getByOrderId($orderId);
         $customer = $this->userModel->read($order['nguoi_mua_id']);
         
+        // Get shipping info from order
+        $shippingInfo = [
+            'ten_nguoi_dung' => $order['nguoi_nhan'] ?? '-',
+            'so_dien_thoai_user' => $order['sdt_nguoi_nhan'] ?? '-',
+            'dia_chi' => $order['dia-chi_nhan'] ?? '-',
+            'email_user' => $customer['email_user'] ?? '-'
+        ];
+        
         $this->jsonResponse([
             'order' => $order,
             'items' => $items,
-            'customer' => $customer
+            'customer' => $shippingInfo
         ]);
     }
     

@@ -11,7 +11,6 @@
                 <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=orders" class="menu-item">📦 Đơn hàng</a></li>
                 <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=customers" class="menu-item active">👥 Khách hàng</a></li>
                 <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=contacts" class="menu-item">💬 Liên hệ</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=auth&method=logout" class="menu-item">🚪 Đăng xuất</a></li>
             </ul>
         </nav>
     </aside>
@@ -121,13 +120,62 @@ function openCustomerModal(customerId, name, email, phone) {
             // Update customer details
             document.getElementById('modalCustomerAddress').textContent = data.customer.dia_chi || '-';
             
+            // Sort orders: active orders first (by latest date), then completed/cancelled orders (by latest date)
+            let orders = data.orders || [];
+            
+            if (orders.length > 0) {
+                // Define status priority
+                const statusPriority = {
+                    'Chờ xác nhận': 0,
+                    'Đã xác nhận': 1,
+                    'Đang giao': 2,
+                    'Đã giao': 3,
+                    'Đã hủy': 4
+                };
+                
+                // Sort orders
+                orders.sort((a, b) => {
+                    const priorityA = statusPriority[a.trang_thai] ?? 999;
+                    const priorityB = statusPriority[b.trang_thai] ?? 999;
+                    
+                    // First sort by priority (active orders first)
+                    if (priorityA !== priorityB) {
+                        return priorityA - priorityB;
+                    }
+                    
+                    // Within same priority, sort by date (newest first)
+                    return new Date(b.ngay_tao_order) - new Date(a.ngay_tao_order);
+                });
+            }
+            
             // Build order history HTML
             let orderHTML = '';
-            if (data.orders && data.orders.length > 0) {
+            if (orders && orders.length > 0) {
                 orderHTML = '<div style="padding: var(--spacing-md);">';
-                data.orders.forEach(order => {
+                orders.forEach(order => {
                     const orderDate = new Date(order.ngay_tao_order).toLocaleDateString('vi-VN');
                     const total = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.tong_tien);
+                    
+                    // Determine status color
+                    let statusColor = '#666';
+                    let statusBg = '#f0f0f0';
+                    if (order.trang_thai === 'Chờ xác nhận') {
+                        statusColor = '#856404';
+                        statusBg = '#fff3cd';
+                    } else if (order.trang_thai === 'Đã xác nhận') {
+                        statusColor = '#0c5460';
+                        statusBg = '#d1ecf1';
+                    } else if (order.trang_thai === 'Đang giao') {
+                        statusColor = '#084298';
+                        statusBg = '#cfe2ff';
+                    } else if (order.trang_thai === 'Đã giao') {
+                        statusColor = '#0f5132';
+                        statusBg = '#d1e7dd';
+                    } else if (order.trang_thai === 'Đã hủy') {
+                        statusColor = '#842029';
+                        statusBg = '#f8d7da';
+                    }
+                    
                     orderHTML += `
                         <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--spacing-sm) 0; border-bottom: 1px solid var(--border-color);">
                             <div>
@@ -136,7 +184,7 @@ function openCustomerModal(customerId, name, email, phone) {
                             </div>
                             <div style="text-align: right;">
                                 <p style="margin: 0; font-weight: 600;">${total}</p>
-                                <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--text-muted);">${order.trang_thai}</p>
+                                <p style="margin: 4px 0 0 0; font-size: 12px; color: white; background: ${statusBg}; color: ${statusColor}; padding: 2px 8px; border-radius: 4px; display: inline-block;">${order.trang_thai}</p>
                             </div>
                         </div>
                     `;

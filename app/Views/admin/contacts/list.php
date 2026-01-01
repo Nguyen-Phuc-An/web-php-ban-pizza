@@ -11,7 +11,6 @@
                 <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=orders" class="menu-item">📦 Đơn hàng</a></li>
                 <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=customers" class="menu-item">👥 Khách hàng</a></li>
                 <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=contacts" class="menu-item active">💬 Liên hệ</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=auth&method=logout" class="menu-item">🚪 Đăng xuất</a></li>
             </ul>
         </nav>
     </aside>

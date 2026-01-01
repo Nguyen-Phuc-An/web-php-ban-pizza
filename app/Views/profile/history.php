@@ -6,6 +6,48 @@
         <p>Quản lý và theo dõi các đơn hàng của bạn</p>
     </div>
 
+    <!-- Filter Menu -->
+    <div style="margin-top: 30px; margin-bottom: 25px;">
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <a href="<?php echo SITE_URL; ?>index.php?action=profile&method=history&status=all" 
+               style="padding: 10px 18px; border-radius: 6px; text-decoration: none; font-weight: 600; transition: all 0.3s; border: 2px solid #ddd; background: white; color: var(--text-dark); cursor: pointer; <?php echo (!isset($_GET['status']) || $_GET['status'] === 'all') ? 'background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%); color: white; border-color: var(--primary-color);' : ''; ?>" 
+               onMouseOver="if ('<?php echo (!isset($_GET['status']) || $_GET['status'] === 'all') ? 'active' : ''; ?>' !== 'active') this.style.borderColor='#999'" 
+               onMouseOut="if ('<?php echo (!isset($_GET['status']) || $_GET['status'] === 'all') ? 'active' : ''; ?>' !== 'active') this.style.borderColor='#ddd'">
+                ✓ Tất cả
+            </a>
+            <a href="<?php echo SITE_URL; ?>index.php?action=profile&method=history&status=pending" 
+               style="padding: 10px 18px; border-radius: 6px; text-decoration: none; font-weight: 600; transition: all 0.3s; border: 2px solid #ddd; background: white; color: var(--text-dark); cursor: pointer; <?php echo (isset($_GET['status']) && $_GET['status'] === 'pending') ? 'background: #fff3cd; color: #856404; border-color: #ffc107;' : ''; ?>"
+               onMouseOver="if ('<?php echo (isset($_GET['status']) && $_GET['status'] === 'pending') ? 'active' : ''; ?>' !== 'active') this.style.borderColor='#ffc107'"
+               onMouseOut="if ('<?php echo (isset($_GET['status']) && $_GET['status'] === 'pending') ? 'active' : ''; ?>' !== 'active') this.style.borderColor='#ddd'">
+                ⏳ Chờ xác nhận
+            </a>
+            <a href="<?php echo SITE_URL; ?>index.php?action=profile&method=history&status=confirmed" 
+               style="padding: 10px 18px; border-radius: 6px; text-decoration: none; font-weight: 600; transition: all 0.3s; border: 2px solid #ddd; background: white; color: var(--text-dark); cursor: pointer; <?php echo (isset($_GET['status']) && $_GET['status'] === 'confirmed') ? 'background: #d1ecf1; color: #0c5460; border-color: #17a2b8;' : ''; ?>"
+               onMouseOver="if ('<?php echo (isset($_GET['status']) && $_GET['status'] === 'confirmed') ? 'active' : ''; ?>' !== 'active') this.style.borderColor='#17a2b8'"
+               onMouseOut="if ('<?php echo (isset($_GET['status']) && $_GET['status'] === 'confirmed') ? 'active' : ''; ?>' !== 'active') this.style.borderColor='#ddd'">
+                ✔️ Đã xác nhận
+            </a>
+            <a href="<?php echo SITE_URL; ?>index.php?action=profile&method=history&status=shipping" 
+               style="padding: 10px 18px; border-radius: 6px; text-decoration: none; font-weight: 600; transition: all 0.3s; border: 2px solid #ddd; background: white; color: var(--text-dark); cursor: pointer; <?php echo (isset($_GET['status']) && $_GET['status'] === 'shipping') ? 'background: #cfe2ff; color: #084298; border-color: #0d6efd;' : ''; ?>"
+               onMouseOver="if ('<?php echo (isset($_GET['status']) && $_GET['status'] === 'shipping') ? 'active' : ''; ?>' !== 'active') this.style.borderColor='#0d6efd'"
+               onMouseOut="if ('<?php echo (isset($_GET['status']) && $_GET['status'] === 'shipping') ? 'active' : ''; ?>' !== 'active') this.style.borderColor='#ddd'">
+                🚚 Đang giao
+            </a>
+            <a href="<?php echo SITE_URL; ?>index.php?action=profile&method=history&status=delivered" 
+               style="padding: 10px 18px; border-radius: 6px; text-decoration: none; font-weight: 600; transition: all 0.3s; border: 2px solid #ddd; background: white; color: var(--text-dark); cursor: pointer; <?php echo (isset($_GET['status']) && $_GET['status'] === 'delivered') ? 'background: #d1e7dd; color: #0f5132; border-color: #198754;' : ''; ?>"
+               onMouseOver="if ('<?php echo (isset($_GET['status']) && $_GET['status'] === 'delivered') ? 'active' : ''; ?>' !== 'active') this.style.borderColor='#198754'"
+               onMouseOut="if ('<?php echo (isset($_GET['status']) && $_GET['status'] === 'delivered') ? 'active' : ''; ?>' !== 'active') this.style.borderColor='#ddd'">
+                ✓ Đã giao
+            </a>
+            <a href="<?php echo SITE_URL; ?>index.php?action=profile&method=history&status=cancelled" 
+               style="padding: 10px 18px; border-radius: 6px; text-decoration: none; font-weight: 600; transition: all 0.3s; border: 2px solid #ddd; background: white; color: var(--text-dark); cursor: pointer; <?php echo (isset($_GET['status']) && $_GET['status'] === 'cancelled') ? 'background: #f8d7da; color: #842029; border-color: #dc3545;' : ''; ?>"
+               onMouseOver="if ('<?php echo (isset($_GET['status']) && $_GET['status'] === 'cancelled') ? 'active' : ''; ?>' !== 'active') this.style.borderColor='#dc3545'"
+               onMouseOut="if ('<?php echo (isset($_GET['status']) && $_GET['status'] === 'cancelled') ? 'active' : ''; ?>' !== 'active') this.style.borderColor='#ddd'">
+                ✕ Đã hủy
+            </a>
+        </div>
+    </div>
+
     <div style="margin-top: 30px;">
         <?php if (empty($orders)): ?>
             <div style="background: white; padding: 40px; border-radius: 12px; text-align: center; border: 1px solid #e0e0e0;">
@@ -68,21 +110,21 @@
             <?php if ($total_pages > 1): ?>
                 <div style="display: flex; justify-content: center; gap: 8px; margin-top: 30px;">
                     <?php if ($current_page > 1): ?>
-                        <a href="<?php echo SITE_URL; ?>index.php?action=order&method=history&page=<?php echo $current_page - 1; ?>" 
+                        <a href="<?php echo SITE_URL; ?>index.php?action=profile&method=history&page=<?php echo $current_page - 1; ?><?php echo isset($_GET['status']) ? '&status=' . $_GET['status'] : ''; ?>" 
                            style="padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; text-decoration: none; color: var(--text-dark); font-weight: 600; transition: all 0.2s;" 
                            onMouseOver="this.style.background='#f5f5f5'" onMouseOut="this.style.background='white'">← Trước</a>
                     <?php endif; ?>
                     
                     <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                        <a href="<?php echo SITE_URL; ?>index.php?action=order&method=history&page=<?php echo $i; ?>" 
-                           style="padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; text-decoration: none; font-weight: 600; transition: all 0.2s; <?php echo $i == $current_page ? 'background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%); color: white; border-color: var(--primary-color);' : 'color: var(--text-dark);'; ?>" 
+                        <a href="<?php echo SITE_URL; ?>index.php?action=profile&method=history&page=<?php echo $i; ?><?php echo isset($_GET['status']) ? '&status=' . $_GET['status'] : ''; ?>" 
+                           style="padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; text-decoration: none; font-weight: 600; transition: all 0.2s; <?php echo $i == $current_page ? 'background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%)); color: white; border-color: var(--primary-color);' : 'color: var(--text-dark);'; ?>" 
                            onMouseOver="<?php if ($i != $current_page): ?>this.style.background='#f5f5f5'<?php endif; ?>" onMouseOut="<?php if ($i != $current_page): ?>this.style.background='white'<?php endif; ?>">
                             <?php echo $i; ?>
                         </a>
                     <?php endfor; ?>
                     
                     <?php if ($current_page < $total_pages): ?>
-                        <a href="<?php echo SITE_URL; ?>index.php?action=order&method=history&page=<?php echo $current_page + 1; ?>" 
+                        <a href="<?php echo SITE_URL; ?>index.php?action=profile&method=history&page=<?php echo $current_page + 1; ?><?php echo isset($_GET['status']) ? '&status=' . $_GET['status'] : ''; ?>" 
                            style="padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; text-decoration: none; color: var(--text-dark); font-weight: 600; transition: all 0.2s;" 
                            onMouseOver="this.style.background='#f5f5f5'" onMouseOut="this.style.background='white'">Sau →</a>
                     <?php endif; ?>

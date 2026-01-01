@@ -11,19 +11,16 @@
                 <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=orders" class="menu-item">📦 Đơn hàng</a></li>
                 <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=customers" class="menu-item">👥 Khách hàng</a></li>
                 <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=contacts" class="menu-item">💬 Liên hệ</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=auth&method=logout" class="menu-item">🚪 Đăng xuất</a></li>
             </ul>
         </nav>
     </aside>
     
     <main class="admin-content">
         <div class="container">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
                 <h2>Quản Lý Danh Mục</h2>
                 <button type="button" class="btn btn-primary" onclick="openAddCategoryModal()">➕ Thêm danh mục</button>
             </div>
-            
-            <h3>Danh mục hiện tại</h3>
             <table class="admin-table">
                 <thead>
                     <tr>
@@ -89,7 +86,9 @@
         <p style="color: var(--error-color); font-size: 12px;">Hành động này không thể hoàn tác.</p>
         
         <div class="modal-actions">
-            <form id="deleteForm" method="GET" style="display: inline;">
+            <form id="deleteForm" method="POST" action="<?php echo SITE_URL; ?>index.php?action=admin&method=categories" style="display: inline;">
+                <input type="hidden" name="action" value="delete">
+                <input type="hidden" name="category_id" id="deleteCategoryId">
                 <button type="submit" class="btn btn-danger">🗑️ Xóa</button>
             </form>
             <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">Hủy</button>
@@ -124,7 +123,7 @@ function closeCategoryModal() {
 
 function openDeleteCategoryModal(id, name) {
     document.getElementById('deleteCategoryName').textContent = name;
-    document.getElementById('deleteForm').action = '<?php echo SITE_URL; ?>index.php?action=admin&method=deleteCategory&id=' + id;
+    document.getElementById('deleteCategoryId').value = id;
     document.getElementById('deleteConfirmModal').style.display = 'block';
 }
 

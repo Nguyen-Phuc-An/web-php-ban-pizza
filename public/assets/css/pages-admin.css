@@ -14,13 +14,13 @@
     box-shadow: 0 2px 8px rgba(0, 0, 51, 0.08);
     height: fit-content;
     position: sticky;
-    top: 100px;
 }
 
 .admin-sidebar h3 {
     color: var(--primary-color);
     margin-bottom: var(--spacing-lg);
-    font-size: 16px;
+    font-size: 25px;
+    text-align: center;
 }
 
 .admin-menu ul {
@@ -37,6 +37,7 @@
     border-left: 3px solid transparent;
     border-radius: 4px;
     transition: all 0.3s ease;
+    font-size: 18px;
 }
 
 .menu-item:hover,
@@ -55,7 +56,6 @@
 
 .admin-content h2 {
     color: var(--primary-color);
-    margin-bottom: var(--spacing-lg);
     font-size: 24px;
 }
 

@@ -18,7 +18,12 @@ abstract class Model
         $values = array_values($data);
         $placeholders = array_fill(0, count($columns), '?');
         
-        $sql = "INSERT INTO {$this->table} (" . implode(', ', $columns) . ") 
+        // Wrap column names in backticks to handle special characters
+        $quotedColumns = array_map(function($col) {
+            return "`{$col}`";
+        }, $columns);
+        
+        $sql = "INSERT INTO {$this->table} (" . implode(', ', $quotedColumns) . ") 
                 VALUES (" . implode(', ', $placeholders) . ")";
         
         $stmt = $this->db->prepare($sql);

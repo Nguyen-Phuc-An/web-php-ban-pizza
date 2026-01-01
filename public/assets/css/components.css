@@ -97,13 +97,9 @@
 }
 
 /* ============ FORMS ============ */
-.form-group {
-    margin-bottom: var(--spacing-lg);
-}
 
 label {
     display: block;
-    margin-bottom: var(--spacing-sm);
     color: var(--text-dark);
     font-weight: 500;
 }

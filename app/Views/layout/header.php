@@ -17,6 +17,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <!-- Page-specific styles -->
     <link rel="stylesheet" href="<?php echo SITE_URL; ?>assets/css/pages-home-product.css">
     <link rel="stylesheet" href="<?php echo SITE_URL; ?>assets/css/pages-about.css">
+    <link rel="stylesheet" href="<?php echo SITE_URL; ?>assets/css/pages-auth.css">
     <link rel="stylesheet" href="<?php echo SITE_URL; ?>assets/css/pages-cart-checkout.css">
     <link rel="stylesheet" href="<?php echo SITE_URL; ?>assets/css/pages-contact.css">
     <link rel="stylesheet" href="<?php echo SITE_URL; ?>assets/css/pages-admin.css">

@@ -72,13 +72,16 @@ class OrderController extends Controller
         $so_dien_thoai_user = $_POST['so_dien_thoai_user'] ?? '';
         $dia_chi = $_POST['dia_chi'] ?? '';
         
-        // Create order
+        // Create order with shipping information
         $orderData = [
             'nguoi_mua_id' => $this->user['user_id'],
             'tong_tien' => $total + 30000, // Include shipping fee
             'phuong_thuc_thanh_toan' => $paymentMethod,
             'trang_thai' => 'Chờ xác nhận',
-            'ngay_tao_order' => date('Y-m-d H:i:s')
+            'ngay_tao_order' => date('Y-m-d H:i:s'),
+            'nguoi_nhan' => $ten_nguoi_dung,
+            'sdt_nguoi_nhan' => $so_dien_thoai_user,
+            'dia-chi_nhan' => $dia_chi
         ];
         
         if (!$this->orderModel->create($orderData)) {
