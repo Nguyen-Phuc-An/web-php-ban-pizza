@@ -1,7 +1,7 @@
 <?php include APP_PATH . 'Views/layout/header.php'; ?>
 
 <div class="container">
-    <div class="cart-section">
+    <div class="cart-section" style=" margin-bottom: 20px;">
         <h2>Giỏ Hàng</h2>
         
         <?php if (empty($cart)): ?>
@@ -74,7 +74,7 @@
                 </div>
                 
                 <!-- RIGHT: Order Summary -->
-                <div style="background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%); color: white; padding: 20px; border-radius: 8px; position: sticky; top: 100px; height: fit-content;">
+                <div style="background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);color: #000033;padding: 20px;border-radius: 8px;position: sticky;top: 100px;height: fit-content;">
                     <h3 style="margin: 0 0 20px 0; font-size: 18px; border-bottom: 2px solid rgba(255,255,255,0.2); padding-bottom: 15px;">Tóm tắt đơn hàng</h3>
                     
                     <div style="margin-bottom: 15px;">
@@ -98,13 +98,13 @@
                     
                     <!-- Action Buttons -->
                     <div style="display: flex; flex-direction: column; gap: 10px;">
-                        <a href="<?php echo SITE_URL; ?>index.php?action=order&method=checkout" 
-                           class="btn btn-primary" style="width: 100%; text-align: center; text-decoration: none; background: white; color: var(--primary-color); font-weight: 600;">
-                            💳 Thanh toán ngay
-                        </a>
+                        <button onclick="proceedToCheckout()" 
+                           class="btn btn-primary" style="width: 100%; text-align: center; text-decoration: none; background: white; color: var(--primary-color); font-weight: 600; border: none; cursor: pointer; padding: 12px; border-radius: 4px;">
+                            Thanh toán ngay
+                        </button>
                         <button onclick="deleteAllCart()" 
-                                style="width: 100%; background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 12px; border-radius: 4px; cursor: pointer; font-weight: 500; font-size: 14px; transition: background 0.3s ease;">
-                            🗑️ Xóa toàn bộ
+                                style="width: 100%;background: rgb(255 0 0 / 20%);color: red;border: 1px solid #ff0000;padding: 12px;border-radius: 4px;cursor: pointer;font-weight: 500;font-size: 14px;transition: background 0.3s ease;">
+                            Xóa toàn bộ
                         </button>
                     </div>
                 </div>
@@ -248,6 +248,44 @@ function deleteAllCart() {
                 }
             }
         });
+    });
+}
+
+function proceedToCheckout() {
+    const checkboxes = document.querySelectorAll('.product-checkbox:checked');
+    
+    if (checkboxes.length === 0) {
+        showToast('Vui lòng chọn ít nhất 1 sản phẩm để thanh toán', 'warning');
+        return;
+    }
+    
+    // Get selected cart keys
+    const selectedKeys = [];
+    checkboxes.forEach(checkbox => {
+        selectedKeys.push(checkbox.dataset.cartKey);
+    });
+    
+    // Store selected items in session via POST
+    const formData = new FormData();
+    formData.append('action', 'setSelectedItems');
+    formData.append('selectedKeys', JSON.stringify(selectedKeys));
+    
+    fetch('<?php echo SITE_URL; ?>index.php?action=cart&method=setSelected', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Redirect to checkout
+            window.location.href = '<?php echo SITE_URL; ?>index.php?action=order&method=checkout';
+        } else {
+            showToast('Lỗi: ' + (data.error || 'Không thể tiếp tục'), 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('Lỗi kết nối', 'error');
     });
 }
 </script>

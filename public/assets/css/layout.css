@@ -1,6 +1,6 @@
 /* ============ HEADER ============ */
 .header {
-    background-color: var(--bg-white);
+    background-color: #1F2933;
     box-shadow: 0 2px 10px rgba(0, 0, 51, 0.1);
     position: sticky;
     top: 0;
@@ -31,7 +31,7 @@
 }
 
 .logo a {
-    color: var(--primary-color);
+    color: #FFEB3B;
 }
 
 .navbar {
@@ -48,10 +48,10 @@
 }
 
 .nav-menu a {
-    color: var(--text-gray);
+    color: #FFEB3B;
     font-weight: 500;
     border-bottom: 2px solid transparent;
-    padding-bottom: 4px;
+    padding: 4px;
     transition: all 0.3s ease;
 }
 
@@ -96,22 +96,6 @@
 }
 
 /* Menu phụ (Yêu thích, Giỏ hàng) */
-.secondary-menu {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-    flex-shrink: 0;
-}
-
-.secondary-menu .menu-item {
-    font-size: 20px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.secondary-menu {
-    transform: scale(1.2);
-}
 
 /* Menu tài khoản */
 .user-menu {
@@ -127,23 +111,26 @@
 
 .dropdown-btn {
     background: none;
-    border: none;
+    border: 2px solid #FFEB3B;
+    border-radius: 6px;
     cursor: pointer;
-    color: var(--primary-color);
+    color: #FFEB3B;
     font-weight: 500;
-    padding: var(--spacing-sm) var(--spacing-md);
+    padding: var(--spacing-sm) 14px;
     transition: color 0.3s;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .dropdown-btn:hover {
-    color: var(--accent-color);
+    color: white;
+    background-color: var(--primary-color);
 }
 
 .dropdown-content {
     display: none;
     position: absolute;
     right: 0;
-    top: calc(100% + 2px);
     background-color: var(--bg-white);
     min-width: 200px;
     box-shadow: 0 8px 16px rgba(0, 0, 51, 0.15);
@@ -155,7 +142,7 @@
 
 .dropdown-content a {
     display: block;
-    padding: var(--spacing-md) var(--spacing-lg);
+    padding: 8px 16px;
     color: var(--text-gray);
     transition: all 0.3s;
 }
@@ -163,6 +150,7 @@
 .dropdown-content a:hover {
     background-color: var(--bg-light);
     color: var(--primary-color);
+     box-shadow: inset 0 0 0 2px #FFEB3B;
 }
 
 .dropdown:hover .dropdown-content {
@@ -171,8 +159,8 @@
 
 /* ============ FOOTER ============ */
 .footer {
-    background: var(--primary-color);
-    color: white;
+    background: #1F2933;
+    color: #9CA3AF;
     padding: var(--spacing-xl) 0;
     text-align: center;
     border-top: 2px solid var(--primary-light);

@@ -38,6 +38,7 @@ class CartController extends Controller
         $productId = $_POST['product_id'] ?? null;
         $quantity = $_POST['quantity'] ?? 1;
         $size = $_POST['size'] ?? 'Vừa';
+        $price = $_POST['price'] ?? null;
         
         if (!$productId) {
             $this->jsonResponse(['error' => 'Product ID is required'], 400);
@@ -55,13 +56,16 @@ class CartController extends Controller
         
         $cartKey = $productId . '_' . $size;
         
+        // Use adjusted price from frontend if provided, otherwise use base price
+        $finalPrice = $price !== null ? intval($price) : $product['gia_product'];
+        
         if (isset($_SESSION['cart'][$cartKey])) {
             $_SESSION['cart'][$cartKey]['quantity'] += $quantity;
         } else {
             $_SESSION['cart'][$cartKey] = [
                 'product_id' => $productId,
                 'name' => $product['ten_product'],
-                'price' => $product['gia_product'],
+                'price' => $finalPrice,
                 'image' => $product['hinh_anh_product'],
                 'quantity' => $quantity,
                 'size' => $size
@@ -122,6 +126,25 @@ class CartController extends Controller
         }
         
         return $total;
+    }
+    
+    public function setSelected()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->jsonResponse(['error' => 'Invalid method'], 400);
+        }
+        
+        $selectedKeys = $_POST['selectedKeys'] ?? '[]';
+        $selectedKeys = json_decode($selectedKeys, true);
+        
+        if (!is_array($selectedKeys)) {
+            $this->jsonResponse(['error' => 'Invalid selected keys'], 400);
+        }
+        
+        // Store selected items in session
+        $_SESSION['selectedCartItems'] = $selectedKeys;
+        
+        $this->jsonResponse(['success' => true]);
     }
 }
 ?>

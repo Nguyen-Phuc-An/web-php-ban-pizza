@@ -34,6 +34,7 @@ class AdminController extends Controller
         $totalOrders = $this->orderModel->countAll();
         $totalCustomers = $this->userModel->countUsers();
         $totalRevenue = $this->orderModel->getTotalRevenue();
+        $totalProducts = $this->productModel->count();
         
         // Get monthly revenue for chart
         $monthlyRevenue = [];
@@ -48,6 +49,7 @@ class AdminController extends Controller
             'total_orders' => $totalOrders,
             'total_customers' => $totalCustomers,
             'total_revenue' => $totalRevenue,
+            'total_products' => $totalProducts,
             'monthly_revenue' => array_reverse($monthlyRevenue)
         ];
         
@@ -73,14 +75,36 @@ class AdminController extends Controller
         }
         
         $page = $_GET['page'] ?? 1;
-        $products = $this->productModel->getAll($page);
-        $total = $this->productModel->count();
-        $totalPages = ceil($total / ADMIN_ITEMS_PER_PAGE);
+        $categoryId = $_GET['category'] ?? null;
+        
+        // Get all categories
+        $categories = $this->categoryModel->readAll();
+        
+        // Get products - filtered by category if specified
+        if ($categoryId) {
+            $allProducts = $this->productModel->getByCategory($categoryId);
+        } else {
+            $allProducts = $this->productModel->readAll();
+        }
+        
+        // Apply pagination
+        $itemsPerPage = 12;
+        $total = count($allProducts);
+        $totalPages = ceil($total / $itemsPerPage);
+        
+        // Ensure page is valid
+        if ($page < 1) $page = 1;
+        if ($page > $totalPages && $totalPages > 0) $page = $totalPages;
+        
+        $offset = ($page - 1) * $itemsPerPage;
+        $products = array_slice($allProducts, $offset, $itemsPerPage);
         
         $data = [
             'products' => $products,
+            'categories' => $categories,
             'current_page' => $page,
-            'total_pages' => $totalPages
+            'total_pages' => $totalPages,
+            'selected_category' => $categoryId
         ];
         
         $this->render('admin/products/list', $data);
@@ -326,9 +350,15 @@ class AdminController extends Controller
         $data = [
             'ten_categories' => $_POST['name'] ?? '',
             'mo_ta_categories' => $_POST['description'] ?? '',
+            'parent_category_id' => $_POST['parent_category_id'] ?? null,
             'ngay_tao_categories' => date('Y-m-d H:i:s'),
             'ngay_cap_nhap_categories' => date('Y-m-d H:i:s')
         ];
+        
+        // Chuyển parent_category_id thành null nếu là string rỗng
+        if ($data['parent_category_id'] === '') {
+            $data['parent_category_id'] = null;
+        }
         
         if (empty($data['ten_categories'])) {
             $_SESSION['error'] = 'Vui lòng nhập tên danh mục';
@@ -348,8 +378,14 @@ class AdminController extends Controller
         $data = [
             'ten_categories' => $_POST['name'] ?? '',
             'mo_ta_categories' => $_POST['description'] ?? '',
+            'parent_category_id' => $_POST['parent_category_id'] ?? null,
             'ngay_cap_nhap_categories' => date('Y-m-d H:i:s')
         ];
+        
+        // Chuyển parent_category_id thành null nếu là string rỗng
+        if ($data['parent_category_id'] === '') {
+            $data['parent_category_id'] = null;
+        }
         
         if (empty($data['ten_categories'])) {
             $_SESSION['error'] = 'Vui lòng nhập tên danh mục';

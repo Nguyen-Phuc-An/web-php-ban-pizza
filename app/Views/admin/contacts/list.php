@@ -72,8 +72,6 @@
     </main>
 </div>
 
-<?php include APP_PATH . 'Views/layout/footer.php'; ?>
-
 <script>
 function loadContactDetail(contactId) {
     const detailDiv = document.getElementById('contactDetail');
@@ -122,7 +120,7 @@ function loadContactDetail(contactId) {
                         </div>
                         
                         <div style="display: flex; gap: var(--spacing-md); margin-top: var(--spacing-lg);">
-                            <button type="button" class="btn btn-danger" onclick="deleteContact(${contact.contact_id})">🗑️ Xóa</button>
+                            <button type="button" class="btn btn-danger" onclick="deleteContact(${contact.contact_id})">Xóa</button>
                         </div>
                     </div>
                 `;

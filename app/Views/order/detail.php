@@ -25,7 +25,7 @@
                 <?php foreach ($items as $item): ?>
                     <tr>
                         <td><?php echo htmlspecialchars($item['ten_product']); ?></td>
-                        <td><?php echo htmlspecialchars($item['size_pizza']); ?></td>
+                        <td><?php echo htmlspecialchars($item['size'] ?? 'N/A'); ?></td>
                         <td><?php echo number_format($item['gia_order_items'], 0, ',', '.'); ?>đ</td>
                         <td><?php echo $item['so_luong_mua']; ?></td>
                         <td><?php echo number_format($item['gia_order_items'] * $item['so_luong_mua'], 0, ',', '.'); ?>đ</td>

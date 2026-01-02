@@ -23,6 +23,7 @@
 /* About Content */
 .about-content {
     display: flex;
+    margin-bottom: 20px;
     flex-direction: column;
     gap: var(--spacing-xl);
 }

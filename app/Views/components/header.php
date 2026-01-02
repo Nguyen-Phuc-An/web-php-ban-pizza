@@ -22,10 +22,10 @@
             </form>
             
             <!-- Menu phụ (Yêu thích, Giỏ hàng) - chỉ hiện khi đã login user (không admin) -->
-            <div class="secondary-menu" <?php if (isset($_SESSION['admin_id'])) echo 'style="display: none;"'; ?>>
-                <a href="<?php echo SITE_URL; ?>index.php?action=home&method=wishlist" class="menu-item" title="Danh sách yêu thích">❤️</a>
+            <div class="nav-menu" <?php if (isset($_SESSION['admin_id'])) echo 'style="display: none;"'; ?>>
+                <a href="<?php echo SITE_URL; ?>index.php?action=home&method=wishlist" class="menu-item" title="Danh sách yêu thích">Yêu thích</a>
                 <?php if (isset($_SESSION['user_id']) || isset($_SESSION['admin_id'])): ?>
-                    <a href="<?php echo SITE_URL; ?>index.php?action=cart&method=view" class="menu-item" title="Giỏ hàng">🛒</a>
+                    <a href="<?php echo SITE_URL; ?>index.php?action=cart&method=view" class="menu-item" title="Giỏ hàng">Giỏ hàng</a>
                 <?php endif; ?>
             </div>
             
@@ -33,7 +33,7 @@
             <div class="user-menu">
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <div class="dropdown">
-                        <button class="dropdown-btn">👤 <?php echo $_SESSION['ten_nguoi_dung']; ?></button>
+                        <button class="dropdown-btn"><?php echo $_SESSION['ten_nguoi_dung']; ?></button>
                         <div class="dropdown-content">
                             <a href="<?php echo SITE_URL; ?>index.php?action=profile&method=view">Hồ sơ</a>
                             <a href="<?php echo SITE_URL; ?>index.php?action=profile&method=history">Đơn hàng</a>
@@ -42,7 +42,7 @@
                     </div>
                 <?php elseif (isset($_SESSION['admin_id'])): ?>
                     <div class="dropdown">
-                        <button class="dropdown-btn">👨‍💼 Admin</button>
+                        <button class="dropdown-btn">Admin</button>
                         <div class="dropdown-content">
                             <a href="<?php echo SITE_URL; ?>index.php?action=admin&method=dashboard">Dashboard</a>
                             <a href="<?php echo SITE_URL; ?>index.php?action=auth&method=logout">Đăng xuất</a>

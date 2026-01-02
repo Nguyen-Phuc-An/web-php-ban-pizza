@@ -1,9 +1,10 @@
 /* ============ ADMIN LAYOUT ============ */
 .admin-layout {
     display: flex;
-    min-height: calc(100vh - 200px);
+    height: calc(100vh - 60px);
     gap: var(--spacing-lg);
-    margin-top: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    margin: 0;
 }
 
 .admin-sidebar {
@@ -12,8 +13,11 @@
     padding: var(--spacing-lg);
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 51, 0.08);
-    height: fit-content;
+    height: 100%;
     position: sticky;
+    top: 0;
+    overflow-y: auto;
+    flex-shrink: 0;
 }
 
 .admin-sidebar h3 {
@@ -34,15 +38,11 @@
 .menu-item {
     display: block;
     color: var(--text-gray);
-    border-left: 3px solid transparent;
-    border-radius: 4px;
     transition: all 0.3s ease;
-    font-size: 18px;
 }
 
 .menu-item:hover,
 .menu-item.active {
-    background-color: var(--bg-light);
     color: var(--primary-color);
 }
 
@@ -52,6 +52,9 @@
     padding: var(--spacing-lg);
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 51, 0.08);
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .admin-content h2 {
@@ -96,20 +99,44 @@
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 51, 0.08);
-    margin: var(--spacing-lg) 0;
+    display: block;
+}
+
+.admin-table thead {
+    display: block;
+    background-color: var(--primary-color);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.admin-table tbody {
+    display: block;
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .admin-table th {
     background-color: var(--primary-color);
-    color: white;
+    color: #000033;
     padding: var(--spacing-md);
     text-align: left;
     font-weight: 600;
+    display: inline-block;
+    width: calc(100% / 6);
+}
+
+.admin-table tr {
+    display: flex;
 }
 
 .admin-table td {
     padding: var(--spacing-md);
     border-bottom: 1px solid var(--border-color);
+    width: calc(100% / 6);
+    flex-grow: 0;
+    flex-shrink: 0;
 }
 
 .admin-table tbody tr:last-child td {
@@ -142,6 +169,45 @@
     padding: var(--spacing-md);
     border-bottom: 1px solid var(--border-color);
 }
+
+/* ============ PAGINATION ============ */
+.pagination {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.page-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    padding: 0 var(--spacing-sm);
+    background-color: var(--bg-white);
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.page-link:hover {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.page-link.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(229, 199, 0, 0.3);
+}
+
 /* ============ ADMIN FORM ============ */
 .admin-form {
     background: var(--bg-white);

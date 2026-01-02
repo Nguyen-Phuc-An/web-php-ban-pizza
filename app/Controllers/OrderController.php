@@ -30,24 +30,32 @@ class OrderController extends Controller
             $this->redirect(SITE_URL . 'index.php?action=cart&method=view');
         }
         
-        // Calculate total
+        // Get selected items (or use all if none selected)
+        $selectedKeys = $_SESSION['selectedCartItems'] ?? array_keys($_SESSION['cart']);
+        
+        // Calculate total for selected items only
         $total = 0;
         $cartItems = [];
         
-        foreach ($_SESSION['cart'] as $cartKey => $item) {
-            $product = $this->productModel->read($item['product_id']);
-            if ($product) {
-                $cartItem = [
-                    'product_id' => $item['product_id'],
-                    'product_name' => $product['ten_product'],
-                    'price' => $product['gia_product'],
-                    'image' => $product['hinh_anh_product'],
-                    'quantity' => $item['quantity'],
-                    'size' => $item['size']
-                ];
-                $cartItem['subtotal'] = $product['gia_product'] * $item['quantity'];
-                $total += $cartItem['subtotal'];
-                $cartItems[] = $cartItem;
+        foreach ($selectedKeys as $cartKey) {
+            if (isset($_SESSION['cart'][$cartKey])) {
+                $item = $_SESSION['cart'][$cartKey];
+                $product = $this->productModel->read($item['product_id']);
+                if ($product) {
+                    // Use price from cart (adjusted by size) instead of base product price
+                    $itemPrice = $item['price'] ?? $product['gia_product'];
+                    $cartItem = [
+                        'product_id' => $item['product_id'],
+                        'product_name' => $product['ten_product'],
+                        'price' => $itemPrice,
+                        'image' => $product['hinh_anh_product'],
+                        'quantity' => $item['quantity'],
+                        'size' => $item['size']
+                    ];
+                    $cartItem['subtotal'] = $itemPrice * $item['quantity'];
+                    $total += $cartItem['subtotal'];
+                    $cartItems[] = $cartItem;
+                }
             }
         }
         
@@ -92,7 +100,7 @@ class OrderController extends Controller
         $orderId = $this->orderModel->getLastInsertId();
         
         // Create order items
-        foreach ($cartItems as $cartKey => $item) {
+        foreach ($cartItems as $item) {
             $itemData = [
                 'fk_order_id' => $orderId,
                 'fk_product_id' => $item['product_id'],
@@ -105,7 +113,8 @@ class OrderController extends Controller
             $this->orderItemModel->create($itemData);
         }
         
-        // Clear cart
+        // Clear selected items and cart
+        unset($_SESSION['selectedCartItems']);
         unset($_SESSION['cart']);
         
         $_SESSION['success'] = 'Đơn hàng đã được tạo thành công';

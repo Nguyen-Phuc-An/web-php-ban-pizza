@@ -15,9 +15,9 @@
         </nav>
     </aside>
     
-    <main class="admin-content">
+    <main class="admin-content" style="overflow-y: hidden;>
         <div class="container">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                 <h2>Quản Lý Danh Mục</h2>
                 <button type="button" class="btn btn-primary" onclick="openAddCategoryModal()">➕ Thêm danh mục</button>
             </div>
@@ -39,8 +39,8 @@
                             <td><?php echo htmlspecialchars($cat['mo_ta_categories'] ?? ''); ?></td>
                             <td><?php echo date('d/m/Y', strtotime($cat['ngay_tao_categories'])); ?></td>
                             <td>
-                                <button type="button" class="btn btn-small btn-secondary" onclick="openEditCategoryModal(<?php echo $cat['categories_id']; ?>, '<?php echo htmlspecialchars(addslashes($cat['ten_categories'])); ?>', '<?php echo htmlspecialchars(addslashes($cat['mo_ta_categories'] ?? '')); ?>')">✏️ Sửa</button>
-                                <button type="button" class="btn btn-small btn-danger" onclick="openDeleteCategoryModal(<?php echo $cat['categories_id']; ?>, '<?php echo htmlspecialchars(addslashes($cat['ten_categories'])); ?>')">🗑️ Xóa</button>
+                                <button type="button" class="btn btn-small btn-secondary" style="margin-bottom: 5px;" onclick="openEditCategoryModal(<?php echo $cat['categories_id']; ?>, '<?php echo htmlspecialchars(addslashes($cat['ten_categories'])); ?>', '<?php echo htmlspecialchars(addslashes($cat['mo_ta_categories'] ?? '')); ?>', <?php echo $cat['parent_category_id'] ?? 'null'; ?>)">Sửa</button>
+                                <button type="button" class="btn btn-small btn-danger" onclick="openDeleteCategoryModal(<?php echo $cat['categories_id']; ?>, '<?php echo htmlspecialchars(addslashes($cat['ten_categories'])); ?>')">Xóa</button>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -63,6 +63,16 @@
             <div class="form-group">
                 <label for="categoryName">Tên danh mục:</label>
                 <input type="text" id="categoryName" name="name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="parentCategory">Danh mục cha (nếu là danh mục con):</label>
+                <select id="parentCategory" name="parent_category_id">
+                    <option value="">-- Không có (danh mục gốc) --</option>
+                    <?php foreach ($categories as $cat): ?>
+                        <option value="<?php echo $cat['categories_id']; ?>"><?php echo htmlspecialchars($cat['ten_categories']); ?></option>
+                    <?php endforeach; ?>
+                </select>
             </div>
             
             <div class="form-group">
@@ -89,7 +99,7 @@
             <form id="deleteForm" method="POST" action="<?php echo SITE_URL; ?>index.php?action=admin&method=categories" style="display: inline;">
                 <input type="hidden" name="action" value="delete">
                 <input type="hidden" name="category_id" id="deleteCategoryId">
-                <button type="submit" class="btn btn-danger">🗑️ Xóa</button>
+                <button type="submit" class="btn btn-danger">Xóa</button>
             </form>
             <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">Hủy</button>
         </div>
@@ -103,16 +113,18 @@ function openAddCategoryModal() {
     document.getElementById('categoryId').value = '';
     document.getElementById('categoryName').value = '';
     document.getElementById('categoryDescription').value = '';
+    document.getElementById('parentCategory').value = '';
     document.getElementById('submitBtn').textContent = 'Lưu';
     document.getElementById('categoryModal').style.display = 'block';
 }
 
-function openEditCategoryModal(id, name, description) {
+function openEditCategoryModal(id, name, description, parentId) {
     document.getElementById('modalTitle').textContent = 'Sửa Danh Mục';
     document.getElementById('formAction').value = 'edit';
     document.getElementById('categoryId').value = id;
     document.getElementById('categoryName').value = decodeURIComponent(name);
     document.getElementById('categoryDescription').value = decodeURIComponent(description);
+    document.getElementById('parentCategory').value = parentId || '';
     document.getElementById('submitBtn').textContent = 'Cập nhật';
     document.getElementById('categoryModal').style.display = 'block';
 }
@@ -178,9 +190,15 @@ document.getElementById('categoryForm').addEventListener('submit', function(e) {
     descInput.name = 'description';
     descInput.value = description;
     
+    var parentInput = document.createElement('input');
+    parentInput.type = 'hidden';
+    parentInput.name = 'parent_category_id';
+    parentInput.value = document.getElementById('parentCategory').value;
+    
     form.appendChild(actionInput);
     form.appendChild(nameInput);
     form.appendChild(descInput);
+    form.appendChild(parentInput);
     
     if (action === 'edit' && categoryId) {
         var idInput = document.createElement('input');
@@ -194,5 +212,3 @@ document.getElementById('categoryForm').addEventListener('submit', function(e) {
     form.submit();
 });
 </script>
-
-<?php include APP_PATH . 'Views/layout/footer.php'; ?>

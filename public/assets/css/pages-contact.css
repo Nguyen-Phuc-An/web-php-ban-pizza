@@ -45,7 +45,7 @@
 }
 
 .contact-form-wrapper {
-    background: var(--bg-white);
+    background: #1F2933;
     border-radius: 8px;
     box-shadow: 0 4px 16px rgba(0, 0, 51, 0.1);
     padding: var(--spacing-xl);
@@ -55,7 +55,7 @@
 
 .contact-form-wrapper h2 {
     font-size: 24px;
-    color: var(--text-dark);
+    color: #FFEB3B;
     margin: 0 0 var(--spacing-lg) 0;
     text-align: center;
     font-weight: 700;
@@ -74,7 +74,7 @@
 
 .contact-form-wrapper .form-group label {
     font-weight: 500;
-    color: var(--text-dark);
+    color: #FFEB3B;
     margin-bottom: var(--spacing-sm);
     font-size: 14px;
 }

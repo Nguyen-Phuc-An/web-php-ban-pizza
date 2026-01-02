@@ -102,8 +102,6 @@
     </div>
 </div>
 
-<?php include APP_PATH . 'Views/layout/footer.php'; ?>
-
 <script>
 function openCustomerModal(customerId, name, email, phone) {
     document.getElementById('modalCustomerName').textContent = name;

@@ -6,12 +6,12 @@
 }
 
 :root {
-    /* Màu chủ đạo - xanh đen đậm */
-    --primary-color: #000033;
-    --primary-dark: #0a0a1f;
-    --primary-light: #1a1a4d;
-    --accent-color: #4d4d99;
-    --accent-light: #8080cc;
+    /* Màu chủ đạo - vàng */
+    --primary-color: #e5c700;
+    --primary-dark: #d4b700;
+    --primary-light: #f5d742;
+    --accent-color: #ffeb3b;
+    --accent-light: #ffeb99;
     
     /* Màu trạng thái */
     --success-color: #27ae60;
