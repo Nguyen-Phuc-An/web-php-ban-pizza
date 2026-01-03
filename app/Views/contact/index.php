@@ -12,15 +12,15 @@ include APP_PATH . 'Views/layout/header.php';
                 <div class="contact-info" style="margin-top: var(--spacing-lg);">
                     <div class="info-item" style="margin-bottom: var(--spacing-md);">
                         <h3 style="color: white; margin: 0 0 8px 0; font-size: 16px;">📍 Địa chỉ</h3>
-                        <p style="margin: 0; color: rgba(255, 255, 255, 0.9); font-size: 14px;">123 Đường Pizza, Quận 1, Thành phố Hồ Chí Minh</p>
+                        <p style="margin: 0; color: rgba(255, 255, 255, 0.9); font-size: 14px;">123 Đường Pizza, xã Mỳ Ý, tỉnh Tráng Miệng</p>
                     </div>
                     <div class="info-item" style="margin-bottom: var(--spacing-md);">
                         <h3 style="color: white; margin: 0 0 8px 0; font-size: 16px;">☎️ Số điện thoại</h3>
-                        <p style="margin: 0; color: rgba(255, 255, 255, 0.9); font-size: 14px;">0123 456 789</p>
+                        <p style="margin: 0; color: rgba(255, 255, 255, 0.9); font-size: 14px;">0363 547 545</p>
                     </div>
                     <div class="info-item" style="margin-bottom: var(--spacing-md);">
                         <h3 style="color: white; margin: 0 0 8px 0; font-size: 16px;">✉️ Email</h3>
-                        <p style="margin: 0; color: rgba(255, 255, 255, 0.9); font-size: 14px;">contact@pizzaonline.com</p>
+                        <p style="margin: 0; color: rgba(255, 255, 255, 0.9); font-size: 14px;">anphuc1203@gmail.com</p>
                     </div>
                     <div class="info-item">
                         <h3 style="color: white; margin: 0 0 8px 0; font-size: 16px;">⏰ Giờ hoạt động</h3>

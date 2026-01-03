@@ -117,6 +117,12 @@ function viewProductDetail(productId) {
             if (data.product) {
                 const product = data.product;
                 const basePrice = Number(product.gia_product);
+                const categoryId = Number(product.danh_muc_product);
+                const isPizza = categoryId === 1; // Pizza category ID = 1
+                
+                // Store category for addToCart function
+                window.currentProductCategory = categoryId;
+                
                 const detailHTML = `
                     <div style="height: 100%;display: grid;grid-template-columns: 1fr 1fr;gap: 30px;align-items: start;">
                         <!-- Left: Product Image -->
@@ -138,6 +144,7 @@ function viewProductDetail(productId) {
                             </div>
                             
                             <!-- Size Selection -->
+                            ${isPizza ? `
                             <div style="margin-bottom: 10px;">
                                 <label style="display: block; margin-bottom: 8px; font-weight: 500;">Chọn kích cỡ:</label>
                                 <select id="sizeSelect" onchange="updatePriceBySize(${basePrice})" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px;">
@@ -147,6 +154,7 @@ function viewProductDetail(productId) {
                                     <option value="Lớn">Lớn (+ 50,000đ)</option>
                                 </select>
                             </div>
+                            ` : ''}
                             
                             <!-- Quantity Input -->
                             <div style="margin-bottom: 10px;">
@@ -224,13 +232,20 @@ function addToCart(productId) {
         return;
     }
     
-    const size = document.getElementById('sizeSelect').value;
-    const quantity = document.getElementById('quantityInput').value;
+    const sizeSelect = document.getElementById('sizeSelect');
+    const categoryId = window.currentProductCategory || 1;
+    const isPizza = categoryId === 1;
     
-    if (!size) {
-        showToast('Vui lòng chọn kích cỡ', 'warning');
-        return;
+    let size = '';
+    if (isPizza) {
+        size = sizeSelect.value;
+        if (!size) {
+            showToast('Vui lòng chọn kích cỡ', 'warning');
+            return;
+        }
     }
+    
+    const quantity = document.getElementById('quantityInput').value;
     
     // Get the adjusted price from the displayed price
     const priceText = document.getElementById('productPrice').textContent;

@@ -6,7 +6,7 @@
     align-items: center;
     min-height: calc(100vh - 300px);
     margin: var(--spacing-xl) 0;
-    background: linear-gradient(135deg, rgba(0, 0, 51, 0.7) 0%, rgba(77, 77, 153, 0.7) 100%), 
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 100%), 
                 url('../../uploads/contact.png') center/cover no-repeat;
     border-radius: 12px;
 }

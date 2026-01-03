@@ -72,10 +72,10 @@ include APP_PATH . 'Views/layout/header.php';
                     đáp ứng mọi khẩu vị của khách hàng:
                 </p>
                 <ul class="pizza-types">
-                    <li><strong>Pizza Cơ Bản:</strong> Margherita, Cheese, BBQ - những lựa chọn kinh điển</li>
-                    <li><strong>Pizza Thịt:</strong> Pepperoni, Sausage, Bacon - cho những ai yêu thích thịt</li>
-                    <li><strong>Pizza Rau Củ:</strong> Vegetarian, Garden Fresh - cho người yêu thích rau quả</li>
-                    <li><strong>Pizza Đặc Biệt:</strong> Seafood, Spicy, Premium - những sáng tạo độc đáo của chúng tôi</li>
+                    <li><strong>Pizza Siêu Topping:</strong> Truyền thống, Hawaiian, xốt phô mai,.. - những lựa chọn hàng đầu</li>
+                    <li><strong>Pizza Đại Tiệc Hải Sản:</strong> Xốt cà chua, tiêu, mayonnaies - cho những ai yêu thích hải sản</li>
+                    <li><strong>Pizza Cho Bé:</strong> Thị heo xông khói, thanh cua,... - cho trẻ nhỏ</li>
+                    <li><strong>Pizza Huyền Thoại Mỹ:</strong> Thập cẩm thượng hạng, Rau củ thập cẩm - những lựa chọn kinh điển</li>
                 </ul>
             </div>
         </section>
