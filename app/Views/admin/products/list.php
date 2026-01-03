@@ -55,9 +55,32 @@
                             <td><?php echo htmlspecialchars($product['ten_product']); ?></td>
                             <td><?php echo number_format($product['gia_product'], 0, ',', '.'); ?>đ</td>
                             <td><img src="<?php echo SITE_URL; ?>uploads/<?php echo htmlspecialchars($product['hinh_anh_product']); ?>" class="admin-thumb" alt="" style="width: 80px; height: 80px; object-fit: cover;"></td>
-                            <td><?php echo $product['danh_muc_product']; ?></td>
                             <td>
-                                <button type="button" class="btn btn-small btn-secondary" style="margin-bottom: 5px;" onclick="openEditProductModal(<?php echo $product['product_id']; ?>, '<?php echo htmlspecialchars(addslashes($product['ten_product'])); ?>', '<?php echo htmlspecialchars($product['gia_product']); ?>', '<?php echo htmlspecialchars($product['danh_muc_product']); ?>', '<?php echo htmlspecialchars(addslashes($product['mo_ta_product'])); ?>')">Sửa</button>
+                                <?php 
+                                    $catId = $product['danh_muc_product'];
+                                    $subCatId = $product['sub_category_id'] ?? null;
+                                    
+                                    // Tìm tên danh mục cha
+                                    $parentName = '';
+                                    $subName = '';
+                                    foreach ($categories as $cat) {
+                                        if ($cat['categories_id'] == $catId) {
+                                            $parentName = $cat['ten_categories'];
+                                        }
+                                        if ($subCatId && $cat['categories_id'] == $subCatId) {
+                                            $subName = $cat['ten_categories'];
+                                        }
+                                    }
+                                    
+                                    if ($subName) {
+                                        echo htmlspecialchars($parentName) . ' > ' . htmlspecialchars($subName);
+                                    } else {
+                                        echo htmlspecialchars($parentName);
+                                    }
+                                ?>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-small btn-secondary" style="margin-bottom: 5px;" onclick="openEditProductModal(<?php echo $product['product_id']; ?>, '<?php echo htmlspecialchars(addslashes($product['ten_product'])); ?>', '<?php echo htmlspecialchars($product['gia_product']); ?>', '<?php echo htmlspecialchars($product['danh_muc_product']); ?>', '<?php echo htmlspecialchars(addslashes($product['mo_ta_product'])); ?>', '<?php echo htmlspecialchars($product['sub_category_id'] ?? ''); ?>')">Sửa</button>
                                 <button type="button" class="btn btn-small btn-danger" onclick="openDeleteProductModal(<?php echo $product['product_id']; ?>, '<?php echo htmlspecialchars(addslashes($product['ten_product'])); ?>')">Xóa</button>
                             </td>
                         </tr>
@@ -285,13 +308,16 @@ function closeAddProductModal() {
     document.getElementById('addProductForm').reset();
 }
 
-function openEditProductModal(id, name, price, categoryId, description) {
+function openEditProductModal(id, name, price, categoryId, description, subCategoryId) {
     document.getElementById('editProductId').value = id;
     document.getElementById('editProductName').value = name;
     document.getElementById('editProductPrice').value = price;
     document.getElementById('editProductCategory').value = categoryId;
     document.getElementById('editProductDesc').value = description;
     updateSubcategories('edit');
+    if (subCategoryId) {
+        document.getElementById('editProductSubcategory').value = subCategoryId;
+    }
     document.getElementById('editProductModal').style.display = 'block';
 }
 

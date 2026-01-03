@@ -10,7 +10,7 @@ class Database
             try {
                 $config = [
                     'host' => 'localhost:3307',
-                    'dbname' => 'web-ban-thucan',
+                    'dbname' => 'web_ban_pizza',
                     'user' => 'root',
                     'password' => ''
                 ];

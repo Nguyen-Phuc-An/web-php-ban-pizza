@@ -47,6 +47,7 @@ include APP_PATH . 'Views/layout/header.php';
 
             <!-- Payment & Delivery Form -->
             <form method="POST" class="checkout-section" style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0;">
+                <input type="hidden" id="transferContentInput" name="transfer_content" value="">
                 
                 <!-- Payment Method -->
                 <h3 style="margin-top: 0; margin-bottom: 15px;">💳 Phương thức thanh toán</h3>
@@ -144,3 +145,14 @@ include APP_PATH . 'Views/layout/header.php';
 </div>
 
 <?php include APP_PATH . 'Views/layout/footer.php'; ?>
+
+<script>
+// Update transfer content on form submit
+document.querySelector('form').addEventListener('submit', function(e) {
+    const bankMethod = document.querySelector('input[value="Chuyển khoản"]').checked;
+    if (bankMethod) {
+        const transferContent = 'DONHANG_' + new Date().toLocaleDateString('vi-VN').split('/').reverse().join('') + '_0000';
+        document.getElementById('transferContentInput').value = transferContent;
+    }
+});
+</script>

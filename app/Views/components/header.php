@@ -3,7 +3,7 @@
         <div class="header-content">
             <!-- Logo + Tên website (bên trái) -->
             <div class="logo">
-                <h1><a href="<?php echo SITE_URL; ?>index.php?action=home">🍕 Pizza Online</a></h1>
+                <h1><a href="<?php echo SITE_URL; ?>index.php?action=home">🍕 Pizza A.D.A</a></h1>
             </div>
             
             <!-- Menu chính (Trang chủ, Giới thiệu, Liên hệ) -->
@@ -18,7 +18,7 @@
             <!-- Ô tìm kiếm -->
             <form class="search-form" onsubmit="handleSearch(event)" <?php if (isset($_SESSION['admin_id'])) echo 'style="display: none;"'; ?>>
                 <input type="text" id="searchInput" name="q" class="search-input" placeholder="Tìm kiếm pizza...">
-                <button type="submit" class="search-btn">🔍</button>
+                <button type="submit" class="search-btn"></button>
             </form>
             
             <!-- Menu phụ (Yêu thích, Giỏ hàng) - chỉ hiện khi đã login user (không admin) -->
@@ -36,7 +36,7 @@
                         <button class="dropdown-btn"><?php echo $_SESSION['ten_nguoi_dung']; ?></button>
                         <div class="dropdown-content">
                             <a href="<?php echo SITE_URL; ?>index.php?action=profile&method=view">Hồ sơ</a>
-                            <a href="<?php echo SITE_URL; ?>index.php?action=profile&method=history">Đơn hàng</a>
+                            <a href="<?php echo SITE_URL; ?>index.php?action=order&method=history">Đơn hàng</a>
                             <a href="<?php echo SITE_URL; ?>index.php?action=auth&method=logout">Đăng xuất</a>
                         </div>
                     </div>

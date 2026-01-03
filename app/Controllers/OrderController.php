@@ -118,7 +118,13 @@ class OrderController extends Controller
         unset($_SESSION['cart']);
         
         $_SESSION['success'] = 'Đơn hàng đã được tạo thành công';
-        $this->redirect(SITE_URL . 'index.php?action=order&method=history');
+        
+        // Redirect based on payment method
+        if ($paymentMethod === 'Chuyển khoản') {
+            $this->redirect(SITE_URL . 'index.php?action=order&method=success&id=' . $orderId);
+        } else {
+            $this->redirect(SITE_URL . 'index.php?action=order&method=history');
+        }
     }
     
     public function history()
@@ -167,6 +173,34 @@ class OrderController extends Controller
         ];
         
         $this->render('order/detail', $data);
+    }
+    
+    public function success()
+    {
+        if (!$this->isAuthenticated()) {
+            $this->redirectToLogin();
+        }
+        
+        $orderId = $_GET['id'] ?? null;
+        if (!$orderId) {
+            $this->redirect(SITE_URL . 'index.php?action=order&method=history');
+            return;
+        }
+        
+        $order = $this->orderModel->read($orderId);
+        if (!$order || $order['nguoi_mua_id'] != $this->user['user_id']) {
+            $this->redirect(SITE_URL . 'index.php?action=order&method=history');
+            return;
+        }
+        
+        $items = $this->orderItemModel->getByOrderId($orderId);
+        
+        $data = [
+            'order' => $order,
+            'items' => $items
+        ];
+        
+        $this->render('order/success', $data);
     }
 }
 ?>

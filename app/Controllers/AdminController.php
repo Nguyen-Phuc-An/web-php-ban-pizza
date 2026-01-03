@@ -117,6 +117,7 @@ class AdminController extends Controller
             'mo_ta_product' => $_POST['mo_ta_product'] ?? '',
             'gia_product' => $_POST['gia_product'] ?? 0,
             'danh_muc_product' => $_POST['danh_muc_product'] ?? 0,
+            'sub_category_id' => $_POST['danh_muc_product_sub'] ?? null,
             'ngay_tao_product' => date('Y-m-d H:i:s'),
             'ngay_cap_nhap_product' => date('Y-m-d H:i:s')
         ];
@@ -162,6 +163,7 @@ class AdminController extends Controller
             'mo_ta_product' => $_POST['mo_ta_product'] ?? '',
             'gia_product' => $_POST['gia_product'] ?? 0,
             'danh_muc_product' => $_POST['danh_muc_product'] ?? 0,
+            'sub_category_id' => $_POST['danh_muc_product_sub'] ?? null,
             'ngay_cap_nhap_product' => date('Y-m-d H:i:s')
         ];
         

@@ -38,7 +38,7 @@ include APP_PATH . 'Views/layout/header.php';
                 <div class="reason-card">
                     <div class="reason-icon">⚡</div>
                     <h3>Giao Hàng Nhanh Chóng</h3>
-                    <p>Đặt hàng ngay hôm nay, nhận hàng trong vòng 30 phút tại địa chỉ của bạn.</p>
+                    <p>Đặt hàng ngay hôm nay, nhận hàng trong vòng 30 phút tại địa chỉ của bạn. Chỉ giao hàng trong vòng bán kính 5km.</p>
                 </div>
                 <div class="reason-card">
                     <div class="reason-icon">💰</div>

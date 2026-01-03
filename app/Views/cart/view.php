@@ -197,10 +197,6 @@ function updateQuantity(cartKey, quantity) {
 }
 
 function removeFromCart(cartKey) {
-    if (!confirm('Bạn chắc chắn muốn xóa sản phẩm này?')) {
-        return;
-    }
-    
     const formData = new FormData();
     formData.append('cart_key', cartKey);
     

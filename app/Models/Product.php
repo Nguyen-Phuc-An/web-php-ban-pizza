@@ -59,9 +59,9 @@ class Product extends Model
     
     public function getByCategory($categoryId)
     {
-        $sql = "SELECT * FROM {$this->table} WHERE danh_muc_product = ? 
+        $sql = "SELECT * FROM {$this->table} WHERE danh_muc_product = ? OR sub_category_id = ?
                 ORDER BY ngay_tao_product DESC";
-        $stmt = $this->query($sql, [$categoryId]);
+        $stmt = $this->query($sql, [$categoryId, $categoryId]);
         return $stmt->fetchAll();
     }
 }

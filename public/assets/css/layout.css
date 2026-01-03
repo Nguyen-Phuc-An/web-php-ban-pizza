@@ -162,7 +162,7 @@
     background: #1F2933;
     color: #9CA3AF;
     padding: var(--spacing-xl) 0;
-    text-align: center;
+    text-align: justify;
     border-top: 2px solid var(--primary-light);
 }
 
@@ -173,7 +173,6 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: var(--spacing-xl);
-    margin-bottom: var(--spacing-xl);
 }
 
 .footer-section h3 {
