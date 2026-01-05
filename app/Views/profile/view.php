@@ -29,7 +29,7 @@
             </div>
             <div style="margin-top: 20px;">
                 <a href="<?php echo SITE_URL; ?>index.php?action=order&method=history" class="btn btn-primary" style="display: block; text-align: center; text-decoration: none; background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%); color: white; padding: 12px; border-radius: 6px; font-weight: 600;">
-                    📦 Xem lịch sử đơn hàng
+                    <i class="bi bi-box"></i> Xem lịch sử đơn hàng
                 </a>
             </div>
         </div>

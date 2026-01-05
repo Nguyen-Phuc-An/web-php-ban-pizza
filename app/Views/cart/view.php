@@ -12,40 +12,41 @@
                 
                 <!-- LEFT: Cart Grid with Checkboxes -->
                 <div>
-                    <h3 style="margin-top: 0; margin-bottom: 15px; font-size: 18px;">Sản phẩm của bạn</h3>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3 style="margin: 0; font-size: 18px;">Sản phẩm của bạn</h3>
+                        <button id="selectAllBtn" onclick="toggleSelectAll()" style="background: var(--primary-color); color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: 500; font-size: 14px; transition: background 0.3s ease;">
+                            Chọn tất cả
+                        </button>
+                    </div>
+                    <div class="products-grid">
                         <?php 
                         $total = 0;
                         foreach ($cart as $cartKey => $item): 
                             $itemTotal = $item['price'] * $item['quantity'];
                             $total += $itemTotal;
                         ?>
-                            <div class="cart-item" style="background: white; border: 2px solid #e0e0e0; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; position: relative;">
+                            <div class="product-card" style="position: relative;">
                                 <!-- Checkbox -->
                                 <div style="position: absolute; top: 10px; left: 10px; z-index: 10;">
                                     <input type="checkbox" class="product-checkbox" data-cart-key="<?php echo htmlspecialchars($cartKey); ?>" 
                                            data-price="<?php echo $item['price']; ?>" data-quantity="<?php echo $item['quantity']; ?>"
-                                           style="width: 20px; height: 20px; cursor: pointer;" onchange="updateSummary()">
+                                           style="width: 20px; height: 20px; cursor: pointer;" onchange="updateSelectAllButton(); updateSummary()">
                                 </div>
                                 
                                 <!-- Product Image -->
-                                <div style="height: 160px; overflow: hidden; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                                <div class="product-image">
                                     <img src="<?php echo SITE_URL; ?>uploads/<?php echo htmlspecialchars($item['image']); ?>" 
-                                         style="width: 100%; height: 100%; object-fit: cover;">
+                                         alt="<?php echo htmlspecialchars($item['name']); ?>">
                                 </div>
                                 
                                 <!-- Product Info -->
-                                <div style="padding: 12px;">
-                                    <h4 style="margin: 0 0 8px 0; font-size: 14px; font-weight: 600; color: #333; line-height: 1.3;">
+                                <div class="product-info">
+                                    <h3 style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 3.2em; line-height: 1.6em; margin: 0 0 8px 0;">
                                         <?php echo htmlspecialchars($item['name']); ?>
-                                    </h4>
+                                    </h3>
                                     
                                     <p style="margin: 4px 0; font-size: 12px; color: #666;">
                                         <strong>Size:</strong> <?php echo htmlspecialchars($item['size']); ?>
-                                    </p>
-                                    
-                                    <p style="margin: 4px 0 10px 0; font-size: 14px; color: var(--primary-color); font-weight: 600;">
-                                        <?php echo number_format($item['price'], 0, ',', '.'); ?> đ
                                     </p>
                                     
                                     <!-- Quantity Control -->
@@ -58,7 +59,7 @@
                                         <button type="button" class="qty-plus" style="width: 28px; height: 28px; border: 1px solid #ddd; background: white; cursor: pointer; border-radius: 3px; font-size: 14px;">+</button>
                                     </form>
                                     
-                                    <p style="margin: 6px 0 10px 0; padding: 8px; background: #f0f0f0; border-radius: 4px; text-align: center; font-size: 12px; color: #666;">
+                                    <p style="margin: 6px 0 10px 0; padding: 8px; background: #f0f0f0; border-radius: 4px; text-align: center; font-size: 20px; color: #666;">
                                         Tổng: <strong style="color: var(--primary-color);" data-item-total><?php echo number_format($itemTotal, 0, ',', '.'); ?> đ</strong>
                                     </p>
                                     
@@ -119,6 +120,31 @@
 
 <script>
 const SHIPPING_FEE = 30000;
+
+function updateSelectAllButton() {
+    const checkboxes = document.querySelectorAll('.product-checkbox');
+    const checkedCount = document.querySelectorAll('.product-checkbox:checked').length;
+    const btn = document.getElementById('selectAllBtn');
+    
+    if (checkedCount === checkboxes.length && checkboxes.length > 0) {
+        btn.textContent = 'Bỏ chọn tất cả';
+    } else {
+        btn.textContent = 'Chọn tất cả';
+    }
+}
+
+function toggleSelectAll() {
+    const checkboxes = document.querySelectorAll('.product-checkbox');
+    const btn = document.getElementById('selectAllBtn');
+    const allChecked = document.querySelectorAll('.product-checkbox:checked').length === checkboxes.length;
+    
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = !allChecked;
+    });
+    
+    btn.textContent = allChecked ? 'Chọn tất cả' : 'Bỏ chọn tất cả';
+    updateSummary();
+}
 
 function updateSummary() {
     const checkboxes = document.querySelectorAll('.product-checkbox:checked');
@@ -184,10 +210,14 @@ function updateQuantity(cartKey, quantity) {
                 const price = parseInt(checkbox.dataset.price);
                 checkbox.dataset.quantity = quantity;
                 
-                // Update the cart item total display
-                const itemTotalEl = document.querySelector(`[data-cart-key="${cartKey}"]`).closest('.cart-item').querySelector('[data-item-total]');
-                if (itemTotalEl) {
-                    itemTotalEl.textContent = (price * quantity).toLocaleString('vi-VN') + ' đ';
+                // Update the cart item total display - find the correct element
+                const productCard = checkbox.closest('.product-card');
+                if (productCard) {
+                    const itemTotalEl = productCard.querySelector('[data-item-total]');
+                    if (itemTotalEl) {
+                        const newTotal = price * quantity;
+                        itemTotalEl.textContent = newTotal.toLocaleString('vi-VN') + ' đ';
+                    }
                 }
             }
             updateSummary();

@@ -24,6 +24,9 @@ if (session_status() === PHP_SESSION_NONE) {
     
     <!-- Responsive styles -->
     <link rel="stylesheet" href="<?php echo SITE_URL; ?>assets/css/responsive.css">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 </head>
 <body>
     <!-- Toast Notifications Container -->
@@ -34,45 +37,16 @@ if (session_status() === PHP_SESSION_NONE) {
     <main class="main-content">
         <?php if (isset($_SESSION['success'])): ?>
             <script>
-                showToast('<?php echo addslashes($_SESSION['success']); ?>', 'success');
+                window.toastMessage = '<?php echo addslashes($_SESSION['success']); ?>';
+                window.toastType = 'success';
             </script>
             <?php unset($_SESSION['success']); ?>
         <?php endif; ?>
         
         <?php if (isset($_SESSION['error'])): ?>
             <script>
-                showToast('<?php echo addslashes($_SESSION['error']); ?>', 'error');
+                window.toastMessage = '<?php echo addslashes($_SESSION['error']); ?>';
+                window.toastType = 'error';
             </script>
             <?php unset($_SESSION['error']); ?>
         <?php endif; ?>
-
-    <script>
-        function showToast(message, type = 'info', duration = 3000) {
-            const container = document.getElementById('toastContainer');
-            
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            
-            const icons = {
-                success: '✓',
-                error: '✕',
-                info: 'ℹ',
-                warning: '⚠'
-            };
-            
-            toast.innerHTML = `
-                <span class="toast-icon">${icons[type] || icons.info}</span>
-                <span class="toast-message">${message}</span>
-                <button class="toast-close" onclick="this.parentElement.remove()">×</button>
-            `;
-            
-            container.appendChild(toast);
-            
-            if (duration > 0) {
-                setTimeout(() => {
-                    toast.style.animation = 'slideOutRight 0.3s ease-out forwards';
-                    setTimeout(() => toast.remove(), 300);
-                }, duration);
-            }
-        }
-    </script>

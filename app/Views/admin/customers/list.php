@@ -5,20 +5,18 @@
         <h3>Menu Quản Trị</h3>
         <nav class="admin-menu">
             <ul>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=dashboard" class="menu-item">📊 Dashboard</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=products" class="menu-item">🍕 Sản phẩm</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=categories" class="menu-item">📁 Danh mục</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=orders" class="menu-item">📦 Đơn hàng</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=customers" class="menu-item active">👥 Khách hàng</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=contacts" class="menu-item">💬 Liên hệ</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=dashboard" class="menu-item"><i class="bi bi-graph-up"></i> Dashboard</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=products" class="menu-item"><i class="bi bi-circle"></i> Sản phẩm</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=categories" class="menu-item"><i class="bi bi-folder"></i> Danh mục</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=orders" class="menu-item"><i class="bi bi-box"></i> Đơn hàng</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=customers" class="menu-item active"><i class="bi bi-people"></i> Khách hàng</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=contacts" class="menu-item"><i class="bi bi-chat-dots"></i> Liên hệ</a></li>
             </ul>
         </nav>
     </aside>
     
     <main class="admin-content">
-        <div class="container">
-            <h2>Quản Lý Khách Hàng</h2>
-            
+        <div class="container">            
             <table class="admin-table">
                 <thead>
                     <tr>
@@ -32,11 +30,11 @@
                 <tbody>
                     <?php foreach ($customers as $customer): ?>
                         <tr style="cursor: pointer;" onclick="openCustomerModal(<?php echo $customer['user_id']; ?>, '<?php echo htmlspecialchars(addslashes($customer['ten_nguoi_dung'])); ?>', '<?php echo htmlspecialchars($customer['email_user']); ?>', '<?php echo htmlspecialchars($customer['so_dien_thoai_user'] ?? '-'); ?>')">
-                            <td><?php echo $customer['user_id']; ?></td>
+                            <td style="text-align: center;"><?php echo $customer['user_id']; ?></td>
                             <td><?php echo htmlspecialchars($customer['ten_nguoi_dung']); ?></td>
                             <td><?php echo htmlspecialchars($customer['email_user']); ?></td>
-                            <td><?php echo htmlspecialchars($customer['so_dien_thoai_user'] ?? '-'); ?></td>
-                            <td><?php echo date('d/m/Y', strtotime($customer['ngay_tao_user'])); ?></td>
+                            <td style="text-align: center;"><?php echo htmlspecialchars($customer['so_dien_thoai_user'] ?? '-'); ?></td>
+                            <td style="text-align: center;"><?php echo date('d/m/Y', strtotime($customer['ngay_tao_user'])); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -91,7 +89,7 @@
             </div>
         </div>
         
-        <h3>📋 Lịch sử đơn hàng</h3>
+        <h3><i class="bi bi-file-text"></i> Lịch sử đơn hàng</h3>
         <div id="modalOrderHistory" style="border: 1px solid var(--border-color); border-radius: 8px;">
             <p style="padding: var(--spacing-md); text-align: center; color: var(--text-muted);">Đang tải...</p>
         </div>

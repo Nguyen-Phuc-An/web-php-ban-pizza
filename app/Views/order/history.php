@@ -2,7 +2,7 @@
 
 <div class="container">
     <div class="page-header">
-        <h1>📦 Lịch Sử Đơn Hàng</h1>
+        <h1><i class="bi bi-box"></i> Lịch Sử Đơn Hàng</h1>
         <p>Quản lý và theo dõi các đơn hàng của bạn</p>
     </div>
 
@@ -13,7 +13,7 @@
                 <h3 style="margin: 0 0 10px 0; color: var(--text-dark);">Chưa có đơn hàng nào</h3>
                 <p style="margin: 0 0 20px 0; color: #666;">Bạn chưa đặt hàng. Hãy khám phá bộ sưu tập pizza của chúng tôi!</p>
                 <a href="<?php echo SITE_URL; ?>index.php?action=home" class="btn btn-primary" style="display: inline-block; text-decoration: none; background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%); color: white; padding: 12px 30px; border-radius: 6px; font-weight: 600;">
-                    🍕 Mua sắm ngay
+                    <i class="bi bi-circle"></i> Mua sắm ngay
                 </a>
             </div>
         <?php else: ?>

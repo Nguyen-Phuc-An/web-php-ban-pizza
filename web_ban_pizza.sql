@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Jan 03, 2026 at 08:01 AM
+-- Generation Time: Jan 05, 2026 at 10:33 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -118,10 +118,12 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`order_id`, `tong_tien`, `phuong_thuc_thanh_toan`, `trang_thai`, `ngay_tao_order`, `nguoi_mua_id`, `nguoi_nhan`, `sdt_nguoi_nhan`, `dia-chi_nhan`) VALUES
-(2, 175000.00, 'Chuyển khoản', 'Đang giao', '2026-01-03 04:24:51', 1, 'Đăng', '0363547540', 'TVU-D3'),
-(3, 55000.00, 'Trực tiếp', 'Chờ xác nhận', '2026-01-03 00:11:23', 1, 'an', '0363547545', 'test view lịch sử'),
-(4, 109000.00, 'Trực tiếp', 'Chờ xác nhận', '2026-01-03 00:29:43', 1, 'an', '0363547542', 'test chuyển khoản ngân hàng'),
-(5, 208000.00, 'Chuyển khoản', 'Chờ xác nhận', '2026-01-03 00:53:48', 1, 'an', '0363547542', 'Test chuyển khoản');
+(2, 175000.00, 'Chuyển khoản', 'Đã giao', '2026-01-05 07:46:00', 1, 'Đăng', '0363547540', 'TVU-D3'),
+(3, 55000.00, 'Trực tiếp', 'Đã hủy', '2026-01-05 07:45:43', 1, 'an', '0363547545', 'test view lịch sử'),
+(4, 109000.00, 'Trực tiếp', 'Đã giao', '2026-01-05 07:45:45', 1, 'an', '0363547542', 'test chuyển khoản ngân hàng'),
+(5, 208000.00, 'Chuyển khoản', 'Đã giao', '2026-01-05 08:37:34', 1, 'an', '0363547542', 'Test chuyển khoản'),
+(6, 360000.00, 'Chuyển khoản', 'Đã hủy', '2026-01-05 08:29:55', 4, 'Thanh Đỉnh', '0123123132', 'Mũy Mo mó'),
+(7, 1269000.00, 'Chuyển khoản', 'Đã giao', '2026-01-05 09:19:31', 1, 'an', '0363547545', 'TVU');
 
 -- --------------------------------------------------------
 
@@ -147,7 +149,12 @@ INSERT INTO `order_items` (`order_item_id`, `so_luong_mua`, `gia_order_items`, `
 (9, 1, 145000.00, 'Lớn', '2026-01-02 22:23:09', 2, 15),
 (10, 1, 25000.00, '', '2026-01-03 00:11:23', 3, 50),
 (11, 1, 79000.00, '', '2026-01-03 00:29:43', 4, 46),
-(12, 2, 89000.00, '', '2026-01-03 00:53:48', 5, 40);
+(12, 2, 89000.00, '', '2026-01-03 00:53:48', 5, 40),
+(13, 2, 165000.00, 'Lớn', '2026-01-05 02:19:02', 6, 9),
+(14, 1, 299000.00, 'Vừa', '2026-01-05 03:17:42', 7, 1),
+(15, 1, 235000.00, 'Vừa', '2026-01-05 03:17:42', 7, 3),
+(16, 2, 235000.00, 'Vừa', '2026-01-05 03:17:42', 7, 4),
+(17, 1, 235000.00, 'Vừa', '2026-01-05 03:17:42', 7, 5);
 
 -- --------------------------------------------------------
 
@@ -249,7 +256,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `ten_nguoi_dung`, `email_user`, `mat_khau`, `so_dien_thoai_user`, `dia_chi`, `ngay_tao_user`, `ngay_cap_nhap_user`) VALUES
-(1, 'an', 'an@gmail.com', '$2y$10$XrG6uF9ucn3KnY1eovvM.umo1.yMLmUrZOPXsxnIKNnrfD7pfoVRO', '0363547545', 'Hòa Hảo', '2026-01-02 08:26:24', '2026-01-02 02:26:24');
+(1, 'an', 'an@gmail.com', '$2y$10$XrG6uF9ucn3KnY1eovvM.umo1.yMLmUrZOPXsxnIKNnrfD7pfoVRO', '0363547545', 'Hòa Hảo', '2026-01-02 08:26:24', '2026-01-02 02:26:24'),
+(2, 'Khánh Đăng', 'dang@gmail.com', '$2y$10$pLM8BArrYIs5MBrCta2hOe6nTwrXdakz.tfjbQwYyD7ek7nhbQ7AS', '0987654321', 'Trà Vinh', '2026-01-05 06:46:41', '2026-01-05 00:46:41'),
+(3, 'Hữu Luân', 'luan@gmail.com', '$2y$10$ixKzQsB.JKtIi8vXjqn7lu9jLQAbgYxQP1G7dXqqSkUbVQYAd4l3m', '0123123123', 'Hưng Mỹ', '2026-01-05 06:48:07', NULL),
+(4, 'Thanh Đỉnh', 'dinh@gmail.com', '$2y$10$tyZmGqFPMb5it33ik2GM5OArrywqBxk8U7GXO1/90ExEKS/.QCxka', '0123123456', 'Mỹ Thoa', '2026-01-05 06:51:26', NULL);
 
 -- --------------------------------------------------------
 
@@ -263,6 +273,21 @@ CREATE TABLE `wishlists` (
   `nguoi_dung_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `wishlists`
+--
+
+INSERT INTO `wishlists` (`wishlist_id`, `tao_luc`, `nguoi_dung_id`, `product_id`) VALUES
+(1, '2026-01-05', 3, 1),
+(2, '2026-01-05', 3, 3),
+(3, '2026-01-05', 3, 4),
+(4, '2026-01-05', 3, 5),
+(5, '2026-01-05', 4, 9),
+(8, '2026-01-05', 1, 1),
+(9, '2026-01-05', 1, 3),
+(10, '2026-01-05', 1, 4),
+(11, '2026-01-05', 1, 5);
 
 --
 -- Indexes for dumped tables
@@ -349,13 +374,13 @@ ALTER TABLE `contacts`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -367,13 +392,13 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `wishlists`
 --
 ALTER TABLE `wishlists`
-  MODIFY `wishlist_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `wishlist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables

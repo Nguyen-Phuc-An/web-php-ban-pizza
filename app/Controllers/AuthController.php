@@ -28,6 +28,7 @@ class AuthController extends Controller
                 $_SESSION['admin_id'] = $admin['admin_id'];
                 $_SESSION['email_admin'] = $admin['email_admin'];
                 $_SESSION['is_admin'] = true;
+                $_SESSION['success'] = 'Đăng nhập thành công!';
                 $this->redirect(SITE_URL . 'index.php?action=admin&method=dashboard');
                 return;
             }
@@ -39,6 +40,7 @@ class AuthController extends Controller
                 $_SESSION['ten_nguoi_dung'] = $user['ten_nguoi_dung'];
                 $_SESSION['email_user'] = $user['email_user'];
                 $_SESSION['is_customer'] = true;
+                $_SESSION['success'] = 'Đăng nhập thành công!';
                 $this->redirect(SITE_URL . 'index.php?action=home');
                 return;
             }
@@ -52,27 +54,41 @@ class AuthController extends Controller
     public function register()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $data = [
-                'ten_nguoi_dung' => $_POST['name'] ?? '',
-                'email_user' => $_POST['email'] ?? '',
-                'mat_khau' => $this->userModel->hashPassword($_POST['password'] ?? ''),
-                'so_dien_thoai_user' => $_POST['phone'] ?? '',
-                'dia_chi' => $_POST['address'] ?? ''
-            ];
+            $name = $_POST['name'] ?? '';
+            $email = $_POST['email'] ?? '';
+            $password = $_POST['password'] ?? '';
+            $confirm_password = $_POST['confirm_password'] ?? '';
+            $phone = $_POST['phone'] ?? '';
+            $address = $_POST['address'] ?? '';
             
             // Validate
-            if (empty($data['ten_nguoi_dung']) || empty($data['email_user']) || empty($_POST['password'])) {
+            if (empty($name) || empty($email) || empty($password) || empty($confirm_password)) {
                 $_SESSION['error'] = 'Vui lòng điền đầy đủ thông tin';
                 $this->render('auth/register');
                 return;
             }
             
+            // Kiểm tra mật khẩu trùng khớp
+            if ($password !== $confirm_password) {
+                $_SESSION['error'] = 'Mật khẩu xác nhận không trùng khớp';
+                $this->render('auth/register');
+                return;
+            }
+            
             // Check if email exists
-            if ($this->userModel->findByEmail($data['email_user'])) {
+            if ($this->userModel->findByEmail($email)) {
                 $_SESSION['error'] = 'Email đã được đăng ký';
                 $this->render('auth/register');
                 return;
             }
+            
+            $data = [
+                'ten_nguoi_dung' => $name,
+                'email_user' => $email,
+                'mat_khau' => $this->userModel->hashPassword($password),
+                'so_dien_thoai_user' => $phone,
+                'dia_chi' => $address
+            ];
             
             if ($this->userModel->create($data)) {
                 $_SESSION['success'] = 'Đăng ký thành công. Vui lòng đăng nhập.';

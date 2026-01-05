@@ -5,7 +5,7 @@ include APP_PATH . 'Views/layout/header.php';
 
 <div class="container">
     <div class="page-header">
-        <h1>🍕 Giới Thiệu Về Pizza Online</h1>
+        <h1><i class="bi bi-circle"></i> Giới Thiệu Về Pizza Online</h1>
         <p>Khám phá câu chuyện của chúng tôi</p>
     </div>
 

@@ -5,20 +5,18 @@
         <h3>Menu Quản Trị</h3>
         <nav class="admin-menu">
             <ul>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=dashboard" class="menu-item active">📊 Dashboard</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=products" class="menu-item">🍕 Sản phẩm</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=categories" class="menu-item">📁 Danh mục</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=orders" class="menu-item">📦 Đơn hàng</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=customers" class="menu-item">👥 Khách hàng</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=contacts" class="menu-item">💬 Liên hệ</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=dashboard" class="menu-item active"><i class="bi bi-graph-up"></i> Dashboard</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=products" class="menu-item"><i class="bi bi-circle"></i> Sản phẩm</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=categories" class="menu-item"><i class="bi bi-folder"></i> Danh mục</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=orders" class="menu-item"><i class="bi bi-box"></i> Đơn hàng</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=customers" class="menu-item"><i class="bi bi-people"></i> Khách hàng</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=contacts" class="menu-item"><i class="bi bi-chat-dots"></i> Liên hệ</a></li>
             </ul>
         </nav>
     </aside>
     
     <main class="admin-content">
-        <div class="container">
-            <h2>Dashboard - Thống Kê</h2>
-            
+        <div class="container">            
             <div class="stats-grid">
                 <div class="stat-card">
                     <h3>Tổng đơn hàng</h3>

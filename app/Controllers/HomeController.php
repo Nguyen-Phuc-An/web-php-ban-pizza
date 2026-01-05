@@ -3,17 +3,20 @@
 require_once APP_PATH . 'Controllers/Controller.php';
 require_once APP_PATH . 'Models/Product.php';
 require_once APP_PATH . 'Models/Category.php';
+require_once APP_PATH . 'Models/Wishlist.php';
 
 class HomeController extends Controller
 {
     private $productModel;
     private $categoryModel;
+    private $wishlistModel;
     
     public function __construct()
     {
         parent::__construct();
         $this->productModel = new Product();
         $this->categoryModel = new Category();
+        $this->wishlistModel = new Wishlist();
     }
     
     public function index()
@@ -91,7 +94,21 @@ class HomeController extends Controller
     
     public function wishlist()
     {
-        $this->render('home/wishlist');
+        if (!$this->isAuthenticated()) {
+            $this->redirectToLogin();
+        }
+        
+        $wishlists = $this->wishlistModel->getByUserId($this->user['user_id']);
+        
+        // Debug log
+        error_log('User ID: ' . $this->user['user_id']);
+        error_log('Wishlists: ' . json_encode($wishlists));
+        
+        $data = [
+            'is_logged_in' => true,
+            'wishlists' => $wishlists
+        ];
+        $this->render('home/wishlist', $data);
     }
     
     public function getWishlistItems()
@@ -175,7 +192,7 @@ class HomeController extends Controller
                 $html .= '        <p class="product-price">' . number_format($product['gia_product'], 0, ',', '.') . ' đ</p>';
                 $html .= '        <p class="product-description" style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; min-height: 1.6em; line-height: 1.6em; margin: 8px 0;">' . htmlspecialchars(substr($product['mo_ta_product'], 0, 50)) . '...</p>';
                 $html .= '        <div class="product-actions">';
-                $html .= '            <button class="btn btn-favorite wishlist-btn" onclick="event.stopPropagation(); toggleWishlist(' . $product['product_id'] . ', this)" title="Thêm vào yêu thích" data-product-id="' . $product['product_id'] . '" style="background: none; border: 1px solid; font-size: 24px; cursor: pointer; padding: 0; min-width: auto; width: 100%;"><span class="wishlist-icon">♡</span></button>';
+                $html .= '            <button class="btn btn-favorite wishlist-btn" onclick="event.stopPropagation(); toggleWishlist(' . $product['product_id'] . ', this)" title="Thêm vào yêu thích" data-product-id="' . $product['product_id'] . '" style="background: none; border: 1px solid; font-size: 20px; cursor: pointer; padding: 0; min-width: auto; width: 100%;"><i class="bi bi-heart wishlist-icon" style="font-size: 20px;"></i></button>';
                 $html .= '        </div>';
                 $html .= '    </div>';
                 $html .= '</div>';
@@ -253,7 +270,7 @@ class HomeController extends Controller
                 $html .= '        <p class="product-price">' . number_format($product['gia_product'], 0, ',', '.') . ' đ</p>';
                 $html .= '        <p class="product-description" style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; min-height: 1.6em; line-height: 1.6em; margin: 8px 0;">' . htmlspecialchars(substr($product['mo_ta_product'], 0, 50)) . '...</p>';
                 $html .= '        <div class="product-actions">';
-                $html .= '            <button class="btn btn-favorite wishlist-btn" onclick="event.stopPropagation(); toggleWishlist(' . $product['product_id'] . ', this)" title="Thêm vào yêu thích" data-product-id="' . $product['product_id'] . '" style="background: none; border: 1px solid; font-size: 24px; cursor: pointer; padding: 0; min-width: auto; width: 100%;"><span class="wishlist-icon">♡</span></button>';
+                $html .= '            <button class="btn btn-favorite wishlist-btn" onclick="event.stopPropagation(); toggleWishlist(' . $product['product_id'] . ', this)" title="Thêm vào yêu thích" data-product-id="' . $product['product_id'] . '" style="background: none; border: 1px solid; font-size: 20px; cursor: pointer; padding: 0; min-width: auto; width: 100%;"><i class="bi bi-heart wishlist-icon" style="font-size: 20px;"></i></button>';
                 $html .= '        </div>';
                 $html .= '    </div>';
                 $html .= '</div>';

@@ -47,7 +47,7 @@ class WishlistController extends Controller
         $exists = $this->wishlistModel->checkExists($this->user['user_id'], $productId);
         
         if ($exists) {
-            $this->jsonResponse(['message' => 'Sản phẩm đã có trong danh sách yêu thích']);
+            $this->jsonResponse(['success' => true, 'message' => 'Sản phẩm đã có trong danh sách yêu thích']);
             return;
         }
         
@@ -56,6 +56,8 @@ class WishlistController extends Controller
             'product_id' => $productId,
             'tao_luc' => date('Y-m-d H:i:s')
         ];
+        
+        error_log('Adding to wishlist: ' . json_encode($data));
         
         if ($this->wishlistModel->create($data)) {
             $this->jsonResponse(['success' => true, 'message' => 'Đã thêm vào danh sách yêu thích']);

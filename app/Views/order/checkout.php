@@ -14,7 +14,7 @@ include APP_PATH . 'Views/layout/header.php';
         <div>
             <!-- Order Information -->
             <div class="checkout-section" style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #e0e0e0;">
-                <h2 style="margin-top: 0;">📦 Thông tin đơn hàng</h2>
+                <h2 style="margin-top: 0;"><i class="bi bi-box"></i> Thông tin đơn hàng</h2>
                 <div style="max-height: 300px; overflow-y: auto;">
                     <?php $subtotal = 0; ?>
                     <?php if (!empty($cartItems)): ?>
@@ -112,7 +112,7 @@ include APP_PATH . 'Views/layout/header.php';
 
         <!-- RIGHT: Order Summary -->
         <div style="background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%); color: white; padding: 20px; border-radius: 8px; height: fit-content; position: sticky; top: 100px;">
-            <h3 style="margin-top: 0; margin-bottom: 20px;">📊 Tóm tắt đơn hàng</h3>
+            <h3 style="margin-top: 0; margin-bottom: 20px;"><i class="bi bi-graph-up"></i> Tóm tắt đơn hàng</h3>
             
             <div style="margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.2);">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px;">

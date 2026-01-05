@@ -65,8 +65,8 @@ include APP_PATH . 'Views/layout/header.php';
                                     onclick="event.stopPropagation(); toggleWishlist(<?php echo $product['product_id']; ?>, this)" 
                                     title="Thêm vào yêu thích"
                                     data-product-id="<?php echo $product['product_id']; ?>"
-                                    style="background: none; border: 1px solid; font-size: 24px; cursor: pointer; padding: 0; min-width: auto; width: 100%;">
-                                <span class="wishlist-icon">♡</span>
+                                    style="background: none;border: 1px solid;font-size: 20px;/* cursor: pointer; */padding: 0;min-width: auto;padding-top: 5px;width: 100%;">
+                                <i class="bi bi-heart wishlist-icon" style="font-size: 20px;"></i>
                             </button>
                         </div>
                     </div>
@@ -115,7 +115,8 @@ document.addEventListener('DOMContentLoaded', function() {
     wishlist.forEach(productId => {
         const btn = document.querySelector(`[data-product-id="${productId}"] .wishlist-icon`);
         if (btn) {
-            btn.textContent = '♥';
+            btn.classList.remove('bi-heart');
+            btn.classList.add('bi-heart-fill');
             btn.parentElement.style.color = 'red';
         }
     });
@@ -174,25 +175,44 @@ function toggleWishlist(productId, button) {
         return;
     }
     
-    const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
-    const index = wishlist.indexOf(productId);
     const icon = button.querySelector('.wishlist-icon');
+    const isCurrentlyFavorited = icon.classList.contains('bi-heart-fill');
     
-    if (index > -1) {
-        // Remove from wishlist
-        wishlist.splice(index, 1);
-        icon.textContent = '♡';
-        button.style.color = 'inherit';
-        showToast('Đã xóa khỏi yêu thích', 'info');
-    } else {
-        // Add to wishlist
-        wishlist.push(productId);
-        icon.textContent = '♥';
-        button.style.color = 'red';
-        showToast('Đã thêm vào yêu thích', 'success');
-    }
+    // Determine action
+    const method = isCurrentlyFavorited ? 'remove' : 'add';
     
-    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    const formData = new FormData();
+    formData.append('product_id', productId);
+    
+    // Send request to server
+    fetch('<?php echo SITE_URL; ?>index.php?action=wishlist&method=' + method, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            if (isCurrentlyFavorited) {
+                // Remove
+                icon.classList.remove('bi-heart-fill');
+                icon.classList.add('bi-heart');
+                button.style.color = 'inherit';
+                showToast('Đã xóa khỏi yêu thích', 'info');
+            } else {
+                // Add
+                icon.classList.remove('bi-heart');
+                icon.classList.add('bi-heart-fill');
+                button.style.color = 'red';
+                showToast('Đã thêm vào yêu thích', 'success');
+            }
+        } else {
+            showToast(data.message || 'Lỗi cập nhật yêu thích', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('Lỗi kết nối', 'error');
+    });
 }
 
 function viewProductDetail(productId) {
@@ -412,10 +432,12 @@ function loadProducts(categoryId, page = 1) {
                     const productId = parseInt(btn.getAttribute('data-product-id'));
                     const icon = btn.querySelector('.wishlist-icon');
                     if (wishlist.includes(productId)) {
-                        icon.textContent = '♥';
+                        icon.classList.remove('bi-heart');
+                        icon.classList.add('bi-heart-fill');
                         btn.style.color = 'red';
                     } else {
-                        icon.textContent = '♡';
+                        icon.classList.remove('bi-heart-fill');
+                        icon.classList.add('bi-heart');
                         btn.style.color = '';
                     }
                 });
@@ -470,10 +492,12 @@ function handleSearch(event) {
                     const productId = parseInt(btn.getAttribute('data-product-id'));
                     const icon = btn.querySelector('.wishlist-icon');
                     if (wishlist.includes(productId)) {
-                        icon.textContent = '♥';
+                        icon.classList.remove('bi-heart');
+                        icon.classList.add('bi-heart-fill');
                         btn.style.color = 'red';
                     } else {
-                        icon.textContent = '♡';
+                        icon.classList.remove('bi-heart-fill');
+                        icon.classList.add('bi-heart');
                         btn.style.color = '';
                     }
                 });

@@ -9,7 +9,40 @@ include APP_PATH . 'Views/layout/header.php';
     </div>
 
     <div id="wishlistContainer">
-        <p style="text-align: center; color: var(--text-muted);">Đang tải...</p>
+        <?php if (empty($wishlists)): ?>
+            <div style="text-align: center; padding: var(--spacing-lg);">
+                <p style="color: var(--text-muted); margin-bottom: var(--spacing-md);">Chưa có sản phẩm yêu thích</p>
+                <a href="<?php echo SITE_URL; ?>index.php?action=home&method=index" class="btn btn-primary">Quay lại mua sắm</a>
+            </div>
+        <?php else: ?>
+            <div class="products-grid">
+                <?php foreach ($wishlists as $product): ?>
+                    <div class="product-card" onclick="viewProductDetail(<?php echo $product['product_id']; ?>)" style="cursor: pointer;">
+                        <div class="product-image">
+                            <img src="<?php echo SITE_URL; ?>uploads/<?php echo htmlspecialchars($product['hinh_anh_product']); ?>" 
+                                 alt="<?php echo htmlspecialchars($product['ten_product']); ?>">
+                        </div>
+                        <div class="product-info">
+                            <h3 style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 3.2em; line-height: 1.6em; margin: 0 0 8px 0;">
+                                <?php echo htmlspecialchars(strpos($product['ten_product'], '-') !== false ? substr($product['ten_product'], 0, strpos($product['ten_product'], '-')) : $product['ten_product']); ?>
+                            </h3>
+                            <p class="product-price"><?php echo number_format($product['gia_product'], 0, ',', '.'); ?> đ</p>
+                            <p class="product-description" style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; min-height: 1.6em; line-height: 1.6em; margin: 8px 0;">
+                                <?php echo htmlspecialchars(substr($product['mo_ta_product'], 0, 50)); ?>...
+                            </p>
+                            <div class="product-actions">
+                                <button class="btn btn-favorite wishlist-btn" 
+                                        onclick="event.stopPropagation(); removeFromWishlist(<?php echo $product['product_id']; ?>)" 
+                                        title="Bỏ yêu thích"
+                                        style="background: red;border: none;font-size: 16px;cursor: pointer;padding: 0;min-width: auto;color: white;padding: 6px 10px;width: 100%;">
+                                    Bỏ yêu thích
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -22,93 +55,164 @@ include APP_PATH . 'Views/layout/header.php';
 </div>
 
 <script>
-// Load wishlist on page load
-document.addEventListener('DOMContentLoaded', function() {
-    loadWishlist();
-});
-
 // User login status (global variable)
-window.isLoggedIn = <?php echo isset($is_logged_in) && $is_logged_in ? 'true' : 'false'; ?>;
+window.isLoggedIn = true;
 
-function loadWishlist() {
-    const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
-    
-    if (wishlist.length === 0) {
-        document.getElementById('wishlistContainer').innerHTML = `
-            <div style="text-align: center; padding: var(--spacing-lg);">
-                <p style="color: var(--text-muted); margin-bottom: var(--spacing-md);">Chưa có sản phẩm yêu thích</p>
-                <a href="<?php echo SITE_URL; ?>index.php?action=home&method=index" class="btn btn-primary">Quay lại mua sắm</a>
-            </div>
-        `;
-        return;
-    }
-    
-    // Fetch all wishlist products
-    fetch('<?php echo SITE_URL; ?>index.php?action=home&method=getWishlistItems', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            product_ids: wishlist
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.products && data.products.length > 0) {
-            let html = '<div class="products-grid">';
-            
-            data.products.forEach(product => {
-                html += `
-                    <div class="product-card" onclick="viewProductDetail(${product.product_id})" style="cursor: pointer;">
-                        <div class="product-image">
+function viewProductDetail(productId) {
+    fetch('<?php echo SITE_URL; ?>index.php?action=home&method=getDetail&id=' + productId)
+        .then(response => response.json())
+        .then(data => {
+            if (data.product) {
+                const product = data.product;
+                const categoryId = Number(product.danh_muc_product);
+                const isPizza = categoryId === 1;
+                window.currentProductCategory = categoryId;
+                
+                const sizeOptions = isPizza ? `
+                    <div style="margin-bottom: 15px;">
+                        <label for="sizeSelect" style="display: block; margin-bottom: 8px; font-weight: 600;">Chọn kích cỡ:</label>
+                        <select id="sizeSelect" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; cursor: pointer;">
+                            <option value="">-- Chọn size --</option>
+                            <option value="Nhỏ">Nhỏ (Giá gốc - 30,000đ)</option>
+                            <option value="Vừa">Vừa (Giá gốc)</option>
+                            <option value="Lớn">Lớn (Giá gốc + 50,000đ)</option>
+                        </select>
+                    </div>
+                ` : '';
+                
+                const html = `
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; height: 100%; padding: 20px; box-sizing: border-box; overflow-y: auto;">
+                        <div>
                             <img src="<?php echo SITE_URL; ?>uploads/${product.hinh_anh_product}" 
-                                 alt="${product.ten_product}">
+                                 alt="${product.ten_product}" 
+                                 style="width: 100%; height: 350px; object-fit: cover; border-radius: 8px; margin-bottom: 10px;">
                         </div>
-                        <div class="product-info">
-                            <h3 style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 3.2em; line-height: 1.6em; margin: 0 0 8px 0;">${product.ten_product.includes('-') ? product.ten_product.split('-')[0].trim() : product.ten_product}</h3>
-                            <p class="product-price">${Number(product.gia_product).toLocaleString('vi-VN')} đ</p>
-                            <p class="product-description" style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; min-height: 1.6em; line-height: 1.6em; margin: 8px 0;">${product.mo_ta_product.substring(0, 50)}...</p>
-                            <div class="product-actions">
-                                <button class="btn btn-favorite wishlist-btn" 
-                                        onclick="event.stopPropagation(); removeFromWishlist(${product.product_id})" 
-                                        title="Bỏ yêu thích"
-                                        style="background: red;border: none;font-size: 16px;cursor: pointer;padding: 0;min-width: auto;color: white;padding: 6px 10px;width: 100%;">
-                                    Bỏ yêu thích
-                                </button>
+                        <div style="overflow-y: auto;">
+                            <h2 style="margin: 0 0 10px 0; font-size: 20px;">${product.ten_product}</h2>
+                            <p class="product-price" id="productPrice" style="font-size: 24px; margin: 10px 0;">${Number(product.gia_product).toLocaleString('vi-VN')} đ</p>
+                            <p style="color: #666; margin: 10px 0; line-height: 1.6;">${product.mo_ta_product}</p>
+                            
+                            ${sizeOptions}
+                            
+                            <div style="margin-bottom: 15px;">
+                                <label for="quantityInput" style="display: block; margin-bottom: 8px; font-weight: 600;">Số lượng:</label>
+                                <input type="number" id="quantityInput" value="1" min="1" 
+                                       style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px;">
                             </div>
+                            
+                            <button onclick="addToCart(${product.product_id})" 
+                                    style="width: 100%; padding: 12px; background: var(--primary-color); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: 600; margin-bottom: 10px;">
+                                🛒 Thêm vào giỏ hàng
+                            </button>
+                            <button onclick="closeProductModal()" 
+                                    style="width: 100%; padding: 12px; background: #f5f5f5; color: #333; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: 600;">
+                                Đóng
+                            </button>
                         </div>
                     </div>
                 `;
-            });
-            
-            html += '</div>';
-            document.getElementById('wishlistContainer').innerHTML = html;
+                document.getElementById('productDetail').innerHTML = html;
+                document.getElementById('productModal').style.display = 'block';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showToast('Lỗi tải chi tiết sản phẩm', 'error');
+        });
+}
+
+function closeProductModal() {
+    document.getElementById('productModal').style.display = 'none';
+}
+
+function addToCart(productId) {
+    const sizeSelect = document.getElementById('sizeSelect');
+    const categoryId = window.currentProductCategory || 1;
+    const isPizza = categoryId === 1;
+    
+    let size = '';
+    if (isPizza) {
+        size = sizeSelect.value;
+        if (!size) {
+            showToast('Vui lòng chọn kích cỡ', 'warning');
+            return;
+        }
+    }
+    
+    const quantity = document.getElementById('quantityInput').value;
+    
+    const priceText = document.getElementById('productPrice').textContent;
+    const price = parseInt(priceText.replace(/[^\d]/g, ''));
+    
+    const formData = new FormData();
+    formData.append('product_id', productId);
+    formData.append('size', size);
+    formData.append('quantity', quantity);
+    formData.append('price', price);
+    
+    fetch('<?php echo SITE_URL; ?>index.php?action=cart&method=add', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showToast(`Đã thêm ${quantity} ${size} vào giỏ hàng`, 'success');
+            closeProductModal();
         } else {
-            document.getElementById('wishlistContainer').innerHTML = `
-                <div style="text-align: center; padding: var(--spacing-lg);">
-                    <p style="color: var(--text-muted); margin-bottom: var(--spacing-md);">Không tìm thấy sản phẩm yêu thích</p>
-                    <a href="<?php echo SITE_URL; ?>index.php?action=home&method=index" class="btn btn-primary">Quay lại mua sắm</a>
-                </div>
-            `;
+            showToast('Lỗi: ' + (data.error || 'Không thể thêm vào giỏ hàng'), 'error');
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        document.getElementById('wishlistContainer').innerHTML = '<p style="color: red; text-align: center;">Lỗi tải danh sách yêu thích</p>';
+        showToast('Lỗi kết nối', 'error');
     });
 }
 
 function removeFromWishlist(productId) {
-    const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
-    const index = wishlist.indexOf(productId);
+    const formData = new FormData();
+    formData.append('product_id', productId);
     
-    if (index > -1) {
-        wishlist.splice(index, 1);
-        localStorage.setItem('wishlist', JSON.stringify(wishlist));
-        loadWishlist();
+    fetch('<?php echo SITE_URL; ?>index.php?action=wishlist&method=remove', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showToast('Đã xóa khỏi danh sách yêu thích', 'success');
+            setTimeout(() => {
+                location.reload();
+            }, 1500);
+        } else {
+            showToast(data.error || 'Lỗi xóa khỏi danh sách yêu thích', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('Lỗi kết nối', 'error');
+    });
+}
+
+window.onclick = function(event) {
+    const modal = document.getElementById('productModal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
     }
 }
+</script>
+
+<!-- Product detail modal -->
+<div id="productModal" class="modal">
+    <div class="modal-content" style=" height: 600px;">
+        <span class="close" onclick="closeProductModal()">&times;</span>
+        <div id="productDetail" style=" height: 100%;"></div>
+    </div>
+</div>
+
+<script>
+// User login status (global variable)
+window.isLoggedIn = true;
 
 function viewProductDetail(productId) {
     fetch('<?php echo SITE_URL; ?>index.php?action=product&method=getDetail&id=' + productId)

@@ -82,6 +82,11 @@
         </div>
         
         <div style="display: flex; gap: 15px; justify-content: flex-end;">
+            <?php if ($order['trang_thai'] === 'Chờ xác nhận'): ?>
+                <button onclick="cancelOrder(<?php echo $order['order_id']; ?>)" class="btn" style="padding: 12px 25px; background: #f44336; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px;">
+                    Hủy đơn hàng
+                </button>
+            <?php endif; ?>
             <a href="<?php echo SITE_URL; ?>index.php?action=order&method=history" class="btn btn-secondary" style="padding: 12px 25px; background: #f5f5f5; color: #333; text-decoration: none; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; border: 1px solid #ddd; display: inline-flex; align-items: center; gap: 8px;">
                 ← Quay lại lịch sử
             </a>
@@ -90,3 +95,30 @@
 </div>
 
 <?php include APP_PATH . 'Views/layout/footer.php'; ?>
+
+<script>
+function cancelOrder(orderId) {
+    if (!confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')) {
+        return;
+    }
+    
+    fetch('<?php echo SITE_URL; ?>index.php?action=order&method=cancel&id=' + orderId, {
+        method: 'POST'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showToast('Đơn hàng đã được hủy thành công', 'success');
+            setTimeout(() => {
+                window.location.href = '<?php echo SITE_URL; ?>index.php?action=order&method=history';
+            }, 1500);
+        } else {
+            showToast(data.error || 'Lỗi: Không thể hủy đơn hàng', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('Lỗi kết nối', 'error');
+    });
+}
+</script>

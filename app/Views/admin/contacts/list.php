@@ -5,12 +5,12 @@
         <h3>Menu Quản Trị</h3>
         <nav class="admin-menu">
             <ul>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=dashboard" class="menu-item">📊 Dashboard</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=products" class="menu-item">🍕 Sản phẩm</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=categories" class="menu-item">📁 Danh mục</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=orders" class="menu-item">📦 Đơn hàng</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=customers" class="menu-item">👥 Khách hàng</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=contacts" class="menu-item active">💬 Liên hệ</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=dashboard" class="menu-item"><i class="bi bi-graph-up"></i> Dashboard</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=products" class="menu-item"><i class="bi bi-circle"></i> Sản phẩm</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=categories" class="menu-item"><i class="bi bi-folder"></i> Danh mục</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=orders" class="menu-item"><i class="bi bi-box"></i> Đơn hàng</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=customers" class="menu-item"><i class="bi bi-people"></i> Khách hàng</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=contacts" class="menu-item active"><i class="bi bi-chat-dots"></i> Liên hệ</a></li>
             </ul>
         </nav>
     </aside>
@@ -92,7 +92,7 @@ function loadContactDetail(contactId) {
                 
                 detailDiv.innerHTML = `
                     <div style="padding: var(--spacing-lg); overflow-y: auto; flex: 1;">
-                        <h3 style="margin-top: 0;">💬 Chi tiết liên hệ</h3>
+                        <h3 style="margin-top: 0;"><i class="bi bi-chat-dots"></i> Chi tiết liên hệ</h3>
                         
                         <div style="margin-bottom: var(--spacing-lg);">
                             <label style="font-weight: 600; color: var(--text-muted); font-size: 12px;">Tên liên hệ</label>

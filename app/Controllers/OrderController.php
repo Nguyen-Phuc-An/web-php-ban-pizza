@@ -202,5 +202,41 @@ class OrderController extends Controller
         
         $this->render('order/success', $data);
     }
+    
+    public function cancel()
+    {
+        if (!$this->isAuthenticated()) {
+            $this->jsonResponse(['success' => false, 'error' => 'Vui lòng đăng nhập'], 401);
+            return;
+        }
+        
+        $orderId = $_GET['id'] ?? null;
+        if (!$orderId) {
+            $this->jsonResponse(['success' => false, 'error' => 'ID đơn hàng không hợp lệ'], 400);
+            return;
+        }
+        
+        $order = $this->orderModel->read($orderId);
+        
+        // Check if order exists and belongs to user
+        if (!$order || $order['nguoi_mua_id'] != $this->user['user_id']) {
+            $this->jsonResponse(['success' => false, 'error' => 'Đơn hàng không tồn tại'], 404);
+            return;
+        }
+        
+        // Check if order is still pending
+        if ($order['trang_thai'] !== 'Chờ xác nhận') {
+            $this->jsonResponse(['success' => false, 'error' => 'Chỉ có thể hủy đơn hàng ở trạng thái "Chờ xác nhận"'], 400);
+            return;
+        }
+        
+        // Update order status to cancelled
+        $updateData = ['trang_thai' => 'Đã hủy'];
+        if ($this->orderModel->update($orderId, $updateData)) {
+            $this->jsonResponse(['success' => true, 'message' => 'Đơn hàng đã được hủy thành công']);
+        } else {
+            $this->jsonResponse(['success' => false, 'error' => 'Lỗi khi hủy đơn hàng'], 500);
+        }
+    }
 }
 ?>

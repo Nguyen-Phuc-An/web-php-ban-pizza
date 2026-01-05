@@ -5,12 +5,12 @@
         <h3>Menu Quản Trị</h3>
         <nav class="admin-menu">
             <ul>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=dashboard" class="menu-item">📊 Dashboard</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=products" class="menu-item active">🍕 Sản phẩm</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=categories" class="menu-item">📁 Danh mục</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=orders" class="menu-item">📦 Đơn hàng</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=customers" class="menu-item">👥 Khách hàng</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=contacts" class="menu-item">💬 Liên hệ</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=dashboard" class="menu-item"><i class="bi bi-graph-up"></i> Dashboard</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=products" class="menu-item active"><i class="bi bi-circle"></i> Sản phẩm</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=categories" class="menu-item"><i class="bi bi-folder"></i> Danh mục</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=orders" class="menu-item"><i class="bi bi-box"></i> Đơn hàng</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=customers" class="menu-item"><i class="bi bi-people"></i> Khách hàng</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=contacts" class="menu-item"><i class="bi bi-chat-dots"></i> Liên hệ</a></li>
             </ul>
         </nav>
     </aside>
@@ -37,7 +37,7 @@
                 </select>
             </div>
             
-            <table class="admin-table" style="height: 480px;">
+            <table class="admin-table" style=" height: 77%;">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -51,10 +51,10 @@
                 <tbody>
                     <?php foreach ($products as $product): ?>
                         <tr>
-                            <td><?php echo $product['product_id']; ?></td>
+                            <td style="text-align: center;"><?php echo $product['product_id']; ?></td>
                             <td><?php echo htmlspecialchars($product['ten_product']); ?></td>
-                            <td><?php echo number_format($product['gia_product'], 0, ',', '.'); ?>đ</td>
-                            <td><img src="<?php echo SITE_URL; ?>uploads/<?php echo htmlspecialchars($product['hinh_anh_product']); ?>" class="admin-thumb" alt="" style="width: 80px; height: 80px; object-fit: cover;"></td>
+                            <td style="text-align: center;"><?php echo number_format($product['gia_product'], 0, ',', '.'); ?>đ</td>
+                            <td style="text-align: center;"><img src="<?php echo SITE_URL; ?>uploads/<?php echo htmlspecialchars($product['hinh_anh_product']); ?>" class="admin-thumb" alt="" style="width: 80px; height: 80px; object-fit: cover;"></td>
                             <td>
                                 <?php 
                                     $catId = $product['danh_muc_product'];
@@ -79,7 +79,7 @@
                                     }
                                 ?>
                             </td>
-                            <td>
+                            <td style="text-align: center;">
                                 <button type="button" class="btn btn-small btn-secondary" style="margin-bottom: 5px;" onclick="openEditProductModal(<?php echo $product['product_id']; ?>, '<?php echo htmlspecialchars(addslashes($product['ten_product'])); ?>', '<?php echo htmlspecialchars($product['gia_product']); ?>', '<?php echo htmlspecialchars($product['danh_muc_product']); ?>', '<?php echo htmlspecialchars(addslashes($product['mo_ta_product'])); ?>', '<?php echo htmlspecialchars($product['sub_category_id'] ?? ''); ?>')">Sửa</button>
                                 <button type="button" class="btn btn-small btn-danger" onclick="openDeleteProductModal(<?php echo $product['product_id']; ?>, '<?php echo htmlspecialchars(addslashes($product['ten_product'])); ?>')">Xóa</button>
                             </td>

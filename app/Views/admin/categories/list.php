@@ -5,23 +5,23 @@
         <h3>Menu Quản Trị</h3>
         <nav class="admin-menu">
             <ul>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=dashboard" class="menu-item">📊 Dashboard</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=products" class="menu-item">🍕 Sản phẩm</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=categories" class="menu-item active">📁 Danh mục</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=orders" class="menu-item">📦 Đơn hàng</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=customers" class="menu-item">👥 Khách hàng</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=contacts" class="menu-item">💬 Liên hệ</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=dashboard" class="menu-item"><i class="bi bi-graph-up"></i> Dashboard</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=products" class="menu-item"><i class="bi bi-circle"></i> Sản phẩm</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=categories" class="menu-item active"><i class="bi bi-folder"></i> Danh mục</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=orders" class="menu-item"><i class="bi bi-box"></i> Đơn hàng</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=customers" class="menu-item"><i class="bi bi-people"></i> Khách hàng</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=contacts" class="menu-item"><i class="bi bi-chat-dots"></i> Liên hệ</a></li>
             </ul>
         </nav>
     </aside>
     
-    <main class="admin-content" style="overflow-y: hidden;>
-        <div class="container">
+    <main class="admin-content" style="overflow-y: hidden; height: 100%;">
+        <div class="container" style=" height: 100%;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                 <h2>Quản Lý Danh Mục</h2>
                 <button type="button" class="btn btn-primary" onclick="openAddCategoryModal()">➕ Thêm danh mục</button>
             </div>
-            <table class="admin-table">
+            <table class="admin-table" style=" height: 92%;">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -34,11 +34,11 @@
                 <tbody>
                     <?php foreach ($categories as $cat): ?>
                         <tr>
-                            <td><?php echo $cat['categories_id']; ?></td>
+                            <td style="text-align: center;"><?php echo $cat['categories_id']; ?></td>
                             <td><?php echo htmlspecialchars($cat['ten_categories']); ?></td>
                             <td><?php echo htmlspecialchars($cat['mo_ta_categories'] ?? ''); ?></td>
-                            <td><?php echo date('d/m/Y', strtotime($cat['ngay_tao_categories'])); ?></td>
-                            <td>
+                            <td style="text-align: center;"><?php echo date('d/m/Y', strtotime($cat['ngay_tao_categories'])); ?></td>
+                            <td style="text-align: center;">
                                 <button type="button" class="btn btn-small btn-secondary" style="margin-bottom: 5px;" onclick="openEditCategoryModal(<?php echo $cat['categories_id']; ?>, '<?php echo htmlspecialchars(addslashes($cat['ten_categories'])); ?>', '<?php echo htmlspecialchars(addslashes($cat['mo_ta_categories'] ?? '')); ?>', <?php echo $cat['parent_category_id'] ?? 'null'; ?>)">Sửa</button>
                                 <button type="button" class="btn btn-small btn-danger" onclick="openDeleteCategoryModal(<?php echo $cat['categories_id']; ?>, '<?php echo htmlspecialchars(addslashes($cat['ten_categories'])); ?>')">Xóa</button>
                             </td>

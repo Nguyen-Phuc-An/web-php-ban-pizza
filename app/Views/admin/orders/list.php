@@ -5,20 +5,18 @@
         <h3>Menu Quản Trị</h3>
         <nav class="admin-menu">
             <ul>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=dashboard" class="menu-item">📊 Dashboard</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=products" class="menu-item">🍕 Sản phẩm</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=categories" class="menu-item">📁 Danh mục</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=orders" class="menu-item active">📦 Đơn hàng</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=customers" class="menu-item">👥 Khách hàng</a></li>
-                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=contacts" class="menu-item">💬 Liên hệ</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=dashboard" class="menu-item"><i class="bi bi-graph-up"></i> Dashboard</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=products" class="menu-item"><i class="bi bi-circle"></i> Sản phẩm</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=categories" class="menu-item"><i class="bi bi-folder"></i> Danh mục</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=orders" class="menu-item active"><i class="bi bi-box"></i> Đơn hàng</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=customers" class="menu-item"><i class="bi bi-people"></i> Khách hàng</a></li>
+                <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=contacts" class="menu-item"><i class="bi bi-chat-dots"></i> Liên hệ</a></li>
             </ul>
         </nav>
     </aside>
     
     <main class="admin-content">
-        <div class="container">
-            <h2>Quản Lý Đơn Hàng</h2>
-            
+        <div class="container">            
             <table class="admin-table">
                 <thead>
                     <tr>
@@ -32,20 +30,49 @@
                 <tbody>
                     <?php foreach ($orders as $order): ?>
                         <tr style="cursor: pointer; transition: background-color 0.2s;" onMouseOver="this.style.backgroundColor='#f5f5f5'" onMouseOut="this.style.backgroundColor=''" onclick="viewOrderDetail(<?php echo $order['order_id']; ?>)">
-                            <td>#<?php echo $order['order_id']; ?></td>
+                            <td style="text-align: center;">#<?php echo $order['order_id']; ?></td>
                             <td><?php echo htmlspecialchars($order['ten_nguoi_dung']); ?></td>
-                            <td><?php echo date('d/m/Y H:i', strtotime($order['ngay_tao_order'])); ?></td>
-                            <td><?php echo number_format($order['tong_tien'], 0, ',', '.'); ?>đ</td>
-                            <td>
-                                <form method="POST" action="<?php echo SITE_URL; ?>index.php?action=admin&method=updateOrderStatus&id=<?php echo $order['order_id']; ?>" class="inline-form" onclick="event.stopPropagation();">
-                                    <select name="status" class="status-select" onchange="updateStatusColor(this); this.form.submit();" data-status="<?php echo $order['trang_thai']; ?>">
-                                        <option value="Chờ xác nhận" <?php echo $order['trang_thai'] === 'Chờ xác nhận' ? 'selected' : ''; ?>>Chờ xác nhận</option>
-                                        <option value="Đã xác nhận" <?php echo $order['trang_thai'] === 'Đã xác nhận' ? 'selected' : ''; ?>>Đã xác nhận</option>
-                                        <option value="Đang giao" <?php echo $order['trang_thai'] === 'Đang giao' ? 'selected' : ''; ?>>Đang giao</option>
-                                        <option value="Đã giao" <?php echo $order['trang_thai'] === 'Đã giao' ? 'selected' : ''; ?>>Đã giao</option>
-                                        <option value="Đã hủy" <?php echo $order['trang_thai'] === 'Đã hủy' ? 'selected' : ''; ?>>Đã hủy</option>
-                                    </select>
-                                </form>
+                            <td style="text-align: center;"><?php echo date('d/m/Y H:i', strtotime($order['ngay_tao_order'])); ?></td>
+                            <td style="text-align: center;"><?php echo number_format($order['tong_tien'], 0, ',', '.'); ?>đ</td>
+                            <td style="text-align: center;">
+                                <div style="display: flex; gap: 8px; justify-content: center;">
+                                    <?php 
+                                    $currentStatus = $order['trang_thai'];
+                                    $nextStatus = '';
+                                    
+                                    if ($currentStatus === 'Chờ xác nhận') {
+                                        $nextStatus = 'Đã xác nhận';
+                                    } elseif ($currentStatus === 'Đã xác nhận') {
+                                        $nextStatus = 'Đang giao';
+                                    } elseif ($currentStatus === 'Đang giao') {
+                                        $nextStatus = 'Đã giao';
+                                    }
+                                    ?>
+                                    
+                                    <!-- Next Step Button - Click to change status -->
+                                    <?php if (!empty($nextStatus)): ?>
+                                        <form method="POST" action="<?php echo SITE_URL; ?>index.php?action=admin&method=updateOrderStatus&id=<?php echo $order['order_id']; ?>" style="display: inline;" onclick="event.stopPropagation();">
+                                            <input type="hidden" name="status" value="<?php echo $nextStatus; ?>">
+                                            <button type="submit" class="btn-action" style="background: #198754; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; transition: background 0.3s;">
+                                                <?php echo $currentStatus; ?>
+                                            </button>
+                                        </form>
+                                    <?php else: ?>
+                                        <button disabled style="background: #d1e7dd; color: #0f5132; border: none; padding: 8px 16px; border-radius: 4px; font-size: 12px; font-weight: 600; cursor: not-allowed;">
+                                            <?php echo $currentStatus; ?>
+                                        </button>
+                                    <?php endif; ?>
+                                    
+                                    <!-- Cancel Button -->
+                                    <?php if ($currentStatus !== 'Đã hủy' && $currentStatus !== 'Đã giao'): ?>
+                                        <form method="POST" action="<?php echo SITE_URL; ?>index.php?action=admin&method=updateOrderStatus&id=<?php echo $order['order_id']; ?>" style="display: inline;" onclick="event.stopPropagation();">
+                                            <input type="hidden" name="status" value="Đã hủy">
+                                            <button type="submit" class="btn-action" style="background: #dc3545; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; transition: background 0.3s;" onclick="return confirm('Bạn chắc chắn muốn hủy đơn này?')">
+                                                <i class="bi bi-trash"></i> Hủy
+                                            </button>
+                                        </form>
+                                    <?php endif; ?>
+                                </div>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -106,7 +133,7 @@
                 <div class="order-info-section">
                     <!-- Shipping Info -->
                     <div class="info-box">
-                        <h4>🚚 Thông tin giao hàng</h4>
+                        <h4><i class="bi bi-truck"></i> Thông tin giao hàng</h4>
                         <div class="info-item">
                             <label>Người nhận:</label>
                             <span id="modalCustomerName">-</span>
@@ -127,7 +154,7 @@
 
                     <!-- Order Info -->
                     <div class="info-box">
-                        <h4>📋 Thông tin đơn hàng</h4>
+                        <h4><i class="bi bi-file-text"></i> Thông tin đơn hàng</h4>
                         <div class="info-item">
                             <label>Ngày đặt:</label>
                             <span id="modalOrderDate">-</span>
@@ -164,7 +191,7 @@
     <div class="invoice-modal-content">
         <div class="invoice-header">
             <button onclick="closeInvoiceModal()" class="invoice-close">×</button>
-            <button onclick="printInvoice()" class="btn btn-primary">🖨️ In hóa đơn</button>
+            <button onclick="printInvoice()" class="btn btn-primary"><i class="bi bi-printer"></i> In hóa đơn</button>
         </div>
         <div id="invoiceContent" class="invoice-content"></div>
     </div>
@@ -172,7 +199,7 @@
 
 <style id="printStyle" type="text/css" media="print">
     @page {
-        margin: 0.5cm;
+        margin: 0.3cm;
         size: A4;
     }
     
@@ -186,10 +213,11 @@
     }
     
     .invoice-print-area {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
+        position: static;
+        left: auto;
+        top: auto;
+        width: auto;
+        page-break-inside: avoid;
     }
     
     .invoice-header,
@@ -557,17 +585,17 @@
 /* Invoice Print Area */
 .invoice-print-area {
     background: white;
-    padding: 8px;
+    padding: 3px;
     font-family: 'Arial', sans-serif;
-    max-width: 400px;
-    margin: 0 auto;
+    max-width: 100%;
+    margin: 0;
 }
 
 .invoice-company {
     text-align: center;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
     border-bottom: 2px solid #333;
-    padding-bottom: 6px;
+    padding-bottom: 3px;
 }
 
 .invoice-company h1 {
@@ -584,18 +612,18 @@
 
 .invoice-title {
     text-align: center;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
-    margin: 12px 0;
+    margin: 4px 0;
     color: #333;
 }
 
 .invoice-info-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 10px;
-    font-size: 10px;
+    gap: 4px;
+    margin-bottom: 6px;
+    font-size: 9px;
 }
 
 .invoice-info-box {
@@ -626,8 +654,8 @@
 .invoice-items-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 8px;
-    font-size: 10px;
+    margin-bottom: 4px;
+    font-size: 9px;
 }
 
 .invoice-items-table thead {
@@ -636,14 +664,14 @@
 }
 
 .invoice-items-table th {
-    padding: 4px;
+    padding: 2px;
     text-align: left;
     font-weight: bold;
-    font-size: 9px;
+    font-size: 8px;
 }
 
 .invoice-items-table td {
-    padding: 4px;
+    padding: 2px;
     border-bottom: 1px solid #e0e0e0;
 }
 
@@ -658,31 +686,31 @@
 .invoice-summary {
     margin-left: auto;
     width: 100%;
-    margin-bottom: 8px;
-    font-size: 10px;
+    margin-bottom: 3px;
+    font-size: 9px;
 }
 
 .invoice-summary-row {
     display: flex;
     justify-content: space-between;
-    padding: 3px 0;
+    padding: 1px 0;
     border-bottom: 1px solid #e0e0e0;
 }
 
 .invoice-summary-row.total {
     border-bottom: 2px solid #333;
     font-weight: bold;
-    font-size: 11px;
+    font-size: 10px;
     color: var(--primary-color);
-    padding: 6px 0;
+    padding: 2px 0;
 }
 
 .invoice-footer {
     text-align: center;
-    margin-top: 8px;
-    padding-top: 6px;
+    margin-top: 3px;
+    padding-top: 3px;
     border-top: 1px solid #ddd;
-    font-size: 9px;
+    font-size: 8px;
     color: #666;
 }
 
@@ -752,8 +780,8 @@ function populateOrderModal(data) {
                 <img src="<?php echo SITE_URL; ?>uploads/${productImage}" class="order-item-image" alt="${productName}">
                 <div class="order-item-details">
                     <p class="order-item-name">${productName}</p>
-                    <p class="order-item-info">🔹 <strong>Size:</strong> ${size}</p>
-                    <p class="order-item-info">📦 <strong>Số lượng:</strong> ${quantity}</p>
+                    <p class="order-item-info"><i class="bi bi-arrow-right"></i> <strong>Size:</strong> ${size}</p>
+                    <p class="order-item-info"><i class="bi bi-box"></i> <strong>Số lượng:</strong> ${quantity}</p>
                     <p class="order-item-price">${quantity} × ${price.toLocaleString('vi-VN')} đ</p>
                 </div>
                 <div class="order-item-total">

@@ -9,7 +9,7 @@
 
 .admin-sidebar {
     width: 250px;
-    background: var(--bg-white);
+    background: #1F2933;
     padding: var(--spacing-lg);
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 51, 0.08);
@@ -33,11 +33,13 @@
 
 .admin-menu li {
     margin-bottom: var(--spacing-sm);
+    padding: 8px 12px;
 }
 
 .menu-item {
     display: block;
-    color: var(--text-gray);
+    color: white;
+    font-size: 18px;
     transition: all 0.3s ease;
 }
 
@@ -112,7 +114,7 @@
 
 .admin-table tbody {
     display: block;
-    max-height: 500px;
+    max-height: 80%;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -121,7 +123,7 @@
     background-color: var(--primary-color);
     color: #000033;
     padding: var(--spacing-md);
-    text-align: left;
+    text-align: center;
     font-weight: 600;
     display: inline-block;
     width: calc(100% / 6);
@@ -129,11 +131,12 @@
 
 .admin-table tr {
     display: flex;
+    border-bottom: 1px solid var(--border-color);
+    justify-content: center;
 }
 
 .admin-table td {
     padding: var(--spacing-md);
-    border-bottom: 1px solid var(--border-color);
     width: calc(100% / 6);
     flex-grow: 0;
     flex-shrink: 0;
