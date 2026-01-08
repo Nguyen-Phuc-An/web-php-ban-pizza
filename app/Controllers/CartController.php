@@ -210,9 +210,30 @@ class CartController extends Controller
         
         $oldCartKey = $_POST['cart_key'] ?? null;
         $newSize = $_POST['new_size'] ?? null;
+        $newPrice = $_POST['new_price'] ?? null;
         
-        if (!$oldCartKey || !$newSize || !isset($_SESSION['cart'][$oldCartKey])) {
-            $this->jsonResponse(['error' => 'Invalid request'], 400);
+        // Better validation with debugging
+        if (!$oldCartKey) {
+            $this->jsonResponse(['error' => 'Cart key is required', 'received' => $_POST], 400);
+            return;
+        }
+        
+        if (!$newSize) {
+            $this->jsonResponse(['error' => 'Size is required'], 400);
+            return;
+        }
+        
+        if ($newPrice === null) {
+            $this->jsonResponse(['error' => 'Price is required'], 400);
+            return;
+        }
+        
+        if (!isset($_SESSION['cart'])) {
+            $_SESSION['cart'] = [];
+        }
+        
+        if (!isset($_SESSION['cart'][$oldCartKey])) {
+            $this->jsonResponse(['error' => 'Cart item not found', 'cart_key' => $oldCartKey, 'available_keys' => array_keys($_SESSION['cart'])], 400);
             return;
         }
         
@@ -229,6 +250,10 @@ class CartController extends Controller
             // Move item to new size
             $_SESSION['cart'][$newCartKey] = $item;
             $_SESSION['cart'][$newCartKey]['size'] = $newSize;
+            // Update price if provided
+            if ($newPrice !== null) {
+                $_SESSION['cart'][$newCartKey]['price'] = intval($newPrice);
+            }
         }
         
         // Remove old cart key

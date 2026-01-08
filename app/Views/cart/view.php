@@ -30,6 +30,7 @@
                                 <div style="position: absolute; top: 10px; left: 10px; z-index: 10;">
                                     <input type="checkbox" class="product-checkbox" data-cart-key="<?php echo htmlspecialchars($cartKey); ?>" 
                                            data-price="<?php echo $item['price']; ?>" data-quantity="<?php echo $item['quantity']; ?>"
+                                           data-size="<?php echo htmlspecialchars($item['size'] ?? 'Vừa'); ?>"
                                            style="width: 20px; height: 20px; cursor: pointer;" onchange="updateSelectAllButton(); updateSummary()">
                                 </div>
                                 
@@ -50,10 +51,10 @@
                                         <label style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: #666;">Size:</label>
                                         <select class="size-select" data-cart-key="<?php echo htmlspecialchars($cartKey); ?>" 
                                                 style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 3px; font-size: 12px; cursor: pointer;"
-                                                onchange="changeSize('<?php echo htmlspecialchars($cartKey); ?>', this.value)">
-                                            <option value="Nhỏ" <?php echo $item['size'] === 'Nhỏ' ? 'selected' : ''; ?>>Nhỏ</option>
-                                            <option value="Vừa" <?php echo $item['size'] === 'Vừa' ? 'selected' : ''; ?>>Vừa</option>
-                                            <option value="Lớn" <?php echo $item['size'] === 'Lớn' ? 'selected' : ''; ?>>Lớn</option>
+                                                onchange="changeSize(this, this.value)">
+                                            <option value="Nhỏ" <?php echo $item['size'] === 'Nhỏ' ? 'selected' : ''; ?>>Nhỏ (- 30,000đ)</option>
+                                            <option value="Vừa" <?php echo $item['size'] === 'Vừa' ? 'selected' : ''; ?>>Vừa (giá cơ bản)</option>
+                                            <option value="Lớn" <?php echo $item['size'] === 'Lớn' ? 'selected' : ''; ?>>Lớn (+ 50,000đ)</option>
                                         </select>
                                         <?php endif; ?>
                                     </div>
@@ -324,10 +325,77 @@ function proceedToCheckout() {
     });
 }
 
-function changeSize(cartKey, newSize) {
+function changeSize(selectElement, newSize) {
+    console.log('changeSize called with:', { selectElement, newSize });
+    
+    // Get the select element and product card
+    const sizeSelect = selectElement;
+    if (!sizeSelect) {
+        console.error('Size select element is null');
+        showToast('Lỗi: Không tìm thấy phần tử chọn size', 'error');
+        return;
+    }
+    
+    const cartKey = sizeSelect.dataset.cartKey;
+    console.log('Cart key from element:', cartKey);
+    
+    const productCard = sizeSelect.closest('.product-card');
+    if (!productCard) {
+        console.error('Product card not found');
+        showToast('Lỗi: Không tìm thấy thẻ sản phẩm', 'error');
+        return;
+    }
+    
+    const checkbox = productCard.querySelector('.product-checkbox');
+    if (!checkbox) {
+        console.error('Checkbox not found');
+        showToast('Lỗi: Không tìm thấy checkbox', 'error');
+        return;
+    }
+    
+    // Get the current size from data-size attribute
+    const currentSize = checkbox.dataset.size || 'Vừa';
+    const productId = checkbox.dataset.cartKey.split('_')[0]; // Extract product_id from cartKey
+    
+    // Construct the ACTUAL current cartKey based on current size
+    const actualCurrentKey = productId + '_' + currentSize;
+    
+    console.log('Actual current key:', actualCurrentKey, 'Current size:', currentSize);
+    
+    // Get the base price (current price stored in checkbox)
+    let basePrice = parseInt(checkbox.dataset.price);
+    let adjustedPrice = basePrice;
+    
+    console.log('Current price:', basePrice, 'Current size:', currentSize);
+    
+    // Reverse the current size adjustment to get the original Vừa price
+    if (currentSize === 'Nhỏ') {
+        basePrice = basePrice + 30000; // Was reduced by 30k, so add back
+    } else if (currentSize === 'Lớn') {
+        basePrice = basePrice - 50000; // Was increased by 50k, so subtract
+    }
+    // If currentSize === 'Vừa', basePrice is already correct
+    
+    // Now apply the new size adjustment
+    if (newSize === 'Nhỏ') {
+        adjustedPrice = basePrice - 30000;
+    } else if (newSize === 'Vừa') {
+        adjustedPrice = basePrice;
+    } else if (newSize === 'Lớn') {
+        adjustedPrice = basePrice + 50000;
+    }
+    
+    // Ensure price is not negative
+    if (adjustedPrice < 0) {
+        adjustedPrice = 0;
+    }
+    
+    console.log('Sending to server:', { cart_key: actualCurrentKey, newSize, new_price: adjustedPrice });
+    
     const formData = new FormData();
-    formData.append('cart_key', cartKey);
+    formData.append('cart_key', actualCurrentKey);  // Use the actual current key
     formData.append('new_size', newSize);
+    formData.append('new_price', adjustedPrice);
     
     fetch('<?php echo SITE_URL; ?>index.php?action=cart&method=changeSize', {
         method: 'POST',
@@ -335,16 +403,38 @@ function changeSize(cartKey, newSize) {
     })
     .then(response => response.json())
     .then(data => {
+        console.log('Server response:', data);
         if (data.success) {
+            // Update checkbox data attributes
+            checkbox.dataset.price = adjustedPrice;
+            checkbox.dataset.size = newSize;
+            checkbox.dataset.quantity = checkbox.dataset.quantity || 1;
+            
+            // Update the select element's data-cart-key for next change
+            const newCartKey = productId + '_' + newSize;
+            sizeSelect.dataset.cartKey = newCartKey;
+            
+            // Update the item total display
+            const itemTotalEl = productCard.querySelector('[data-item-total]');
+            if (itemTotalEl) {
+                const quantity = parseInt(checkbox.dataset.quantity);
+                const newTotal = adjustedPrice * quantity;
+                itemTotalEl.textContent = newTotal.toLocaleString('vi-VN') + ' đ';
+            }
+            
+            updateSummary();
             showToast('Đã cập nhật size', 'success');
-            setTimeout(() => location.reload(), 500);
         } else {
             showToast(data.error || 'Lỗi cập nhật size', 'error');
+            // Revert select to original size if save fails
+            sizeSelect.value = currentSize;
         }
     })
     .catch(error => {
-        console.error('Error:', error);
+        console.error('Fetch error:', error);
         showToast('Lỗi kết nối', 'error');
+        // Revert select to original size if request fails
+        sizeSelect.value = currentSize;
     });
 }
 </script>
