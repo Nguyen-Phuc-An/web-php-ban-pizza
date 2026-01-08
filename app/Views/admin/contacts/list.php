@@ -3,6 +3,7 @@
 <div class="admin-layout">
     <aside class="admin-sidebar">
         <h3>Menu Quản Trị</h3>
+        <!-- Menu điều hướng admin -->
         <nav class="admin-menu">
             <ul>
                 <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=dashboard" class="menu-item"><i class="bi bi-graph-up"></i> Dashboard</a></li>
@@ -14,7 +15,7 @@
             </ul>
         </nav>
     </aside>
-    
+    <!-- Nội dung chính của trang quản trị liên hệ -->
     <main class="admin-content">
         <div class="container" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-lg); height: calc(100vh - 200px);">
             
@@ -73,6 +74,7 @@
 </div>
 
 <script>
+// Hàm tải chi tiết liên hệ
 function loadContactDetail(contactId) {
     const detailDiv = document.getElementById('contactDetail');
     detailDiv.innerHTML = '<p style="padding: var(--spacing-md); text-align: center; color: var(--text-muted);">Đang tải...</p>';
@@ -131,7 +133,7 @@ function loadContactDetail(contactId) {
             detailDiv.innerHTML = '<p style="padding: var(--spacing-md); text-align: center; color: red;">Lỗi tải dữ liệu</p>';
         });
 }
-
+// Hàm xóa liên hệ
 function deleteContact(contactId) {
     if (confirm('Bạn chắc chắn muốn xóa liên hệ này?')) {
         fetch('<?php echo SITE_URL; ?>index.php?action=admin&method=deleteContact', {
@@ -156,7 +158,7 @@ function deleteContact(contactId) {
         });
     }
 }
-
+// Hàm thoát HTML để tránh lỗi hiển thị
 function htmlEscape(text) {
     const map = {
         '&': '&amp;',
@@ -167,8 +169,7 @@ function htmlEscape(text) {
     };
     return text.replace(/[&<>"']/g, m => map[m]);
 }
-
-// Load first contact on page load
+// Tự động tải chi tiết liên hệ đầu tiên khi trang được tải
 window.addEventListener('load', function() {
     const firstContact = document.querySelector('.contact-item');
     if (firstContact) {

@@ -1,381 +1,272 @@
-// API & Routing Documentation
+## 🧪 Testing với Postman
 
-## Router System
+### Chuẩn Bị
+1. **Cài đặt Postman** (nếu chưa có)
+2. **Tạo Collection mới:** Pizza Online API
+3. **Đặt Base URL:** `http://localhost/web-php-ban-pizza/public/`
 
-Pizza Online sử dụng query string based router với cấu trúc:
-```
-index.php?action=[controller]&method=[method]&[params]
-```
+### Lưu Ý Quan Trọng
 
----
+#### 1. ⚠️ Session Cookies
+- Postman **TỰ ĐỘNG** lưu cookies từ response
+- Đảm bảo **"Automatically follow redirects"** được bật
+- Cần login trước khi test API có yêu cầu authentication
 
-## Routing Map
+#### 2. ⚠️ Content-Type
+- **Hầu hết API** dùng `form-data` (KHÔNG phải JSON)
+- Chọn **Body → form-data** khi test POST
+- **KHÔNG dùng** "raw" JSON trừ khi được nói
 
-### HOME & PUBLIC PAGES
-
-#### Trang Chủ
-```
-GET /index.php?action=home
-```
-Hiển thị danh sách sản phẩm (mặc định 12 sản phẩm)
-
-#### Sản Phẩm
-```
-GET /index.php?action=product
-GET /index.php?action=product&page=2
-GET /index.php?action=product&category=1
-GET /index.php?action=product&category=1&page=2
-GET /index.php?action=product&method=detail&id=5
-GET /index.php?action=product&method=search?q=margherita
-```
-
-#### Liên Hệ
-```
-GET /index.php?action=contact
-POST /index.php?action=contact
-```
+#### 3. ⚠️ CSRF Token
+- API này **KHÔNG có CSRF protection**
+- Có thể test trực tiếp mà không cần token
 
 ---
 
-## AUTHENTICATION
+## 📋 Ví Dụ Test Từng API
 
-#### Đăng Nhập
+### 1. Đăng Nhập
+
+**Request:**
 ```
-GET /index.php?action=auth&method=login
 POST /index.php?action=auth&method=login
 
-POST data:
-  - email: string
-  - password: string
+Body (form-data):
+  - email: admin@example.com
+  - password: password123
 ```
 
-#### Đăng Ký
-```
-GET /index.php?action=auth&method=register
-POST /index.php?action=auth&method=register
-
-POST data:
-  - name: string
-  - email: string
-  - password: string
-```
-
-#### Đăng Xuất
-```
-GET /index.php?action=auth&method=logout
-```
+**Postman Setup:**
+1. Method: POST
+2. URL: `{{baseUrl}}index.php?action=auth&method=login`
+3. Tab Body → form-data
+4. Key: `email`, Value: `admin@example.com`
+5. Key: `password`, Value: `password123`
+6. Gửi (Send)
+7. ✅ Response sẽ có redirect hoặc success message
 
 ---
 
-## SHOPPING
+### 2. Thêm Vào Giỏ Hàng
 
-#### Giỏ Hàng - View
-```
-GET /index.php?action=cart&method=view
-```
-Hiển thị giỏ hàng từ session
-
-#### Giỏ Hàng - Thêm
+**Request:**
 ```
 POST /index.php?action=cart&method=add
 
-POST data:
-  - product_id: int (required)
-  - quantity: int (default: 1)
-  - size: string (Nhỏ|Vừa|Lớn) (default: Vừa)
-
-Response: JSON
-  {
-    "success": true/false,
-    "message": string,
-    "error": string
-  }
+Body (form-data):
+  - product_id: 1
+  - quantity: 2
+  - size: Vừa
+  - price: 120000
 ```
 
-#### Giỏ Hàng - Xóa
-```
-POST /index.php?action=cart&method=remove
-
-POST data:
-  - cart_key: string (required)
-
-Response: JSON
-```
-
-#### Giỏ Hàng - Update
-```
-POST /index.php?action=cart&method=update
-
-POST data:
-  - cart_key: string (required)
-  - quantity: int (required)
-
-Response: JSON
-```
-
-#### Thanh Toán
-```
-GET /index.php?action=order&method=checkout
-POST /index.php?action=order&method=checkout
-
-POST data:
-  - payment_method: string (Trực tiếp|Chuyển khoản)
-```
-
-#### Lịch Sử Đơn Hàng
-```
-GET /index.php?action=order&method=history
-GET /index.php?action=order&method=history?page=2
-```
-
-#### Chi Tiết Đơn Hàng
-```
-GET /index.php?action=order&method=detail&id=5
-```
+**Postman Setup:**
+1. Method: POST
+2. URL: `{{baseUrl}}index.php?action=cart&method=add`
+3. Tab Body → form-data
+4. Điền dữ liệu:
+   - product_id: 1
+   - quantity: 2
+   - size: Vừa
+   - price: 120000
+5. Gửi
+6. ✅ Response: `{"success": true, "message": "..."}`
 
 ---
 
-## USER ACCOUNT
+### 3. Xem Giỏ Hàng
 
-#### Hồ Sơ Cá Nhân
+**Request:**
 ```
-GET /index.php?action=profile&method=view
-POST /index.php?action=profile&method=view
-
-POST data:
-  - name: string
-  - phone: string
-  - address: string
+GET /index.php?action=cart&method=view
 ```
 
-#### Danh Sách Yêu Thích
+**Postman Setup:**
+1. Method: GET
+2. URL: `{{baseUrl}}index.php?action=cart&method=view`
+3. Gửi
+4. ✅ Response: HTML page (hoặc redirect nếu chưa login)
+
+---
+
+### 4. Thay Đổi Size
+
+**Request:**
 ```
-GET /index.php?action=wishlist&method=view
+POST /index.php?action=cart&method=changeSize
+
+Body (form-data):
+  - cart_key: 1_Vừa
+  - new_size: Lớn
+  - new_price: 170000
 ```
 
-#### Thêm Vào Yêu Thích
+**Postman Setup:**
+1. Method: POST
+2. URL: `{{baseUrl}}index.php?action=cart&method=changeSize`
+3. Tab Body → form-data
+4. Điền:
+   - cart_key: 1_Vừa
+   - new_size: Lớn
+   - new_price: 170000
+5. Gửi
+6. ✅ Response: `{"success": true, "message": "Đã cập nhật size"}`
+
+---
+
+### 5. Thanh Toán
+
+**Request:**
+```
+POST /index.php?action=order&method=checkout
+
+Body (form-data):
+  - phuong_thuc_thanh_toan: Trực tiếp
+  - ten_nguoi_dung: John Doe
+  - so_dien_thoai_user: 0123456789
+  - dia_chi: 123 Đường ABC, TP HCM
+```
+
+**Postman Setup:**
+1. Method: POST
+2. URL: `{{baseUrl}}index.php?action=order&method=checkout`
+3. Tab Body → form-data
+4. Điền dữ liệu
+5. **Lưu ý:** Phải login trước + phải chọn sản phẩm trong giỏ
+6. Gửi
+7. ✅ Response: Redirect đến success page
+
+---
+
+### 6. Thêm Vào Yêu Thích
+
+**Request:**
 ```
 POST /index.php?action=wishlist&method=add
 
-POST data:
-  - product_id: int (required)
-
-Response: JSON
+Body (form-data):
+  - product_id: 1
 ```
 
-#### Xóa Khỏi Yêu Thích
+**Postman Setup:**
+1. Method: POST
+2. URL: `{{baseUrl}}index.php?action=wishlist&method=add`
+3. Tab Body → form-data
+4. Key: `product_id`, Value: `1`
+5. Gửi
+6. ✅ Response: `{"success": true, ...}`
+
+---
+
+## 🎯 Quy Trình Test Hoàn Chỉnh
+
+### Workflow 1: Khách Hàng Mua Hàng
 ```
-POST /index.php?action=wishlist&method=remove
+1. Đăng nhập
+   POST /auth&method=login
+   
+2. Thêm sản phẩm vào giỏ
+   POST /cart&method=add (product_id=1, qty=1, price=100000)
+   POST /cart&method=add (product_id=2, qty=2, price=120000)
+   
+3. Xem giỏ hàng
+   GET /cart&method=view
+   
+4. Thay đổi size
+   POST /cart&method=changeSize (cart_key=1_Vừa, new_size=Lớn, new_price=150000)
+   
+5. Cập nhật số lượng
+   POST /cart&method=update (cart_key=1_Lớn, quantity=3)
+   
+6. Thanh toán
+   POST /order&method=checkout (payment method + address)
+   
+7. Xem lịch sử
+   GET /order&method=history
+```
 
-POST data:
-  - product_id: int (required)
-
-Response: JSON
+### Workflow 2: Admin Quản Lý
+```
+1. Đăng nhập admin
+   POST /auth&method=login (admin email)
+   
+2. Xem dashboard
+   GET /admin&method=dashboard
+   
+3. Xem danh sách sản phẩm
+   GET /admin&method=products
+   
+4. Thêm sản phẩm
+   POST /admin&method=addProduct
+   (multipart/form-data với file upload)
+   
+5. Cập nhật trạng thái đơn
+   POST /admin&method=updateOrderStatus&id=1 (status=Đã xác nhận)
 ```
 
 ---
 
-## ADMIN PANEL
+## ✅ Checklist Test
 
-### Yêu Cầu
-- User phải đăng nhập
-- User phải có role: 'admin' hoặc 'staff'
-
-#### Dashboard
-```
-GET /index.php?action=admin&method=dashboard
-```
-Thống kê: tổng đơn hàng, khách hàng, doanh thu, doanh thu tháng
-
-#### Quản Lý Sản Phẩm
-
-##### Danh Sách
-```
-GET /index.php?action=admin&method=products
-GET /index.php?action=admin&method=products?page=2
-```
-
-##### Thêm Mới
-```
-GET /index.php?action=admin&method=addProduct
-POST /index.php?action=admin&method=addProduct
-
-POST data (multipart/form-data):
-  - name: string (required)
-  - description: string
-  - price: float (required)
-  - category: int (required)
-  - image: file (required)
-```
-
-##### Sửa
-```
-GET /index.php?action=admin&method=editProduct&id=5
-POST /index.php?action=admin&method=editProduct&id=5
-
-POST data (multipart/form-data):
-  - name: string (required)
-  - description: string
-  - price: float (required)
-  - category: int (required)
-  - image: file (optional)
-```
-
-##### Xóa
-```
-GET /index.php?action=admin&method=deleteProduct&id=5
-```
-
-#### Quản Lý Danh Mục
-```
-GET /index.php?action=admin&method=categories
-POST /index.php?action=admin&method=categories
-
-POST data:
-  - action: "add"
-  - name: string (required)
-  - description: string
-```
-
-#### Quản Lý Đơn Hàng
-
-##### Danh Sách
-```
-GET /index.php?action=admin&method=orders
-GET /index.php?action=admin&method=orders?page=2
-```
-
-##### Cập Nhật Trạng Thái
-```
-POST /index.php?action=admin&method=updateOrderStatus&id=5
-
-POST data:
-  - status: string
-    (Chờ xác nhận|Đã xác nhận|Đang giao|Đã giao|Đã hủy)
-```
-
-#### Quản Lý Khách Hàng
-
-##### Danh Sách
-```
-GET /index.php?action=admin&method=customers
-GET /index.php?action=admin&method=customers?page=2
-```
-
-##### Chi Tiết Khách Hàng
-```
-GET /index.php?action=admin&method=customerDetail&id=5
-GET /index.php?action=admin&method=customerDetail&id=5&page=2
-```
-
-#### Quản Lý Liên Hệ
-
-##### Danh Sách
-```
-GET /index.php?action=admin&method=contacts
-GET /index.php?action=admin&method=contacts?page=2
-```
-
-##### Chi Tiết
-```
-GET /index.php?action=admin&method=contactDetail&id=5
-```
+- [ ] **Đăng nhập/Đăng ký** - Test auth flow
+- [ ] **Thêm/Xóa/Update giỏ** - Test cart operations
+- [ ] **Thay size + giá** - Test changeSize
+- [ ] **Thanh toán** - Test checkout flow
+- [ ] **Yêu thích** - Test wishlist add/remove
+- [ ] **Admin** - Test admin operations (nếu có quyền)
+- [ ] **Cookies** - Kiểm tra session persist
+- [ ] **Error cases** - Test validation errors
 
 ---
 
-## Session Variables
+## 🐛 Troubleshooting
 
-Sau khi đăng nhập, các biến session được set:
-```php
-$_SESSION['user_id']        // int
-$_SESSION['ten_nguoi_dung'] // string
-$_SESSION['email_user']     // string
-$_SESSION['loai_user']      // 'customer'|'admin'|'staff'
-```
+| Vấn đề | Nguyên Nhân | Giải Pháp |
+|--------|-----------|----------|
+| **405 Method Not Allowed** | Sai method (GET vs POST) | Kiểm tra method đúng |
+| **Session lost** | Cookies không được gửi | Bật "Automatically follow redirects" |
+| **401 Unauthorized** | Chưa login hoặc session hết | Login lại |
+| **400 Bad Request** | Thiếu parameter hoặc sai format | Kiểm tra form-data |
+| **Redirect loop** | Middleware blocking | Kiểm tra .htaccess |
 
 ---
 
-## Error Responses
+## 🔧 Postman Environment Variables
 
-### JSON Responses (API)
+Tạo file `.postman_environment.json`:
 ```json
 {
-  "success": false,
-  "error": "Error message"
+  "name": "Pizza Online Dev",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost/web-php-ban-pizza/public/"
+    },
+    {
+      "key": "product_id",
+      "value": "1"
+    },
+    {
+      "key": "admin_email",
+      "value": "admin@example.com"
+    },
+    {
+      "key": "admin_password",
+      "value": "password123"
+    }
+  ]
 }
-
-{
-  "success": true,
-  "message": "Success message"
-}
 ```
 
-### HTTP Status Codes
-- 200: OK
-- 400: Bad Request
-- 401: Unauthorized
-- 500: Server Error
+Sử dụng trong URL: `{{baseUrl}}` hoặc `{{admin_email}}`
 
 ---
 
-## Data Validation
+## 📌 Ghi Chú Quan Trọng
 
-### Product Prices
-- Kiểu: decimal(10,2)
-- Min: 0
-- Là bắt buộc
-
-### Order Status
-- 'Chờ xác nhận'
-- 'Đã xác nhận'
-- 'Đang giao'
-- 'Đã giao'
-- 'Đã hủy'
-
-### User Roles
-- 'customer'
-- 'admin'
-- 'staff'
-
-### Pizza Sizes
-- 'Nhỏ'
-- 'Vừa'
-- 'Lớn'
-
----
-
-## Rate Limiting
-
-Không có rate limiting hiện tại. Nên thêm nếu cần.
-
----
-
-## CORS
-
-Không áp dụng (chỉ là form POST truyền thống)
-
----
-
-## Pagination
-
-- Trang mặc định: 1
-- Items per page (khách): 12
-- Items per page (admin): 10
-
-### Example
-```
-GET /index.php?action=product&page=1
-→ Sản phẩm 1-12
-
-GET /index.php?action=product&page=2
-→ Sản phẩm 13-24
-```
-
----
-
-## Sorting
-
-Sắp xếp mặc định:
-- Sản phẩm: Ngày tạo DESC
-- Đơn hàng: Ngày tạo DESC
-- Khách hàng: Ngày tạo DESC
+1. ✅ **API có thể test bằng Postman được**
+2. ⚠️ **Phải dùng form-data, không phải JSON**
+3. ⚠️ **Phải enable cookies/session**
+4. ⚠️ **Một số API yêu cầu login trước**
+5. ✅ **Không cần CSRF token**
+6. ✅ **Response là JSON hoặc HTML**

@@ -59,6 +59,7 @@
 <?php include APP_PATH . 'Views/layout/footer.php'; ?>
 
 <script>
+    // Xử lý xác thực mật khẩu trùng khớp
 document.addEventListener('DOMContentLoaded', function() {
     const passwordInput = document.getElementById('password');
     const confirmPasswordInput = document.getElementById('confirm_password');

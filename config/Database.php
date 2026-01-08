@@ -1,5 +1,4 @@
 <?php
-
 class Database
 {
     private static $connection = null;
@@ -30,8 +29,7 @@ class Database
             } catch (PDOException $e) {
                 die("Connection Error: " . $e->getMessage());
             }
-        }
-        
+        }        
         return self::$connection;
     }
 }

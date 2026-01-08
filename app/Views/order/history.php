@@ -5,7 +5,6 @@
         <h1><i class="bi bi-box"></i> Lịch Sử Đơn Hàng</h1>
         <p>Quản lý và theo dõi các đơn hàng của bạn</p>
     </div>
-
     <div style="margin-top: 30px;">
         <?php if (empty($orders)): ?>
             <div style="background: white; padding: 40px; border-radius: 12px; text-align: center; border: 1px solid #e0e0e0;">
@@ -21,20 +20,18 @@
                 <?php foreach ($orders as $order): ?>
                     <div style="background: white; border: 1px solid #e0e0e0; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,51,0.05); transition: box-shadow 0.3s;" onMouseOver="this.style.boxShadow='0 4px 16px rgba(0,0,51,0.1)'" onMouseOut="this.style.boxShadow='0 2px 8px rgba(0,0,51,0.05)'">
                         <div style="display: grid; grid-template-columns: 1fr 2fr 1.5fr auto; gap: 20px; align-items: center;">
-                            <!-- Order ID -->
+                            <!-- Mã đơn -->
                             <div>
                                 <p style="margin: 0 0 4px 0; font-size: 12px; color: #999; text-transform: uppercase;">Mã đơn</p>
                                 <p style="margin: 0; font-size: 18px; font-weight: 700; color: var(--primary-color);">#<?php echo $order['order_id']; ?></p>
-                            </div>
-                            
-                            <!-- Order Info -->
+                            </div>                            
+                            <!-- Thông tin đơn hàng -->
                             <div>
                                 <p style="margin: 0 0 4px 0; font-size: 12px; color: #999; text-transform: uppercase;">Ngày đặt</p>
                                 <p style="margin: 0; font-size: 14px; color: var(--text-dark); font-weight: 600;"><?php echo date('d/m/Y H:i', strtotime($order['ngay_tao_order'])); ?></p>
                                 <p style="margin: 4px 0 0 0; font-size: 12px; color: #666;">Người nhận: <?php echo htmlspecialchars($order['nguoi_nhan'] ?? '-'); ?></p>
-                            </div>
-                            
-                            <!-- Amount & Status -->
+                            </div>                            
+                            <!-- Tổng tiền & Trạng thái -->
                             <div>
                                 <p style="margin: 0 0 4px 0; font-size: 12px; color: #999; text-transform: uppercase;">Tổng tiền</p>
                                 <p style="margin: 0 0 6px 0; font-size: 18px; font-weight: 700; color: var(--primary-color);"><?php echo number_format($order['tong_tien'], 0, ',', '.'); ?> đ</p>
@@ -49,9 +46,8 @@
                                     ?>">
                                     <?php echo htmlspecialchars($status); ?>
                                 </span>
-                            </div>
-                            
-                            <!-- Action Button -->
+                            </div>                            
+                            <!-- Nút hành động -->
                             <div>
                                 <a href="<?php echo SITE_URL; ?>index.php?action=order&method=detail&id=<?php echo $order['order_id']; ?>" 
                                    style="display: inline-block; background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%); color: white; padding: 10px 18px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 600; transition: transform 0.2s;" 
@@ -62,9 +58,8 @@
                         </div>
                     </div>
                 <?php endforeach; ?>
-            </div>
-            
-            <!-- Pagination -->
+            </div>            
+            <!-- Phân trang -->
             <?php if ($total_pages > 1): ?>
                 <div style="display: flex; justify-content: center; gap: 8px; margin-top: 30px;">
                     <?php if ($current_page > 1): ?>

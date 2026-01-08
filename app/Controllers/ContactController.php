@@ -12,7 +12,7 @@ class ContactController extends Controller
         parent::__construct();
         $this->contactModel = new Contact();
     }
-    
+    // Trang liên hệ
     public function index()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

@@ -8,9 +8,8 @@ include APP_PATH . 'Views/layout/header.php';
         <h1>🍕 Giới Thiệu Về Pizza Online</h1>
         <p>Khám phá câu chuyện của chúng tôi</p>
     </div>
-
     <div class="about-content">
-        <!-- Welcome Section -->
+        <!-- Section giới thiệu -->
         <section class="about-section about-welcome">
             <div class="section-content">
                 <h2>Chào Mừng Đến Với Pizza Online</h2>
@@ -26,7 +25,7 @@ include APP_PATH . 'Views/layout/header.php';
             </div>
         </section>
 
-        <!-- Why Choose Us -->
+        <!-- Section lý do chọn chúng tôi -->
         <section class="about-section about-reasons">
             <h2><i class="bi bi-star-fill"></i> Tại Sao Chọn Pizza Online?</h2>
             <div class="reasons-grid">
@@ -63,7 +62,7 @@ include APP_PATH . 'Views/layout/header.php';
             </div>
         </section>
 
-        <!-- Our Menu -->
+        <!-- Section thực đơn của chúng tôi -->
         <section class="about-section about-menu">
             <div class="section-content">
                 <h2>🍴 Các Loại Pizza Của Chúng Tôi</h2>
@@ -80,7 +79,7 @@ include APP_PATH . 'Views/layout/header.php';
             </div>
         </section>
 
-        <!-- Our Commitment -->
+        <!-- Section cam kết của chúng tôi -->
         <section class="about-section about-commitment">
             <h2>💪 Cam Kết Của Chúng Tôi</h2>
             <div class="commitment-list">
@@ -122,7 +121,7 @@ include APP_PATH . 'Views/layout/header.php';
             </div>
         </section>
 
-        <!-- Contact CTA -->
+        <!-- Section kêu gọi liên hệ -->
         <section class="about-section about-cta">
             <h2>Sẵn Sàng Tới Với Pizza Online?</h2>
             <p>Hãy đặt pizza yêu thích của bạn ngay hôm nay và trải nghiệm dịch vụ tuyệt vời!</p>

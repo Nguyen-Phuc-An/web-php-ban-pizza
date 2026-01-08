@@ -3,6 +3,7 @@
 <div class="admin-layout">
     <aside class="admin-sidebar">
         <h3>Menu Quản Trị</h3>
+        <!-- Menu điều hướng quản trị -->
         <nav class="admin-menu">
             <ul>
                 <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=dashboard" class="menu-item"><i class="bi bi-graph-up"></i> Dashboard</a></li>
@@ -14,7 +15,7 @@
             </ul>
         </nav>
     </aside>
-    
+    <!-- Nội dung chính của trang quản trị đơn hàng -->
     <main class="admin-content">
         <div class="container">            
             <table class="admin-table">
@@ -101,7 +102,7 @@
     </main>
 </div>
 
-<!-- Order Detail Modal -->
+<!-- Modal Chi tiết đơn hàng -->
 <div id="orderModal" class="admin-modal">
     <div class="admin-modal-content">
         <div class="admin-modal-header">
@@ -186,7 +187,7 @@
     </div>
 </div>
 
-<!-- Invoice Modal -->
+<!-- Modal Hóa đơn -->
 <div id="invoiceModal" class="admin-modal" style="z-index: 2000;">
     <div class="invoice-modal-content">
         <div class="invoice-header">
@@ -726,6 +727,7 @@
 </style>
 
 <script>
+// Hàm hiển thị chi tiết đơn hàng trong modal
 function viewOrderDetail(orderId) {
     const modal = document.getElementById('orderModal');
     
@@ -745,7 +747,7 @@ function viewOrderDetail(orderId) {
             alert('Lỗi khi tải thông tin đơn hàng: ' + error.message);
         });
 }
-
+// Hàm điền dữ liệu vào modal chi tiết đơn hàng
 function populateOrderModal(data) {
     const order = data.order;
     const items = data.items || [];
@@ -847,34 +849,30 @@ function populateOrderModal(data) {
     // Total
     document.getElementById('modalTotalAmount').textContent = parseInt(order.tong_tien).toLocaleString('vi-VN') + ' đ';
 }
-
+// Hàm đóng modal chi tiết đơn hàng
 function closeOrderModal() {
     document.getElementById('orderModal').style.display = 'none';
 }
-
-// Close modal when clicking outside
+// Đóng modal khi click ra ngoài
 window.onclick = function(event) {
     const modal = document.getElementById('orderModal');
     if (event.target === modal) {
         modal.style.display = 'none';
     }
 }
-
-// Update status select color based on selected value
+// Cập nhật màu sắc select trạng thái dựa trên giá trị đã chọn
 function updateStatusColor(selectElement) {
     const selectedValue = selectElement.value;
     selectElement.setAttribute('data-status', selectedValue);
 }
-
-// Initialize status colors on page load
+// Khởi tạo màu sắc trạng thái khi tải trang
 document.addEventListener('DOMContentLoaded', function() {
     const statusSelects = document.querySelectorAll('.status-select');
     statusSelects.forEach(select => {
         updateStatusColor(select);
     });
 });
-
-// Export Invoice
+// Xuất hóa đơn
 function exportInvoice() {
     if (!window.currentOrderData) {
         alert('Không có dữ liệu đơn hàng');
@@ -987,11 +985,11 @@ function exportInvoice() {
     document.getElementById('invoiceContent').innerHTML = invoiceHTML;
     document.getElementById('invoiceModal').style.display = 'block';
 }
-
+// Đóng modal hóa đơn
 function closeInvoiceModal() {
     document.getElementById('invoiceModal').style.display = 'none';
 }
-
+// In
 function printInvoice() {
     window.print();
 }

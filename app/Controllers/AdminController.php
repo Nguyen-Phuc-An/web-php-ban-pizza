@@ -24,7 +24,7 @@ class AdminController extends Controller
         $this->categoryModel = new Category();
         $this->contactModel = new Contact();
     }
-    
+    // Trang dashboard admin
     public function dashboard()
     {
         if (!$this->isAdmin()) {
@@ -55,7 +55,7 @@ class AdminController extends Controller
         
         $this->render('admin/dashboard', $data);
     }
-    
+    // liệt kê sản phẩm
     public function products()
     {
         if (!$this->isAdmin()) {
@@ -109,7 +109,7 @@ class AdminController extends Controller
         
         $this->render('admin/products/list', $data);
     }
-    
+    // Thêm sản phẩm từ modal
     private function addProductFromModal()
     {
         $data = [
@@ -149,7 +149,7 @@ class AdminController extends Controller
             $_SESSION['error'] = 'Lỗi thêm sản phẩm';
         }
     }
-    
+    // Chỉnh sửa sản phẩm từ modal
     private function editProductFromModal()
     {
         $productId = $_POST['product_id'] ?? null;
@@ -191,7 +191,7 @@ class AdminController extends Controller
             $_SESSION['error'] = 'Lỗi cập nhật sản phẩm';
         }
     }
-    
+    // Xóa sản phẩm
     private function deleteProductFromModal()
     {
         $productId = $_POST['product_id'] ?? null;
@@ -206,7 +206,7 @@ class AdminController extends Controller
             $_SESSION['error'] = 'Lỗi xóa sản phẩm';
         }
     }
-    
+    // Thêm sản phẩm mới
     public function addProduct()
     {
         if (!$this->isAdmin()) {
@@ -222,7 +222,7 @@ class AdminController extends Controller
         
         $this->render('admin/products/add', $data);
     }
-    
+    // Chỉnh sửa sản phẩm
     public function editProduct()
     {
         if (!$this->isAdmin()) {
@@ -252,7 +252,7 @@ class AdminController extends Controller
         
         $this->render('admin/products/edit', $data);
     }
-    
+    // Lưu sản phẩm (thêm mới hoặc cập nhật)
     private function saveProduct($productId = null)
     {
         $data = [
@@ -298,7 +298,7 @@ class AdminController extends Controller
             }
         }
     }
-    
+    // Xóa sản phẩm
     public function deleteProduct()
     {
         if (!$this->isAdmin()) {
@@ -318,7 +318,7 @@ class AdminController extends Controller
             $this->redirect(SITE_URL . 'index.php?action=admin&method=products');
         }
     }
-    
+    // Quản lý danh mục
     public function categories()
     {
         if (!$this->isAdminOnly()) {
@@ -346,7 +346,7 @@ class AdminController extends Controller
         
         $this->render('admin/categories/list', $data);
     }
-    
+    // Thêm danh mục
     private function addCategory()
     {
         $data = [
@@ -373,7 +373,7 @@ class AdminController extends Controller
             $_SESSION['error'] = 'Lỗi thêm danh mục';
         }
     }
-    
+    // Cập nhật danh mục từ modal
     private function updateCategoryFromModal()
     {
         $categoryId = $_POST['category_id'] ?? null;
@@ -400,7 +400,7 @@ class AdminController extends Controller
             $_SESSION['error'] = 'Lỗi cập nhật danh mục';
         }
     }
-    
+    // Xóa danh mục từ modal
     private function deleteCategoryFromModal()
     {
         $categoryId = $_POST['category_id'] ?? null;
@@ -415,7 +415,7 @@ class AdminController extends Controller
             $_SESSION['error'] = 'Lỗi xóa danh mục';
         }
     }
-    
+    // Chỉnh sửa danh mục
     public function editCategory()
     {
         if (!$this->isAdminOnly()) {
@@ -455,7 +455,7 @@ class AdminController extends Controller
         $data = ['category' => $category];
         $this->render('admin/categories/edit', $data);
     }
-    
+    // Xóa danh mục
     public function deleteCategory()
     {
         if (!$this->isAdminOnly()) {
@@ -476,7 +476,7 @@ class AdminController extends Controller
         
         $this->redirect(SITE_URL . 'index.php?action=admin&method=categories');
     }
-    
+    // Quản lý đơn hàng
     public function orders()
     {
         if (!$this->isAdmin()) {
@@ -496,7 +496,7 @@ class AdminController extends Controller
         
         $this->render('admin/orders/list', $data);
     }
-    
+    // Chi tiết đơn hàng
     public function orderDetail()
     {
         if (!$this->isAdmin()) {
@@ -528,7 +528,7 @@ class AdminController extends Controller
         
         $this->render('admin/orders/detail', $data);
     }
-    
+    // Lấy chi tiết đơn hàng (API)
     public function getOrderDetail()
     {
         if (!$this->isAdmin()) {
@@ -568,7 +568,7 @@ class AdminController extends Controller
             'customer' => $shippingInfo
         ]);
     }
-    
+    // Cập nhật trạng thái đơn hàng
     public function updateOrderStatus()
     {
         if (!$this->isAdmin()) {
@@ -591,7 +591,7 @@ class AdminController extends Controller
         
         $this->redirect(SITE_URL . 'index.php?action=admin&method=orders');
     }
-    
+    // Quản lý khách hàng
     public function customers()
     {
         if (!$this->isAdmin()) {
@@ -611,7 +611,7 @@ class AdminController extends Controller
         
         $this->render('admin/customers/list', $data);
     }
-    
+    // Lấy dữ liệu khách hàng (API)
     public function getCustomerData()
     {
         if (!$this->isAdmin()) {
@@ -636,7 +636,7 @@ class AdminController extends Controller
             'orders' => $orders ?? []
         ]);
     }
-    
+    // Cập nhật trạng thái tài khoản khách hàng (API)
     public function toggleAccountStatus()
     {
         if (!$this->isAdmin()) {
@@ -669,7 +669,7 @@ class AdminController extends Controller
             $this->jsonResponse(['success' => false, 'message' => 'Không thể cập nhật trạng thái tài khoản'], 500);
         }
     }
-    
+    // Chi tiết khách hàng
     public function customerDetail()
     {
         if (!$this->isAdmin()) {
@@ -701,7 +701,7 @@ class AdminController extends Controller
         
         $this->render('admin/customers/detail', $data);
     }
-    
+    // Quản lý liên hệ
     public function contacts()
     {
         if (!$this->isAdmin()) {
@@ -721,7 +721,7 @@ class AdminController extends Controller
         
         $this->render('admin/contacts/list', $data);
     }
-    
+    // Lấy dữ liệu liên hệ (API)
     public function getContactData()
     {
         if (!$this->isAdmin()) {
@@ -740,7 +740,7 @@ class AdminController extends Controller
         
         $this->jsonResponse(['contact' => $contact]);
     }
-    
+    // Xóa liên hệ (API)
     public function deleteContact()
     {
         if (!$this->isAdmin()) {
@@ -758,7 +758,7 @@ class AdminController extends Controller
             $this->jsonResponse(['error' => 'Failed to delete contact'], 500);
         }
     }
-    
+    // Chi tiết liên hệ
     public function contactDetail()
     {
         if (!$this->isAdmin()) {

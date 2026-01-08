@@ -8,7 +8,7 @@ include APP_PATH . 'Views/layout/header.php';
 </div>
 
 <div class="container">
-    <!-- Search Result Header (hidden by default) -->
+    <!-- Tìm kiếm -->
     <div id="searchHeader" style="display: none; margin: var(--spacing-xl) 0; padding: var(--spacing-lg); background: var(--bg-light); border-radius: 8px; text-align: center;">
         <p style="font-size: 16px; color: var(--text-dark); margin: 0;">
             Tìm kiếm: <strong id="searchKeyword"></strong>
@@ -19,7 +19,7 @@ include APP_PATH . 'Views/layout/header.php';
         </p>
     </div>
 
-    <!-- Filter by categories -->
+    <!-- Lọc theo danh mục -->
     <div class="filter-section">
         <div class="filter-group">
             <div style="display: flex; gap: var(--spacing-md); flex-wrap: wrap;">
@@ -40,14 +40,14 @@ include APP_PATH . 'Views/layout/header.php';
         </div>
     </div>
     
-    <!-- Subcategories (separate row) -->
+    <!-- Danh mục con (hàng riêng biệt) -->
     <div id="subcategoriesContainer" style="display: none; padding: var(--spacing-md); background: #f9f9f9; border-radius: 8px;">
         <div style="display: flex; gap: var(--spacing-md); flex-wrap: wrap; align-items: center;">
             <div id="subcategoriesList" style="display: flex; gap: var(--spacing-md); flex-wrap: wrap;"></div>
         </div>
     </div>
 
-    <!-- Products list -->
+    <!-- Danh sách sản phẩm -->
     <div id="productsContainer" class="products-grid">
         <?php if (!empty($products)): ?>
             <?php foreach ($products as $product): ?>
@@ -77,13 +77,13 @@ include APP_PATH . 'Views/layout/header.php';
         <?php endif; ?>
     </div>
     
-    <!-- Pagination -->
+    <!-- Phân trang -->
     <div id="paginationContainer" style=" margin-bottom: 20px;">
         <?php echo isset($pagination) ? $pagination : ''; ?>
     </div>
 </div>
 
-<!-- Product detail modal -->
+<!-- Chi tiết sản phẩm -->
 <div id="productModal" class="modal">
     <div class="modal-content" style=" height: 600px;">
         <span class="close" onclick="closeProductModal()" style="top: '0px'">&times;</span>
@@ -94,7 +94,7 @@ include APP_PATH . 'Views/layout/header.php';
 </div>
 
 <script>
-// Dữ liệu danh mục (PHP to JS)
+// Dữ liệu danh mục (toàn bộ) từ PHP sang JS
 const categoriesData = <?php 
     echo json_encode(array_map(function($cat) {
         return [
@@ -105,11 +105,11 @@ const categoriesData = <?php
     }, $categories));
 ?>;
 
-// User login status (global variable)
+// Người dùng đã đăng nhập hay chưa
 window.isLoggedIn = <?php echo isset($is_logged_in) && $is_logged_in ? 'true' : 'false'; ?>;
 console.log('User logged in:', window.isLoggedIn);
 
-// Load wishlist from localStorage on page load
+// Khôi phục trạng thái yêu thích
 document.addEventListener('DOMContentLoaded', function() {
     const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
     wishlist.forEach(productId => {
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
-
+// Hiển thị danh mục con
 function showSubcategories(parentId) {
     const subcategoriesList = document.getElementById('subcategoriesList');
     const container = document.getElementById('subcategoriesContainer');
@@ -162,11 +162,11 @@ function showSubcategories(parentId) {
     
     container.style.display = 'block';
 }
-
+// Đóng danh mục con
 function closeSubcategories() {
     document.getElementById('subcategoriesContainer').style.display = 'none';
 }
-
+// Thêm / Xóa yêu thích
 function toggleWishlist(productId, button) {
     // Check if user is logged in
     if (!window.isLoggedIn) {
@@ -214,7 +214,7 @@ function toggleWishlist(productId, button) {
         showToast('Lỗi kết nối', 'error');
     });
 }
-
+// Xem chi tiết sản phẩm
 function viewProductDetail(productId) {
     // Load product detail
     fetch('<?php echo SITE_URL; ?>index.php?action=product&method=getDetail&id=' + productId)
@@ -293,11 +293,11 @@ function viewProductDetail(productId) {
             }
         });
 }
-
+// Đóng modal chi tiết sản phẩm
 function closeProductModal() {
     document.getElementById('productModal').style.display = 'none';
 }
-
+// Thay đổi số lượng
 function changeQuantity(change) {
     const input = document.getElementById('quantityInput');
     const newValue = parseInt(input.value) + change;
@@ -305,7 +305,7 @@ function changeQuantity(change) {
         input.value = newValue;
     }
 }
-
+// Cập nhật giá theo kích cỡ
 function updatePriceBySize(basePrice) {
     const sizeSelect = document.getElementById('sizeSelect');
     const size = sizeSelect.value;
@@ -326,14 +326,12 @@ function updatePriceBySize(basePrice) {
     
     document.getElementById('productPrice').textContent = adjustedPrice.toLocaleString('vi-VN') + ' đ';
 }
-
+// Thêm vào giỏ hàng
 function addToCart(productId) {
-    // Check if user is logged in
     console.log('Adding to cart. User logged in:', window.isLoggedIn);
     
     if (!window.isLoggedIn) {
         showToast('Vui lòng đăng nhập để thêm vào giỏ hàng', 'warning');
-        // Redirect to login after a short delay
         setTimeout(() => {
             window.location.href = '<?php echo SITE_URL; ?>index.php?action=auth&method=login';
         }, 1500);
@@ -384,33 +382,27 @@ function addToCart(productId) {
         showToast('Lỗi kết nối', 'error');
     });
 }
-
-// Close modal when clicking outside
+// Đóng modal khi click bên ngoài
 window.onclick = function(event) {
     const modal = document.getElementById('productModal');
     if (event.target == modal) {
         modal.style.display = 'none';
     }
 }
-
-// Load products by category via AJAX
+// Tải sản phẩm theo danh mục
 function loadProducts(categoryId, page = 1) {
-    console.log('loadProducts called with categoryId:', categoryId, 'page:', page);
-    
-    // Hide search header when loading category
-    document.getElementById('searchHeader').style.display = 'none';
-    
+    console.log('loadProducts called with categoryId:', categoryId, 'page:', page);    
+    // Ẩn tiêu đề tìm kiếm khi tải danh mục
+    document.getElementById('searchHeader').style.display = 'none';    
     // Nếu categoryId là null, ẩn danh mục con
     if (categoryId === null) {
         closeSubcategories();
-    }
-    
+    }    
     const url = categoryId 
         ? '<?php echo SITE_URL; ?>index.php?action=home&method=getProducts&category=' + categoryId + '&page=' + page
         : '<?php echo SITE_URL; ?>index.php?action=home&method=getProducts&page=' + page;
     
-    console.log('Fetching URL:', url);
-    
+    console.log('Fetching URL:', url);    
     fetch(url)
         .then(response => {
             console.log('Response status:', response.status);
@@ -455,8 +447,7 @@ function loadProducts(categoryId, page = 1) {
             showToast('Lỗi tải sản phẩm', 'error');
         });
 }
-
-// Handle search form submission
+// Xử lý gửi form tìm kiếm
 function handleSearch(event) {
     event.preventDefault();
     const keyword = document.getElementById('searchInput').value.trim();
@@ -466,13 +457,13 @@ function handleSearch(event) {
         return;
     }
     
-    // Hide category buttons and show search header
+    // Ẩn nút danh mục và hiển thị tiêu đề tìm kiếm
     document.querySelector('.filter-section').style.display = 'none';
     const searchHeader = document.getElementById('searchHeader');
     searchHeader.style.display = 'block';
     document.getElementById('searchKeyword').textContent = keyword;
     
-    // Fetch search results
+    // Tải sản phẩm theo từ khóa
     const url = '<?php echo SITE_URL; ?>index.php?action=home&method=searchProducts&q=' + encodeURIComponent(keyword);
     
     fetch(url)
@@ -481,12 +472,12 @@ function handleSearch(event) {
             if (data.html) {
                 document.getElementById('productsContainer').innerHTML = data.html;
                 document.getElementById('searchCount').textContent = data.count || 0;
-                // Update login status from server
+                // Cập nhật trạng thái đăng nhập từ server
                 if (data.isLoggedIn !== undefined) {
                     window.isLoggedIn = data.isLoggedIn;
                 }
                 
-                // Restore wishlist icons from localStorage
+                // Khôi phục biểu tượng yêu thích từ localStorage
                 const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
                 document.querySelectorAll('.wishlist-btn').forEach(btn => {
                     const productId = parseInt(btn.getAttribute('data-product-id'));
@@ -508,29 +499,27 @@ function handleSearch(event) {
             showToast('Lỗi tìm kiếm', 'error');
         });
 }
-
-// Clear search and go back to showing all products
+// Xóa tìm kiếm và trở về hiển thị tất cả sản phẩm
 function clearSearch() {
     document.getElementById('searchInput').value = '';
     document.querySelector('.filter-section').style.display = 'block';
     document.getElementById('searchHeader').style.display = 'none';
     loadProducts(null);
 }
-
+// Cập nhật trạng thái nút danh mục
 function updateCategoryButtons(categoryId) {
-    // Remove active state from all buttons
+    // Trả về trạng thái mặc định cho tất cả nút
     document.querySelectorAll('.filter-group button').forEach(btn => {
         btn.classList.remove('btn-primary');
         btn.classList.add('btn-secondary');
     });
     
-    // Add active state to selected button
+    // Thêm trạng thái active cho nút tương ứng
     if (categoryId === null) {
-        // Tất cả button is the first button
         document.querySelectorAll('.filter-group button')[0].classList.remove('btn-secondary');
         document.querySelectorAll('.filter-group button')[0].classList.add('btn-primary');
     } else {
-        // Find button with matching data-category-id
+        // Tìm nút có data-category-id tương ứng
         const targetBtn = document.querySelector(`[data-category-id="${categoryId}"]`);
         if (targetBtn) {
             targetBtn.classList.remove('btn-secondary');
@@ -538,8 +527,6 @@ function updateCategoryButtons(categoryId) {
         }
     }
 }
-
-// Removed - category button highlighting is now handled by updateCategoryButtons()
 </script>
 
 <?php include APP_PATH . 'Views/layout/footer.php'; ?>

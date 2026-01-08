@@ -15,7 +15,7 @@ class WishlistController extends Controller
         $this->wishlistModel = new Wishlist();
         $this->productModel = new Product();
     }
-    
+    // Trang danh sách yêu thích
     public function view()
     {
         if (!$this->isAuthenticated()) {
@@ -27,7 +27,7 @@ class WishlistController extends Controller
         
         $this->render('wishlist/view', $data);
     }
-    
+    // Thêm sản phẩm vào danh sách yêu thích (API)
     public function add()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -65,7 +65,7 @@ class WishlistController extends Controller
             $this->jsonResponse(['error' => 'Lỗi thêm vào danh sách yêu thích'], 500);
         }
     }
-    
+    // Xóa sản phẩm khỏi danh sách yêu thích (API)
     public function remove()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

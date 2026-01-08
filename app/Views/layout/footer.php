@@ -5,6 +5,7 @@
     <script src="<?php echo SITE_URL; ?>assets/js/main.php"></script>
     
     <script>
+        // Hiển thị toast notification
         function showToast(message, type = 'info', duration = 3000) {
             const container = document.getElementById('toastContainer');
             

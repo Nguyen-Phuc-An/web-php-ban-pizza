@@ -4,8 +4,7 @@
     <div class="order-detail-section" style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
         <h2 style="margin: 0 0 30px 0; font-size: 28px; color: #333; border-bottom: 3px solid var(--primary-color); padding-bottom: 15px;">
             Chi Tiết Đơn Hàng #<?php echo $order['order_id']; ?>
-        </h2>
-        
+        </h2>        
         <div class="order-info" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; padding: 20px; background: #f9f9f9; border-radius: 8px;">
             <div style="padding: 15px; background: white; border-radius: 6px; border-left: 4px solid var(--primary-color);">
                 <p style="margin: 0; font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;">Ngày đặt</p>
@@ -21,11 +20,11 @@
                 <p style="margin: 0; font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;">Thanh toán</p>
                 <p style="margin: 0; font-size: 16px; font-weight: 600; color: #333;"><?php echo htmlspecialchars($order['phuong_thuc_thanh_toan']); ?></p>
             </div>
-        </div>
-        
+        </div>        
         <h3 style="margin: 30px 0 20px 0; font-size: 20px; color: #333; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">
             Danh sách sản phẩm
         </h3>
+        <!-- Bảng danh sách sản phẩm trong đơn hàng -->
         <div style="overflow-x: auto; border-radius: 8px; border: 1px solid #e0e0e0;">
             <table class="items-table" style="width: 100%; border-collapse: collapse; background: white;">
                 <thead style="background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%); color: white;">
@@ -61,7 +60,7 @@
                 </tbody>
             </table>
         </div>
-        
+        <!-- Tóm tắt đơn hàng -->
         <div class="order-summary" style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 30px 0; border: 1px solid #e0e0e0;">
             <div style="display: flex; justify-content: flex-end; margin-bottom: 15px;">
                 <div style="width: 100%;">
@@ -80,7 +79,7 @@
                 </div>
             </div>
         </div>
-        
+        <!-- Nút hành động -->
         <div style="display: flex; gap: 15px; justify-content: flex-end;">
             <?php if ($order['trang_thai'] === 'Chờ xác nhận'): ?>
                 <button onclick="cancelOrder(<?php echo $order['order_id']; ?>)" class="btn" style="padding: 12px 25px; background: #f44336; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px;">
@@ -97,6 +96,7 @@
 <?php include APP_PATH . 'Views/layout/footer.php'; ?>
 
 <script>
+// Hàm hủy đơn hàng
 function cancelOrder(orderId) {
     if (!confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')) {
         return;

@@ -3,6 +3,7 @@
 <div class="admin-layout">
     <aside class="admin-sidebar">
         <h3>Menu Quản Trị</h3>
+        <!-- Menu điều hướng admin -->
         <nav class="admin-menu">
             <ul>
                 <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=dashboard" class="menu-item"><i class="bi bi-graph-up"></i> Dashboard</a></li>
@@ -14,7 +15,7 @@
             </ul>
         </nav>
     </aside>
-    
+    <!-- Nội dung chính của trang quản trị danh mục -->
     <main class="admin-content" style="overflow-y: hidden; height: 100%;">
         <div class="container" style=" height: 100%;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
@@ -107,6 +108,7 @@
 </div>
 
 <script>
+// Hàm mở modal thêm danh mục
 function openAddCategoryModal() {
     document.getElementById('modalTitle').textContent = 'Thêm Danh Mục';
     document.getElementById('formAction').value = 'add';
@@ -117,7 +119,7 @@ function openAddCategoryModal() {
     document.getElementById('submitBtn').textContent = 'Lưu';
     document.getElementById('categoryModal').style.display = 'block';
 }
-
+// Hàm mở modal sửa danh mục
 function openEditCategoryModal(id, name, description, parentId) {
     document.getElementById('modalTitle').textContent = 'Sửa Danh Mục';
     document.getElementById('formAction').value = 'edit';
@@ -128,21 +130,20 @@ function openEditCategoryModal(id, name, description, parentId) {
     document.getElementById('submitBtn').textContent = 'Cập nhật';
     document.getElementById('categoryModal').style.display = 'block';
 }
-
+// Hàm đóng modal
 function closeCategoryModal() {
     document.getElementById('categoryModal').style.display = 'none';
 }
-
+// Hàm mở modal xác nhận xóa danh mục
 function openDeleteCategoryModal(id, name) {
     document.getElementById('deleteCategoryName').textContent = name;
     document.getElementById('deleteCategoryId').value = id;
     document.getElementById('deleteConfirmModal').style.display = 'block';
 }
-
+// Hàm đóng modal xác nhận xóa danh mục
 function closeDeleteModal() {
     document.getElementById('deleteConfirmModal').style.display = 'none';
 }
-
 // Đóng modal khi click ngoài
 window.onclick = function(event) {
     var modal = document.getElementById('categoryModal');
@@ -155,7 +156,6 @@ window.onclick = function(event) {
         deleteModal.style.display = 'none';
     }
 }
-
 // Xử lý form submit
 document.getElementById('categoryForm').addEventListener('submit', function(e) {
     e.preventDefault();

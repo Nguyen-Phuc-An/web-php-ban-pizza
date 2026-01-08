@@ -5,7 +5,7 @@ include APP_PATH . 'Views/layout/header.php';
 
 <div class="container">
     <div class="contact-container">
-        <!-- Left Side: Contact Information -->
+        <!-- Left Side: Thông tin liên hệ -->
         <div class="contact-left">
             <div class="contact-left-content">
                 <h2>Liên hệ với chúng tôi</h2>
@@ -30,7 +30,7 @@ include APP_PATH . 'Views/layout/header.php';
             </div>
         </div>
 
-        <!-- Right Side: Contact Form -->
+        <!-- Right Side: Form liên hệ -->
         <div class="contact-right">
             <div class="contact-form-wrapper">
                 <h2>Gửi liên hệ cho chúng tôi</h2>

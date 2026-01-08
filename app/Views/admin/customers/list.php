@@ -3,6 +3,7 @@
 <div class="admin-layout">
     <aside class="admin-sidebar">
         <h3>Menu Quản Trị</h3>
+        <!-- Menu điều hướng admin -->
         <nav class="admin-menu">
             <ul>
                 <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=dashboard" class="menu-item"><i class="bi bi-graph-up"></i> Dashboard</a></li>
@@ -14,7 +15,7 @@
             </ul>
         </nav>
     </aside>
-    
+    <!-- Nội dung chính của trang quản trị khách hàng -->
     <main class="admin-content">
         <div class="container">            
             <table class="admin-table">
@@ -133,6 +134,7 @@
 </div>
 
 <script>
+// Hàm mở modal chi tiết khách hàng
 function openCustomerModal(customerId, name, email, phone) {
     document.getElementById('modalCustomerName').textContent = name;
     document.getElementById('modalCustomerEmail').textContent = email;
@@ -141,18 +143,18 @@ function openCustomerModal(customerId, name, email, phone) {
     
     document.getElementById('customerModal').style.display = 'block';
     
-    // Fetch customer details and order history
+    // Thông tin khách hàng từ server
     fetch('<?php echo SITE_URL; ?>index.php?action=admin&method=getCustomerData&id=' + customerId)
         .then(response => response.json())
         .then(data => {
-            // Update customer details
+            // Cập nhật chi tiết khách hàng
             document.getElementById('modalCustomerAddress').textContent = data.customer.dia_chi || '-';
             
-            // Sort orders: active orders first (by latest date), then completed/cancelled orders (by latest date)
+            // Định dạng và sắp xếp lịch sử đơn hàng
             let orders = data.orders || [];
             
             if (orders.length > 0) {
-                // Define status priority
+                // Định nghĩa độ ưu tiên trạng thái
                 const statusPriority = {
                     'Chờ xác nhận': 0,
                     'Đã xác nhận': 1,
@@ -161,22 +163,22 @@ function openCustomerModal(customerId, name, email, phone) {
                     'Đã hủy': 4
                 };
                 
-                // Sort orders
+                // Sắp xếp đơn hàng
                 orders.sort((a, b) => {
                     const priorityA = statusPriority[a.trang_thai] ?? 999;
                     const priorityB = statusPriority[b.trang_thai] ?? 999;
                     
-                    // First sort by priority (active orders first)
+                    // Sắp xếp theo độ ưu tiên (đơn hàng đang hoạt động trước)
                     if (priorityA !== priorityB) {
                         return priorityA - priorityB;
                     }
                     
-                    // Within same priority, sort by date (newest first)
+                    // Trong cùng độ ưu tiên, sắp xếp theo ngày (mới nhất trước)
                     return new Date(b.ngay_tao_order) - new Date(a.ngay_tao_order);
                 });
             }
             
-            // Build order history HTML
+            // Tạo HTML cho lịch sử đơn hàng
             let orderHTML = '';
             if (orders && orders.length > 0) {
                 orderHTML = '<div style="padding: var(--spacing-md);">';
@@ -184,7 +186,7 @@ function openCustomerModal(customerId, name, email, phone) {
                     const orderDate = new Date(order.ngay_tao_order).toLocaleDateString('vi-VN');
                     const total = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.tong_tien);
                     
-                    // Determine status color
+                    // Xác định màu trạng thái
                     let statusColor = '#666';
                     let statusBg = '#f0f0f0';
                     if (order.trang_thai === 'Chờ xác nhận') {
@@ -228,11 +230,10 @@ function openCustomerModal(customerId, name, email, phone) {
             document.getElementById('modalOrderHistory').innerHTML = '<p style="padding: var(--spacing-md); text-align: center; color: red;">Lỗi tải dữ liệu</p>';
         });
 }
-
+// Hàm đóng modal chi tiết khách hàng
 function closeCustomerModal() {
     document.getElementById('customerModal').style.display = 'none';
 }
-
 // Đóng modal khi click ngoài
 window.onclick = function(event) {
     var customerModal = document.getElementById('customerModal');
@@ -245,12 +246,10 @@ window.onclick = function(event) {
         closeConfirmModal();
     }
 }
-
 // Biến lưu trữ userId và status để toggle
 let pendingToggleUserId = null;
 let pendingToggleStatus = null;
-
-// Khóa/Bỏ khóa tài khoản
+// Khóa khóa tài khoản
 function toggleAccountStatus(userId, status) {
     pendingToggleUserId = userId;
     pendingToggleStatus = status;
@@ -273,15 +272,13 @@ function toggleAccountStatus(userId, status) {
     // Hiển thị modal
     document.getElementById('confirmModal').style.display = 'block';
 }
-
 // Đóng modal xác nhận
 function closeConfirmModal() {
     document.getElementById('confirmModal').style.display = 'none';
     pendingToggleUserId = null;
     pendingToggleStatus = null;
 }
-
-// Thực hiện toggle status
+// Thực hiện toggle trạng thái
 function executeToggleStatus() {
     if (!pendingToggleUserId || !pendingToggleStatus) return;
     
@@ -342,7 +339,6 @@ function executeToggleStatus() {
         setTimeout(() => { if (toastEl.parentElement) toastEl.remove(); }, 3000);
     });
 }
-
 // Tạo toast container nếu chưa tồn tại
 function createToastContainer() {
     const container = document.createElement('div');
@@ -350,7 +346,6 @@ function createToastContainer() {
     document.body.appendChild(container);
     return container;
 }
-
 // Đóng confirm modal khi click ngoài
 window.onclick = function(event) {
     var confirmModal = document.getElementById('confirmModal');

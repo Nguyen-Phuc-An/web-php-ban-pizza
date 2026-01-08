@@ -15,7 +15,7 @@ class ProductController extends Controller
         $this->productModel = new Product();
         $this->categoryModel = new Category();
     }
-    
+    // Trang danh sách sản phẩm với phân trang và lọc theo danh mục
     public function index()
     {
         $page = $_GET['page'] ?? 1;
@@ -42,7 +42,7 @@ class ProductController extends Controller
         
         $this->render('home/index', $data);
     }
-    
+    // Trang chi tiết sản phẩm
     public function detail()
     {
         $productId = $_GET['id'] ?? null;
@@ -59,7 +59,7 @@ class ProductController extends Controller
         $data = ['product' => $product];
         $this->render('product/detail', $data);
     }
-    
+    // Lấy chi tiết sản phẩm (API)
     public function getDetail()
     {
         $productId = $_GET['id'] ?? null;
@@ -76,7 +76,7 @@ class ProductController extends Controller
         
         $this->jsonResponse(['product' => $product]);
     }
-    
+    // Tìm kiếm sản phẩm
     public function search()
     {
         $keyword = $_GET['q'] ?? '';

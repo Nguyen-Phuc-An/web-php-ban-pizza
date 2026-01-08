@@ -21,7 +21,7 @@ class CartController extends Controller
         $this->productModel = new Product();
         $this->cartModel = new Cart();
     }
-    
+    // Trang xem giỏ hàng
     public function view()
     {
         if (!isset($_SESSION['cart'])) {
@@ -36,7 +36,7 @@ class CartController extends Controller
         $data = ['cart' => $_SESSION['cart']];
         $this->render('cart/view', $data);
     }
-    
+    // Tải giỏ hàng từ CSDL
     private function loadCartFromDatabase($userId)
     {
         $cartItems = $this->cartModel->getCartByUserId($userId);
@@ -54,7 +54,7 @@ class CartController extends Controller
             ];
         }
     }
-    
+    // Lưu giỏ hàng vào CSDL
     private function saveCartToDatabase($userId)
     {
         // Clear existing cart for this user
@@ -73,7 +73,7 @@ class CartController extends Controller
             }
         }
     }
-    
+    // Thêm sản phẩm vào giỏ hàng
     public function add()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -124,7 +124,7 @@ class CartController extends Controller
         
         $this->jsonResponse(['success' => true, 'message' => 'Đã thêm vào giỏ hàng']);
     }
-    
+    // Xóa sản phẩm khỏi giỏ hàng
     public function remove()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -144,7 +144,7 @@ class CartController extends Controller
         
         $this->jsonResponse(['success' => true]);
     }
-    
+    // Cập nhật số lượng sản phẩm trong giỏ hàng
     public function update()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -169,7 +169,7 @@ class CartController extends Controller
         
         $this->jsonResponse(['success' => true]);
     }
-    
+    // Lấy tổng giá trị giỏ hàng
     public function getTotal()
     {
         $total = 0;
@@ -182,7 +182,7 @@ class CartController extends Controller
         
         return $total;
     }
-    
+    // Lưu các mục đã chọn trong giỏ hàng để thanh toán
     public function setSelected()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -201,7 +201,7 @@ class CartController extends Controller
         
         $this->jsonResponse(['success' => true]);
     }
-    
+    // Thay đổi kích cỡ sản phẩm trong giỏ hàng
     public function changeSize()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

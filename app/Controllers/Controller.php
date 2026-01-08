@@ -9,7 +9,7 @@ class Controller
     {
         $this->checkSession();
     }
-    
+    //Render view với dữ liệu
     protected function render($view, $data = [])
     {
         extract($data);
@@ -21,7 +21,7 @@ class Controller
         
         include $viewPath;
     }
-    
+    //Render một phần view không đầy đủ
     protected function renderPartial($view, $data = [])
     {
         extract($data);
@@ -35,7 +35,7 @@ class Controller
         include $viewPath;
         return ob_get_clean();
     }
-    
+    //Kiểm tra phiên đăng nhập
     protected function checkSession()
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -52,40 +52,40 @@ class Controller
             ];
         }
     }
-    
+    //Kiểm tra user đã đăng nhập
     protected function isAuthenticated()
     {
         return isset($_SESSION['user_id']) || isset($_SESSION['admin_id']);
     }
-    
+    //Kiểm tra quyền admin
     protected function isAdmin()
     {
         return isset($_SESSION['admin_id']) && $_SESSION['is_admin'] === true;
     }
-    
+    //Kiểm tra quyền admin mới được truy cập
     protected function isAdminOnly()
     {
         return isset($_SESSION['admin_id']) && $_SESSION['is_admin'] === true;
     }
-    
+    //Chuyển hướng đến trang đăng nhập
     protected function redirectToLogin()
     {
         header('Location: ' . SITE_URL . 'index.php?action=auth&method=login');
         exit;
     }
-    
+    //Chuyển hướng đến trang quản trị
     protected function redirectToAdmin()
     {
         header('Location: ' . SITE_URL . 'index.php?action=admin&method=dashboard');
         exit;
     }
-    
+    //Chuyển hướng đến URL cụ thể
     protected function redirect($url)
     {
         header('Location: ' . $url);
         exit;
     }
-    
+    //Trả về dữ liệu JSON
     protected function jsonResponse($data, $statusCode = 200)
     {
         http_response_code($statusCode);
@@ -93,17 +93,19 @@ class Controller
         echo json_encode($data);
         exit;
     }
-    
+    //Lấy giá trị từ session
     protected function getSession($key, $default = null)
     {
         return $_SESSION[$key] ?? $default;
     }
     
+    //Đặt giá trị cho session
     protected function setSession($key, $value)
     {
         $_SESSION[$key] = $value;
     }
     
+    //Xóa giá trị khỏi session
     protected function unsetSession($key)
     {
         unset($_SESSION[$key]);

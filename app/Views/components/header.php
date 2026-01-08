@@ -4,8 +4,7 @@
             <!-- Logo + Tên website (bên trái) -->
             <div class="logo">
                 <h1><a href="<?php echo SITE_URL; ?>index.php?action=home">🍕 Pizza A.D.A</a></h1>
-            </div>
-            
+            </div>            
             <!-- Menu chính (Trang chủ, Giới thiệu, Liên hệ) -->
             <nav class="navbar">
                 <ul class="nav-menu">
@@ -13,22 +12,19 @@
                     <li <?php if (isset($_SESSION['admin_id'])) echo 'style="display: none;"'; ?>><a href="<?php echo SITE_URL; ?>index.php?action=home&method=about">Giới thiệu</a></li>
                     <li <?php if (isset($_SESSION['admin_id'])) echo 'style="display: none;"'; ?>><a href="<?php echo SITE_URL; ?>index.php?action=contact">Liên hệ</a></li>
                 </ul>
-            </nav>
-            
+            </nav>            
             <!-- Ô tìm kiếm -->
             <form class="search-form" onsubmit="handleSearch(event)" <?php if (isset($_SESSION['admin_id'])) echo 'style="display: none;"'; ?>>
                 <input type="text" id="searchInput" name="q" class="search-input" placeholder="Tìm kiếm pizza...">
                 <button type="submit" class="search-btn"></button>
-            </form>
-            
+            </form>            
             <!-- Menu phụ (Yêu thích, Giỏ hàng) - chỉ hiện khi đã login user (không admin) -->
             <div class="nav-menu" <?php if (isset($_SESSION['admin_id'])) echo 'style="display: none;"'; ?>>
                 <a href="<?php echo SITE_URL; ?>index.php?action=home&method=wishlist" class="menu-item" title="Danh sách yêu thích">Yêu thích</a>
                 <?php if (isset($_SESSION['user_id']) || isset($_SESSION['admin_id'])): ?>
                     <a href="<?php echo SITE_URL; ?>index.php?action=cart&method=view" class="menu-item" title="Giỏ hàng">Giỏ hàng</a>
                 <?php endif; ?>
-            </div>
-            
+            </div>            
             <!-- Menu tài khoản (bên phải) -->
             <div class="user-menu">
                 <?php if (isset($_SESSION['user_id'])): ?>

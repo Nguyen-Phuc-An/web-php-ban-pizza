@@ -10,7 +10,7 @@
             <!-- Cart Layout: Left Grid + Right Summary -->
             <div style="display: grid; grid-template-columns: 1fr 350px; gap: 25px; align-items: start;">
                 
-                <!-- LEFT: Cart Grid with Checkboxes -->
+                <!-- LEFT: Cart Grid với Checkboxes -->
                 <div>
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                         <h3 style="margin: 0; font-size: 18px;">Sản phẩm của bạn</h3>
@@ -84,7 +84,7 @@
                     </div>
                 </div>
                 
-                <!-- RIGHT: Order Summary -->
+                <!-- RIGHT: Tóm tắt đơn hàng  Summary   -->
                 <div style="background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);color: #000033;padding: 20px;border-radius: 8px;position: sticky;top: 100px;height: fit-content;">
                     <h3 style="margin: 0 0 20px 0; font-size: 18px; border-bottom: 2px solid rgba(255,255,255,0.2); padding-bottom: 15px;">Tóm tắt đơn hàng</h3>
                     
@@ -107,7 +107,7 @@
                         </div>
                     </div>
                     
-                    <!-- Action Buttons -->
+                    <!-- Nút hành động -->
                     <div style="display: flex; flex-direction: column; gap: 10px;">
                         <button onclick="proceedToCheckout()" 
                            class="btn btn-primary" style="width: 100%; text-align: center; text-decoration: none; background: white; color: var(--primary-color); font-weight: 600; border: none; cursor: pointer; padding: 12px; border-radius: 4px;">
@@ -142,7 +142,7 @@ function updateSelectAllButton() {
         btn.textContent = 'Chọn tất cả';
     }
 }
-
+// Khởi tạo trạng thái nút khi tải trang
 function toggleSelectAll() {
     const checkboxes = document.querySelectorAll('.product-checkbox');
     const btn = document.getElementById('selectAllBtn');
@@ -155,7 +155,7 @@ function toggleSelectAll() {
     btn.textContent = allChecked ? 'Chọn tất cả' : 'Bỏ chọn tất cả';
     updateSummary();
 }
-
+// Cập nhật tóm tắt đơn hàng
 function updateSummary() {
     const checkboxes = document.querySelectorAll('.product-checkbox:checked');
     let selectedCount = 0;
@@ -173,7 +173,7 @@ function updateSummary() {
     document.getElementById('totalPayment').textContent = totalPayment.toLocaleString('vi-VN') + ' đ';
 }
 
-// Setup quantity control buttons
+// Xử lý thay đổi số lượng
 document.querySelectorAll('.quantity-form').forEach(form => {
     const cartKey = form.dataset.cartKey;
     const qtyInput = form.querySelector('.qty-input');
@@ -200,7 +200,7 @@ document.querySelectorAll('.quantity-form').forEach(form => {
         updateQuantity(cartKey, newQty);
     });
 });
-
+// Cập nhật số lượng trong giỏ hàng
 function updateQuantity(cartKey, quantity) {
     const formData = new FormData();
     formData.append('cart_key', cartKey);
@@ -235,7 +235,7 @@ function updateQuantity(cartKey, quantity) {
     })
     .catch(error => console.error('Error:', error));
 }
-
+// Xóa
 function removeFromCart(cartKey) {
     const formData = new FormData();
     formData.append('cart_key', cartKey);
@@ -258,7 +258,7 @@ function removeFromCart(cartKey) {
         showToast('Lỗi kết nối', 'error');
     });
 }
-
+// Xóa toàn bộ giỏ hàng
 function deleteAllCart() {
     if (!confirm('Bạn chắc chắn muốn xóa toàn bộ sản phẩm trong giỏ hàng?')) {
         return;
@@ -286,7 +286,7 @@ function deleteAllCart() {
         });
     });
 }
-
+// Tiến hành thanh toán
 function proceedToCheckout() {
     const checkboxes = document.querySelectorAll('.product-checkbox:checked');
     
@@ -324,7 +324,7 @@ function proceedToCheckout() {
         showToast('Lỗi kết nối', 'error');
     });
 }
-
+// Thay đổi size sản phẩm
 function changeSize(selectElement, newSize) {
     console.log('changeSize called with:', { selectElement, newSize });
     

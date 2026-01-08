@@ -21,7 +21,7 @@ class OrderController extends Controller
         $this->productModel = new Product();
         $this->cartModel = new Cart();
     }
-    
+    // Trang thanh toán
     public function checkout()
     {
         if (!$this->isAuthenticated()) {
@@ -80,7 +80,7 @@ class OrderController extends Controller
         
         $this->render('order/checkout', $data);
     }
-    
+    // Xử lý thanh toán + Tạo đơn hàng
     private function processCheckout($cartItems, $total)
     {
         $paymentMethod = $_POST['phuong_thuc_thanh_toan'] ?? 'Trực tiếp';
@@ -148,7 +148,7 @@ class OrderController extends Controller
             $this->redirect(SITE_URL . 'index.php?action=order&method=history');
         }
     }
-    
+    // Lịch sử đơn hàng
     public function history()
     {
         if (!$this->isAuthenticated()) {
@@ -168,7 +168,7 @@ class OrderController extends Controller
         
         $this->render('order/history', $data);
     }
-    
+    // Chi tiết đơn hàng
     public function detail()
     {
         if (!$this->isAuthenticated()) {
@@ -196,7 +196,7 @@ class OrderController extends Controller
         
         $this->render('order/detail', $data);
     }
-    
+    // Chi tiết đơn hàng thành công (sau khi chuyển khoản)
     public function success()
     {
         if (!$this->isAuthenticated()) {
@@ -224,7 +224,7 @@ class OrderController extends Controller
         
         $this->render('order/success', $data);
     }
-    
+    // Hủy đơn hàng
     public function cancel()
     {
         if (!$this->isAuthenticated()) {

@@ -6,12 +6,12 @@ abstract class Model
 {
     protected $db;
     protected $table;
-    
+    // Khởi tạo kết nối cơ sở dữ liệu
     public function __construct()
     {
         $this->db = Database::connect();
     }
-    
+    // Tạo bản ghi mới
     public function create($data)
     {
         $columns = array_keys($data);
@@ -29,7 +29,7 @@ abstract class Model
         $stmt = $this->db->prepare($sql);
         return $stmt->execute($values);
     }
-    
+    // Đọc bản ghi theo ID
     public function read($id)
     {
         $pk = $this->getPrimaryKey();
@@ -38,7 +38,7 @@ abstract class Model
         $stmt->execute([$id]);
         return $stmt->fetch();
     }
-    
+    // Đọc tất cả bản ghi
     public function readAll()
     {
         $sql = "SELECT * FROM {$this->table}";
@@ -46,7 +46,7 @@ abstract class Model
         $stmt->execute();
         return $stmt->fetchAll();
     }
-    
+    // Cập nhật bản ghi theo ID
     public function update($id, $data)
     {
         $columns = array_keys($data);
@@ -61,7 +61,7 @@ abstract class Model
         $stmt = $this->db->prepare($sql);
         return $stmt->execute($values);
     }
-    
+    // Xóa bản ghi theo ID
     public function delete($id)
     {
         $pk = $this->getPrimaryKey();
@@ -69,19 +69,19 @@ abstract class Model
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$id]);
     }
-    
+    // Thực thi truy vấn tùy chỉnh
     public function query($sql, $params = [])
     {
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
         return $stmt;
     }
-    
+    // Lấy ID của bản ghi mới chèn
     public function getLastInsertId()
     {
         return $this->db->lastInsertId();
     }
-    
+    // Lấy tên khóa chính của bảng
     protected function getPrimaryKey()
     {
         // Override this method in child classes if needed

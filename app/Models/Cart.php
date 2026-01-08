@@ -11,7 +11,7 @@ class Cart extends Model
     {
         parent::__construct();
     }
-    
+    // Lấy giỏ hàng theo user_id
     public function getCartByUserId($userId)
     {
         $sql = "SELECT sc.*, p.ten_product, p.hinh_anh_product FROM {$this->table} sc 
@@ -20,14 +20,14 @@ class Cart extends Model
         $stmt->execute([$userId]);
         return $stmt->fetchAll();
     }
-    
+    // Xóa giỏ hàng theo user_id
     public function deleteCartByUserId($userId)
     {
         $sql = "DELETE FROM {$this->table} WHERE user_id = ?";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$userId]);
     }
-    
+    // Thêm mục vào giỏ hàng
     public function addCartItem($userId, $productId, $kichCo, $soLuong, $gia)
     {
         $sql = "INSERT INTO {$this->table} (user_id, product_id, kich_co, so_luong, gia) 

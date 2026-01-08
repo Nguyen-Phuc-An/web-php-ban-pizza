@@ -14,7 +14,6 @@
                     và quản lý đơn hàng một cách thuận tiện.
                 </p>
             </div>
-
             <!-- Thông tin nhóm thực hiện -->
             <div class="footer-section">
                 <h3>👨‍💻 Nhóm Thực Hiện</h3>
@@ -28,7 +27,6 @@
                     Phát triển ứng dụng web với mã nguồn mở
                 </p>
             </div>
-
             <!-- Liên kết nhanh -->
             <div class="footer-section">
                 <h3>🔗 Liên Kết Nhanh</h3>
@@ -43,7 +41,6 @@
                     <?php endif; ?>
                 </ul>
             </div>
-
             <!-- Công nghệ sử dụng -->
             <div class="footer-section">
                 <h3>⚙️ Công Nghệ</h3>
@@ -57,12 +54,9 @@
                     Mục tiêu: Rèn luyện kỹ năng phân tích, thiết kế và phát triển web.
                 </p>
             </div>
-
         </div>
-
         <!-- Đường phân cách -->
         <div style="border-top: 1px solid rgba(255,255,255,0.2); margin: 10px 0;"></div>
-
         <!-- Footer bottom -->
         <div class="footer-bottom">
             <div style="text-align: center;">

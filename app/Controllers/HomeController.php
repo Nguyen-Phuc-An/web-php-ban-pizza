@@ -18,7 +18,7 @@ class HomeController extends Controller
         $this->categoryModel = new Category();
         $this->wishlistModel = new Wishlist();
     }
-    
+    // Trang chủ với phân trang và lọc theo danh mục
     public function index()
     {
         $categoryId = $_GET['category'] ?? null;
@@ -85,13 +85,13 @@ class HomeController extends Controller
         
         $this->render('home/index', $data);
     }
-    
+    // Trang giới thiệu
     public function about()
     {
         $page_title = 'Giới thiệu';
         $this->render('home/about');
     }
-    
+    // Trang danh sách yêu thích
     public function wishlist()
     {
         if (!$this->isAuthenticated()) {
@@ -110,7 +110,7 @@ class HomeController extends Controller
         ];
         $this->render('home/wishlist', $data);
     }
-    
+    // Lấy chi tiết các sản phẩm trong danh sách yêu thích
     public function getWishlistItems()
     {
         $data = json_decode(file_get_contents('php://input'), true);
@@ -131,7 +131,7 @@ class HomeController extends Controller
         
         $this->jsonResponse(['products' => $products]);
     }
-    
+    // Lấy chi tiết sản phẩm
     public function getDetail()
     {
         $productId = $_GET['id'] ?? null;
@@ -148,7 +148,7 @@ class HomeController extends Controller
         
         $this->jsonResponse(['product' => $product]);
     }
-    
+    // Lấy danh sách sản phẩm với phân trang và lọc theo danh mục
     public function getProducts()
     {
         $categoryId = $_GET['category'] ?? null;
@@ -239,7 +239,7 @@ class HomeController extends Controller
             'totalProducts' => $totalProducts
         ]);
     }
-    
+    // Tìm kiếm sản phẩm
     public function searchProducts()
     {
         $keyword = $_GET['q'] ?? '';

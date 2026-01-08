@@ -1,5 +1,5 @@
 <?php
-
+// URL constants
 define('SITE_URL', 'http://localhost:81/web-php-ban-pizza/public/');
 define('ADMIN_URL', 'http://localhost:81/web-php-ban-pizza/public/index.php?action=admin');
 define('ROOT_PATH', dirname(dirname(__FILE__)) . '/');
@@ -8,7 +8,7 @@ define('PUBLIC_PATH', ROOT_PATH . 'public/');
 define('UPLOAD_PATH', PUBLIC_PATH . 'uploads/');
 define('ASSETS_PATH', PUBLIC_PATH . 'assets/');
 
-// Status constants
+// Order status constants
 define('ORDER_STATUS_PENDING', 'Chờ xác nhận');
 define('ORDER_STATUS_CONFIRMED', 'Đã xác nhận');
 define('ORDER_STATUS_SHIPPING', 'Đang giao');
@@ -20,7 +20,7 @@ define('ROLE_CUSTOMER', 'customer');
 define('ROLE_ADMIN', 'admin');
 define('ROLE_STAFF', 'staff');
 
-// Items per page
+// Pagination constants
 define('ITEMS_PER_PAGE', 12);
 define('ADMIN_ITEMS_PER_PAGE', 10);
 ?>

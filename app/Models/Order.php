@@ -5,12 +5,12 @@ require_once APP_PATH . 'Models/Model.php';
 class Order extends Model
 {
     protected $table = 'orders';
-    
+    // Lấy tên khóa chính của bảng
     protected function getPrimaryKey()
     {
         return 'order_id';
     }
-    
+    // Lấy đơn hàng theo user_id với phân trang
     public function getByUserId($userId, $page = 1)
     {
         $offset = ($page - 1) * ADMIN_ITEMS_PER_PAGE;
@@ -20,7 +20,7 @@ class Order extends Model
         $stmt = $this->query($sql, [$userId, ADMIN_ITEMS_PER_PAGE, $offset]);
         return $stmt->fetchAll();
     }
-    
+    // Đếm tổng số đơn hàng theo user_id
     public function countByUserId($userId)
     {
         $sql = "SELECT COUNT(*) as count FROM {$this->table} WHERE nguoi_mua_id = ?";
@@ -28,7 +28,7 @@ class Order extends Model
         $result = $stmt->fetch();
         return $result['count'];
     }
-    
+    // Lấy tất cả đơn hàng với phân trang
     public function getAllOrders($page = 1)
     {
         $offset = ($page - 1) * ADMIN_ITEMS_PER_PAGE;
@@ -49,7 +49,7 @@ class Order extends Model
         $stmt = $this->query($sql, [ADMIN_ITEMS_PER_PAGE, $offset]);
         return $stmt->fetchAll();
     }
-    
+    // Đếm tổng số đơn hàng
     public function countAll()
     {
         $sql = "SELECT COUNT(*) as count FROM {$this->table}";
@@ -57,7 +57,7 @@ class Order extends Model
         $result = $stmt->fetch();
         return $result['count'];
     }
-    
+    // Thống kê doanh thu
     public function getTotalRevenue()
     {
         $sql = "SELECT SUM(tong_tien) as total FROM {$this->table} 
@@ -66,7 +66,7 @@ class Order extends Model
         $result = $stmt->fetch();
         return $result['total'] ?? 0;
     }
-    
+    // Thống kê doanh thu theo tháng
     public function getRevenueByMonth($month, $year)
     {
         $sql = "SELECT SUM(tong_tien) as total FROM {$this->table} 
@@ -76,7 +76,7 @@ class Order extends Model
         $result = $stmt->fetch();
         return $result['total'] ?? 0;
     }
-    
+    // Lấy đơn hàng theo khách hàng
     public function getOrdersByCustomer($customerId)
     {
         $sql = "SELECT * FROM {$this->table} WHERE nguoi_mua_id = ? 

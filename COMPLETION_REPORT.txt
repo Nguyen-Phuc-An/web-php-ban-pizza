@@ -29,11 +29,13 @@ web-php-ban-pizza/
 │   │   ├── WishlistController.php
 │   │   ├── ContactController.php
 │   │   └── AdminController.php
-│   ├── Models/                [8 files]
+│   ├── Models/                [10 files]
 │   │   ├── Model.php (Base class)
 │   │   ├── User.php
+│   │   ├── Admin.php
 │   │   ├── Product.php
 │   │   ├── Category.php
+│   │   ├── Cart.php (NEW - Database persistence)
 │   │   ├── Order.php
 │   │   ├── OrderItem.php
 │   │   ├── Wishlist.php
@@ -82,7 +84,7 @@ web-php-ban-pizza/
 7. Chọn size pizza (Nhỏ, Vừa, Lớn)
 8. Thêm vào giỏ hàng
 9. Quản lý giỏ hàng (thay đổi số lượng, xóa)
-10. Thanh toán và đặt hàng
+10. Thanh toán và đặt hàngscript
 11. Xem lịch sử đơn hàng
 12. Quản lý danh sách yêu thích & hồ sơ cá nhân
 

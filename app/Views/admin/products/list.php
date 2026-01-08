@@ -3,6 +3,7 @@
 <div class="admin-layout">
     <aside class="admin-sidebar">
         <h3>Menu Quản Trị</h3>
+        <!-- Menu điều hướng quản trị -->
         <nav class="admin-menu">
             <ul>
                 <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=dashboard" class="menu-item"><i class="bi bi-graph-up"></i> Dashboard</a></li>
@@ -14,8 +15,8 @@
             </ul>
         </nav>
     </aside>
-    
-    <main class="admin-content" style="overflow-y: hidden;>
+    <!-- Nội dung chính quản trị -->
+    <main class="admin-content" style="overflow-y: hidden;">
         <div class="container">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <h2>Quản Lý Sản Phẩm</h2>
@@ -170,7 +171,6 @@
         </form>
     </div>
 </div>
-
 <!-- Modal Sửa sản phẩm -->
 <div id="editProductModal" class="modal">
     <div class="modal-content">
@@ -233,7 +233,6 @@
         </form>
     </div>
 </div>
-
 <!-- Modal Xác nhận xóa sản phẩm -->
 <div id="deleteProductModal" class="modal">
     <div class="modal-content modal-confirm">
@@ -267,7 +266,7 @@ const categoriesData = <?php
     }
     echo json_encode($categoriesJson);
 ?>;
-
+// Cập nhật danh mục con dựa trên danh mục cha đã chọn
 function updateSubcategories(form) {
     const parentId = form === 'add' 
         ? document.getElementById('addProductCategory').value
@@ -298,16 +297,16 @@ function updateSubcategories(form) {
         subcategorySelect.innerHTML = '<option value="">-- Chọn danh mục con --</option>';
     }
 }
-
+// Mở modal thêm sản phẩm
 function openAddProductModal() {
     document.getElementById('addProductModal').style.display = 'block';
 }
-
+// Đóng modal thêm sản phẩm
 function closeAddProductModal() {
     document.getElementById('addProductModal').style.display = 'none';
     document.getElementById('addProductForm').reset();
 }
-
+// Mở modal sửa sản phẩm và điền dữ liệu
 function openEditProductModal(id, name, price, categoryId, description, subCategoryId) {
     document.getElementById('editProductId').value = id;
     document.getElementById('editProductName').value = name;
@@ -320,22 +319,21 @@ function openEditProductModal(id, name, price, categoryId, description, subCateg
     }
     document.getElementById('editProductModal').style.display = 'block';
 }
-
+// Đóng modal sửa sản phẩm
 function closeEditProductModal() {
     document.getElementById('editProductModal').style.display = 'none';
     document.getElementById('editProductForm').reset();
 }
-
+// Mở modal xóa sản phẩm và điền dữ liệu
 function openDeleteProductModal(id, name) {
     document.getElementById('deleteProductId').value = id;
     document.getElementById('deleteProductName').textContent = name;
     document.getElementById('deleteProductModal').style.display = 'block';
 }
-
+// Đóng modal xóa sản phẩm
 function closeDeleteProductModal() {
     document.getElementById('deleteProductModal').style.display = 'none';
 }
-
 // Đóng modal khi click ngoài
 window.onclick = function(event) {
     var addModal = document.getElementById('addProductModal');
@@ -352,18 +350,15 @@ window.onclick = function(event) {
         deleteModal.style.display = 'none';
     }
 }
-
 // Xử lý form submit add product
 document.getElementById('addProductForm').addEventListener('submit', function(e) {
     // Cho phép form submit bình thường vì đã có enctype="multipart/form-data"
 });
-
 // Xử lý form submit edit product
 document.getElementById('editProductForm').addEventListener('submit', function(e) {
     // Cho phép form submit bình thường vì đã có enctype="multipart/form-data"
 });
-
-// Filter products by category
+// Lọc sản phẩm theo danh mục
 function filterByCategory() {
     const categoryId = document.getElementById('categoryFilter').value;
     const url = categoryId 

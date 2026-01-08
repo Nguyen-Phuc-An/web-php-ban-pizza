@@ -3,6 +3,7 @@
 <div class="admin-layout">
     <aside class="admin-sidebar">
         <h3>Menu Quản Trị</h3>
+        <!-- Menu điều hướng admin -->
         <nav class="admin-menu">
             <ul>
                 <li><a href="<?php echo SITE_URL; ?>index.php?action=admin&method=dashboard" class="menu-item active"><i class="bi bi-graph-up"></i> Dashboard</a></li>
@@ -14,7 +15,7 @@
             </ul>
         </nav>
     </aside>
-    
+    <!-- Nội dung chính của trang dashboard -->
     <main class="admin-content">
         <div class="container">            
             <div class="stats-grid">
@@ -50,11 +51,11 @@
     </main>
 </div>
 
-<!-- Chart.js Library -->
+<!-- Chart.js Thư viện -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    // Revenue Chart
+    // Biểu đồ doanh thu
     <?php if (isset($monthly_revenue) && !empty($monthly_revenue)): ?>
         const revenueLabels = <?php echo json_encode(array_keys($monthly_revenue)); ?>;
         const revenueData = <?php echo json_encode(array_values($monthly_revenue)); ?>;

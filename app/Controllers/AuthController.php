@@ -15,7 +15,7 @@ class AuthController extends Controller
         $this->userModel = new User();
         $this->adminModel = new Admin();
     }
-    
+    // Đăng nhập cho cả Admin và Customer
     public function login()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -58,6 +58,7 @@ class AuthController extends Controller
         $this->render('auth/login');
     }
     
+    // Đăng ký tài khoản khách hàng
     public function register()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -107,7 +108,7 @@ class AuthController extends Controller
         
         $this->render('auth/register');
     }
-    
+    // Đăng xuất
     public function logout()
     {
         session_destroy();

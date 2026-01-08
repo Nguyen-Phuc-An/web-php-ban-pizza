@@ -24,11 +24,12 @@ Một ứng dụng web bán pizza trực tuyến được xây dựng bằng **P
 
 - ✅ Giao diện khách hàng thân thiện
 - ✅ Hệ thống quản lý admin toàn diện
-- ✅ Giỏ hàng và thanh toán
-- ✅ Quản lý đơn hàng
+- ✅ Giỏ hàng với lưu trữ database
+- ✅ Thanh toán và quản lý đơn hàng
 - ✅ Danh sách yêu thích
 - ✅ Hệ thống liên hệ
 - ✅ Bảo mật với mã hóa mật khẩu BCRYPT
+- ✅ Hỗ trợ chọn size pizza với cập nhật giá tự động
 
 ---
 

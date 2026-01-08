@@ -7,12 +7,10 @@ include APP_PATH . 'Views/layout/header.php';
     <div class="page-header">
         <h1>Thanh toán đơn hàng</h1>
     </div>
-
-    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 25px;">
-        
-        <!-- LEFT: Order Details & Delivery -->
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 25px;">        
+        <!-- LEFT: Đơn hàng -->
         <div>
-            <!-- Order Information -->
+            <!-- Order thông tin -->
             <div class="checkout-section" style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #e0e0e0;">
                 <h2 style="margin-top: 0;"><i class="bi bi-box"></i> Thông tin đơn hàng</h2>
                 <div style="max-height: 300px; overflow-y: auto;">
@@ -44,12 +42,11 @@ include APP_PATH . 'Views/layout/header.php';
                     <?php endif; ?>
                 </div>
             </div>
-
-            <!-- Payment & Delivery Form -->
+            <!-- Thanh toán & Giao hàng -->
             <form method="POST" class="checkout-section" style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0;">
                 <input type="hidden" id="transferContentInput" name="transfer_content" value="">
                 
-                <!-- Payment Method -->
+                <!-- Phương thức thanh toán -->
                 <h3 style="margin-top: 0; margin-bottom: 15px;">💳 Phương thức thanh toán</h3>
                 <div style="margin-bottom: 20px;">
                     <label style="display: flex; align-items: center; margin-bottom: 12px; padding: 12px; border: 2px solid #ddd; border-radius: 6px; cursor: pointer; transition: border-color 0.3s;">
@@ -71,7 +68,7 @@ include APP_PATH . 'Views/layout/header.php';
                     </label>
                 </div>
 
-                <!-- Delivery Information -->
+                <!-- Thông tin giao hàng -->
                 <h3 style="margin-bottom: 15px;">📍 Thông tin giao hàng</h3>
                 
                 <div style="margin-bottom: 15px;">
@@ -109,8 +106,7 @@ include APP_PATH . 'Views/layout/header.php';
                 </div>
             </form>
         </div>
-
-        <!-- RIGHT: Order Summary -->
+        <!-- RIGHT: Order tóm tắt -->
         <div style="background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%); color: white; padding: 20px; border-radius: 8px; height: fit-content; position: sticky; top: 100px;">
             <h3 style="margin-top: 0; margin-bottom: 20px;"><i class="bi bi-graph-up"></i> Tóm tắt đơn hàng</h3>
             
@@ -147,7 +143,7 @@ include APP_PATH . 'Views/layout/header.php';
 <?php include APP_PATH . 'Views/layout/footer.php'; ?>
 
 <script>
-// Update transfer content on form submit
+// Tự động điền nội dung chuyển khoản khi chọn phương thức chuyển khoản
 document.querySelector('form').addEventListener('submit', function(e) {
     const bankMethod = document.querySelector('input[value="Chuyển khoản"]').checked;
     if (bankMethod) {
