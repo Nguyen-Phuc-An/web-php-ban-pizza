@@ -36,6 +36,13 @@ class AuthController extends Controller
             // Kiểm tra Customer
             $user = $this->userModel->findByEmail($email);
             if ($user && $this->userModel->validatePassword($password, $user['mat_khau'])) {
+                // Kiểm tra trạng thái tài khoản
+                if (isset($user['trang_thai_tai_khoan']) && $user['trang_thai_tai_khoan'] === 'Khóa') {
+                    $_SESSION['error'] = 'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên để được hỗ trợ.';
+                    $this->render('auth/login');
+                    return;
+                }
+                
                 $_SESSION['user_id'] = $user['user_id'];
                 $_SESSION['ten_nguoi_dung'] = $user['ten_nguoi_dung'];
                 $_SESSION['email_user'] = $user['email_user'];

@@ -27,7 +27,10 @@ class ProfileController extends Controller
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $action = $_POST['action'] ?? 'updateProfile';
-            if ($action === 'changePassword') {
+            if ($action === 'deleteAccount') {
+                $this->deleteAccount($user);
+                return;
+            } elseif ($action === 'changePassword') {
                 $this->changePassword($user);
             } else {
                 $this->updateProfile($user);
@@ -117,7 +120,7 @@ class ProfileController extends Controller
         
         if (empty($orders)): ?>
             <div style="background: white; padding: 40px; border-radius: 12px; text-align: center; border: 1px solid #e0e0e0;">
-                <div style="font-size: 48px; margin-bottom: 15px;">🛒</div>
+                <div style="font-size: 48px; margin-bottom: 15px;"><i class="bi bi-cart-dash" style="color: #666; font-size: 48px;"></i></div>
                 <h3 style="margin: 0 0 10px 0; color: var(--text-dark);">Chưa có đơn hàng nào</h3>
                 <p style="margin: 0 0 20px 0; color: #666;">Bạn chưa đặt hàng. Hãy khám phá bộ sưu tập pizza của chúng tôi!</p>
                 <a href="<?php echo SITE_URL; ?>index.php?action=home" class="btn btn-primary" style="display: inline-block; text-decoration: none; background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%)); color: white; padding: 12px 30px; border-radius: 6px; font-weight: 600;">
@@ -280,6 +283,37 @@ class ProfileController extends Controller
             $this->jsonResponse(['success' => true, 'message' => 'Đã cập nhật mật khẩu thành công']);
         } else {
             $this->jsonResponse(['success' => false, 'error' => 'Lỗi cập nhật mật khẩu'], 500);
+        }
+    }
+    
+    private function deleteAccount($currentUser)
+    {
+        $password = $_POST['password'] ?? '';
+        
+        // Validation
+        if (empty($password)) {
+            $this->jsonResponse(['success' => false, 'error' => 'Vui lòng nhập mật khẩu'], 400);
+            return;
+        }
+        
+        // Verify password
+        if (!password_verify($password, $currentUser['mat_khau'])) {
+            $this->jsonResponse(['success' => false, 'error' => 'Mật khẩu không đúng'], 401);
+            return;
+        }
+        
+        // Lock account (set trang_thai_tai_khoan to 'Khóa')
+        $data = [
+            'trang_thai_tai_khoan' => 'Khóa',
+            'ngay_cap_nhap_user' => date('Y-m-d H:i:s')
+        ];
+        
+        if ($this->userModel->update($this->user['user_id'], $data)) {
+            // Log out the user by clearing session
+            session_destroy();
+            $this->jsonResponse(['success' => true, 'message' => 'Tài khoản đã được khóa thành công']);
+        } else {
+            $this->jsonResponse(['success' => false, 'error' => 'Lỗi khi khóa tài khoản'], 500);
         }
     }
 }

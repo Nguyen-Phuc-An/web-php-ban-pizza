@@ -20,21 +20,37 @@
             <table class="admin-table">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Tên</th>
-                        <th>Email</th>
-                        <th>Điện thoại</th>
-                        <th>Ngày tạo</th>
+                        <th style="width: calc(100% / 7);">ID</th>
+                        <th style="width: calc(100% / 7);">Tên</th>
+                        <th style="width: calc(100% / 7);">Email</th>
+                        <th style="width: calc(100% / 7);">Điện thoại</th>
+                        <th style="width: calc(100% / 7);">Trạng thái</th>
+                        <th style="width: calc(100% / 7);">Ngày tạo</th>
+                        <th style="width: calc(100% / 7);">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($customers as $customer): ?>
-                        <tr style="cursor: pointer;" onclick="openCustomerModal(<?php echo $customer['user_id']; ?>, '<?php echo htmlspecialchars(addslashes($customer['ten_nguoi_dung'])); ?>', '<?php echo htmlspecialchars($customer['email_user']); ?>', '<?php echo htmlspecialchars($customer['so_dien_thoai_user'] ?? '-'); ?>')">
-                            <td style="text-align: center;"><?php echo $customer['user_id']; ?></td>
-                            <td><?php echo htmlspecialchars($customer['ten_nguoi_dung']); ?></td>
-                            <td><?php echo htmlspecialchars($customer['email_user']); ?></td>
-                            <td style="text-align: center;"><?php echo htmlspecialchars($customer['so_dien_thoai_user'] ?? '-'); ?></td>
-                            <td style="text-align: center;"><?php echo date('d/m/Y', strtotime($customer['ngay_tao_user'])); ?></td>
+                        <tr onclick="openCustomerModal(<?php echo $customer['user_id']; ?>, '<?php echo htmlspecialchars(addslashes($customer['ten_nguoi_dung'])); ?>', '<?php echo htmlspecialchars($customer['email_user']); ?>', '<?php echo htmlspecialchars($customer['so_dien_thoai_user'] ?? '-'); ?>')" style="cursor: pointer;">
+                            <td style="text-align: center; width: calc(100% / 7);"><?php echo $customer['user_id']; ?></td>
+                            <td style="width: calc(100% / 7);"><?php echo htmlspecialchars($customer['ten_nguoi_dung']); ?></td>
+                            <td style="width: calc(100% / 7);"><?php echo htmlspecialchars($customer['email_user']); ?></td>
+                            <td style="text-align: center; width: calc(100% / 7);"><?php echo htmlspecialchars($customer['so_dien_thoai_user'] ?? '-'); ?></td>
+                            <td style="text-align: center; width: calc(100% / 7);">
+                                <?php if (isset($customer['trang_thai_tai_khoan']) && $customer['trang_thai_tai_khoan'] === 'Khóa'): ?>
+                                    <span style="background: #f8d7da; color: #842029; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;"><i class="bi bi-lock"></i> Khóa</span>
+                                <?php else: ?>
+                                    <span style="background: #d1e7dd; color: #0f5132; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;"><i class="bi bi-check-circle"></i> Hoạt động</span>
+                                <?php endif; ?>
+                            </td>
+                            <td style="text-align: center; width: calc(100% / 7);"><?php echo date('d/m/Y', strtotime($customer['ngay_tao_user'])); ?></td>
+                            <td style="text-align: center; white-space: nowrap; width: calc(100% / 7);" onclick="event.stopPropagation();">
+                                <?php if (!isset($customer['trang_thai_tai_khoan']) || $customer['trang_thai_tai_khoan'] === 'Hoạt động'): ?>
+                                    <button onclick="toggleAccountStatus(<?php echo $customer['user_id']; ?>, 'Khóa')" class="btn-action" style="background: #dc3545; padding: 4px 8px; font-size: 12px;"><i class="bi bi-lock"></i> Khóa</button>
+                                <?php else: ?>
+                                    <button onclick="toggleAccountStatus(<?php echo $customer['user_id']; ?>, 'Hoạt động')" class="btn-action" style="background: #28a745; padding: 4px 8px; font-size: 12px;"><i class="bi bi-unlock"></i> Bỏ khóa</button>
+                                <?php endif; ?>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -60,6 +76,22 @@
             <?php endif; ?>
         </div>
     </main>
+</div>
+
+<!-- Modal Xác nhận Khóa/Bỏ khóa tài khoản -->
+<div id="confirmModal" class="modal">
+    <div class="modal-content" style="max-width: 400px;">
+        <h3 style="margin-top: 0; text-align: center; color: var(--primary-color);">
+            <i class="bi bi-exclamation-triangle" style="font-size: 32px; color: #ff9800;"></i>
+        </h3>
+        <h3 id="confirmTitle" style="text-align: center; margin: 10px 0;">Xác nhận hành động</h3>
+        <p id="confirmMessage" style="text-align: center; color: var(--text-muted); margin-bottom: 20px;">Bạn chắc chắn muốn thực hiện hành động này?</p>
+        
+        <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" onclick="closeConfirmModal()">Hủy</button>
+            <button type="button" id="confirmBtn" class="btn btn-danger" onclick="executeToggleStatus()">Xác nhận</button>
+        </div>
+    </div>
 </div>
 
 <!-- Modal Chi tiết khách hàng -->
@@ -203,9 +235,127 @@ function closeCustomerModal() {
 
 // Đóng modal khi click ngoài
 window.onclick = function(event) {
-    var modal = document.getElementById('customerModal');
-    if (event.target == modal) {
-        modal.style.display = 'none';
+    var customerModal = document.getElementById('customerModal');
+    var confirmModal = document.getElementById('confirmModal');
+    
+    if (event.target == customerModal) {
+        customerModal.style.display = 'none';
+    }
+    if (event.target == confirmModal) {
+        closeConfirmModal();
+    }
+}
+
+// Biến lưu trữ userId và status để toggle
+let pendingToggleUserId = null;
+let pendingToggleStatus = null;
+
+// Khóa/Bỏ khóa tài khoản
+function toggleAccountStatus(userId, status) {
+    pendingToggleUserId = userId;
+    pendingToggleStatus = status;
+    
+    // Cập nhật modal
+    const confirmTitle = document.getElementById('confirmTitle');
+    const confirmMessage = document.getElementById('confirmMessage');
+    const confirmBtn = document.getElementById('confirmBtn');
+    
+    if (status === 'Khóa') {
+        confirmTitle.innerHTML = '<i class="bi bi-lock" style="color: #dc3545;"></i> Khóa tài khoản';
+        confirmMessage.textContent = 'Bạn chắc chắn muốn khóa tài khoản này? Tài khoản sẽ không thể đăng nhập được.';
+        confirmBtn.style.background = '#dc3545';
+    } else {
+        confirmTitle.innerHTML = '<i class="bi bi-unlock" style="color: #28a745;"></i> Bỏ khóa tài khoản';
+        confirmMessage.textContent = 'Bạn chắc chắn muốn bỏ khóa tài khoản này? Tài khoản sẽ có thể đăng nhập trở lại.';
+        confirmBtn.style.background = '#28a745';
+    }
+    
+    // Hiển thị modal
+    document.getElementById('confirmModal').style.display = 'block';
+}
+
+// Đóng modal xác nhận
+function closeConfirmModal() {
+    document.getElementById('confirmModal').style.display = 'none';
+    pendingToggleUserId = null;
+    pendingToggleStatus = null;
+}
+
+// Thực hiện toggle status
+function executeToggleStatus() {
+    if (!pendingToggleUserId || !pendingToggleStatus) return;
+    
+    const userId = pendingToggleUserId;
+    const status = pendingToggleStatus;
+    
+    // Đóng modal
+    closeConfirmModal();
+    
+    fetch('<?php echo SITE_URL; ?>index.php?action=admin&method=toggleAccountStatus&id=' + userId + '&status=' + status, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Tạo toast element
+            const toastContainer = document.querySelector('.toast-container') || createToastContainer();
+            const toastEl = document.createElement('div');
+            toastEl.className = 'toast success';
+            toastEl.innerHTML = `
+                <span class="toast-icon"><i class="bi bi-check-circle"></i></span>
+                <span class="toast-message">${data.message || 'Cập nhật trạng thái thành công!'}</span>
+                <button class="toast-close" onclick="this.parentElement.remove();">&times;</button>
+            `;
+            toastContainer.appendChild(toastEl);
+            setTimeout(() => { if (toastEl.parentElement) toastEl.remove(); }, 1500);
+            
+            // Reload sau 1.5 giây
+            setTimeout(() => location.reload(), 1500);
+        } else {
+            // Tạo toast error
+            const toastContainer = document.querySelector('.toast-container') || createToastContainer();
+            const toastEl = document.createElement('div');
+            toastEl.className = 'toast error';
+            toastEl.innerHTML = `
+                <span class="toast-icon"><i class="bi bi-exclamation-circle"></i></span>
+                <span class="toast-message">${data.message || 'Có lỗi xảy ra!'}</span>
+                <button class="toast-close" onclick="this.parentElement.remove();">&times;</button>
+            `;
+            toastContainer.appendChild(toastEl);
+            setTimeout(() => { if (toastEl.parentElement) toastEl.remove(); }, 3000);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        const toastContainer = document.querySelector('.toast-container') || createToastContainer();
+        const toastEl = document.createElement('div');
+        toastEl.className = 'toast error';
+        toastEl.innerHTML = `
+            <span class="toast-icon"><i class="bi bi-exclamation-circle"></i></span>
+            <span class="toast-message">Có lỗi xảy ra!</span>
+            <button class="toast-close" onclick="this.parentElement.remove();">&times;</button>
+        `;
+        toastContainer.appendChild(toastEl);
+        setTimeout(() => { if (toastEl.parentElement) toastEl.remove(); }, 3000);
+    });
+}
+
+// Tạo toast container nếu chưa tồn tại
+function createToastContainer() {
+    const container = document.createElement('div');
+    container.className = 'toast-container';
+    document.body.appendChild(container);
+    return container;
+}
+
+// Đóng confirm modal khi click ngoài
+window.onclick = function(event) {
+    var confirmModal = document.getElementById('confirmModal');
+    if (event.target == confirmModal) {
+        closeConfirmModal();
     }
 }
 </script>

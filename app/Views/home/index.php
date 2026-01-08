@@ -65,7 +65,7 @@ include APP_PATH . 'Views/layout/header.php';
                                     onclick="event.stopPropagation(); toggleWishlist(<?php echo $product['product_id']; ?>, this)" 
                                     title="Thêm vào yêu thích"
                                     data-product-id="<?php echo $product['product_id']; ?>"
-                                    style="background: none;border: 1px solid;font-size: 20px;/* cursor: pointer; */padding: 0;min-width: auto;padding-top: 5px;width: 100%;">
+                                    style="background: none;border: 1px solid var(--primary-color);font-size: 20px;/* cursor: pointer; */padding: 0;min-width: auto;padding-top: 5px;width: 100%;">
                                 <i class="bi bi-heart wishlist-icon" style="font-size: 20px;"></i>
                             </button>
                         </div>
@@ -196,7 +196,7 @@ function toggleWishlist(productId, button) {
                 // Remove
                 icon.classList.remove('bi-heart-fill');
                 icon.classList.add('bi-heart');
-                button.style.color = 'inherit';
+                button.style.color = '#FFD700';
                 showToast('Đã xóa khỏi yêu thích', 'info');
             } else {
                 // Add

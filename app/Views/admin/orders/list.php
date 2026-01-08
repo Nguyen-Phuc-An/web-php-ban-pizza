@@ -190,8 +190,8 @@
 <div id="invoiceModal" class="admin-modal" style="z-index: 2000;">
     <div class="invoice-modal-content">
         <div class="invoice-header">
-            <button onclick="closeInvoiceModal()" class="invoice-close">×</button>
             <button onclick="printInvoice()" class="btn btn-primary"><i class="bi bi-printer"></i> In hóa đơn</button>
+            <button onclick="closeInvoiceModal()" class="invoice-close">×</button>
         </div>
         <div id="invoiceContent" class="invoice-content"></div>
     </div>

@@ -5,7 +5,7 @@ include APP_PATH . 'Views/layout/header.php';
 
 <div class="container">
     <div class="page-header">
-        <h1>❤️ Danh sách yêu thích</h1>
+        <h1><i class="bi bi-heart-fill"></i> Danh sách yêu thích</h1>
     </div>
 
     <div id="wishlistContainer">
@@ -102,7 +102,7 @@ function viewProductDetail(productId) {
                             
                             <button onclick="addToCart(${product.product_id})" 
                                     style="width: 100%; padding: 12px; background: var(--primary-color); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: 600; margin-bottom: 10px;">
-                                🛒 Thêm vào giỏ hàng
+                                <i class="bi bi-cart-plus"></i> Thêm vào giỏ hàng
                             </button>
                             <button onclick="closeProductModal()" 
                                     style="width: 100%; padding: 12px; background: #f5f5f5; color: #333; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: 600;">

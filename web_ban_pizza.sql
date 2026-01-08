@@ -247,6 +247,7 @@ CREATE TABLE `users` (
   `mat_khau` varchar(255) NOT NULL,
   `so_dien_thoai_user` varchar(10) NOT NULL,
   `dia_chi` text NOT NULL,
+  `trang_thai_tai_khoan` enum('Hoạt động','Khóa') NOT NULL DEFAULT 'Hoạt động',
   `ngay_tao_user` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `ngay_cap_nhap_user` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -435,6 +436,46 @@ ALTER TABLE `products`
 ALTER TABLE `wishlists`
   ADD CONSTRAINT `FK_wish_pro` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`),
   ADD CONSTRAINT `FK_wish_user` FOREIGN KEY (`nguoi_dung_id`) REFERENCES `users` (`user_id`);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `shopping_cart`
+--
+
+CREATE TABLE `shopping_cart` (
+  `gio_hang_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `kich_co` varchar(50) DEFAULT NULL,
+  `so_luong` int(11) NOT NULL DEFAULT 1,
+  `gia` decimal(10,2) NOT NULL,
+  `ngay_tao` timestamp NOT NULL DEFAULT current_timestamp(),
+  `ngay_cap_nhap` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Indexes for table `shopping_cart`
+--
+ALTER TABLE `shopping_cart`
+  ADD PRIMARY KEY (`gio_hang_id`),
+  ADD UNIQUE KEY `user_product_size` (`user_id`, `product_id`, `kich_co`),
+  ADD KEY `FK_cart_user` (`user_id`),
+  ADD KEY `FK_cart_product` (`product_id`);
+
+--
+-- AUTO_INCREMENT for table `shopping_cart`
+--
+ALTER TABLE `shopping_cart`
+  MODIFY `gio_hang_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for table `shopping_cart`
+--
+ALTER TABLE `shopping_cart`
+  ADD CONSTRAINT `FK_cart_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `FK_cart_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

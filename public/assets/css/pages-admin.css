@@ -126,7 +126,7 @@
     text-align: center;
     font-weight: 600;
     display: inline-block;
-    width: calc(100% / 6);
+    width: calc(100% / 5);
 }
 
 .admin-table tr {
@@ -137,7 +137,7 @@
 
 .admin-table td {
     padding: var(--spacing-md);
-    width: calc(100% / 6);
+    width: calc(100% / 5);
     flex-grow: 0;
     flex-shrink: 0;
 }

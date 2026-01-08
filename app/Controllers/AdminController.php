@@ -637,6 +637,39 @@ class AdminController extends Controller
         ]);
     }
     
+    public function toggleAccountStatus()
+    {
+        if (!$this->isAdmin()) {
+            $this->jsonResponse(['success' => false, 'message' => 'Bạn không có quyền thực hiện hành động này'], 401);
+            return;
+        }
+        
+        $userId = $_GET['id'] ?? null;
+        $status = $_GET['status'] ?? null;
+        
+        if (!$userId || !$status) {
+            $this->jsonResponse(['success' => false, 'message' => 'Thiếu thông tin cần thiết'], 400);
+            return;
+        }
+        
+        if (!in_array($status, ['Hoạt động', 'Khóa'])) {
+            $this->jsonResponse(['success' => false, 'message' => 'Trạng thái không hợp lệ'], 400);
+            return;
+        }
+        
+        $result = $this->userModel->updateAccountStatus($userId, $status);
+        
+        if ($result) {
+            $statusText = $status === 'Khóa' ? 'khoá' : 'bỏ khoá';
+            $this->jsonResponse([
+                'success' => true, 
+                'message' => 'Cập nhật trạng thái tài khoản thành công! Tài khoản đã được ' . $statusText . '.'
+            ]);
+        } else {
+            $this->jsonResponse(['success' => false, 'message' => 'Không thể cập nhật trạng thái tài khoản'], 500);
+        }
+    }
+    
     public function customerDetail()
     {
         if (!$this->isAdmin()) {

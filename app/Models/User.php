@@ -47,5 +47,12 @@ class User extends Model
         // Hash bằng BCRYPT
         return password_hash($password, PASSWORD_BCRYPT);
     }
+    
+    public function updateAccountStatus($userId, $status)
+    {
+        $sql = "UPDATE {$this->table} SET trang_thai_tai_khoan = ? WHERE user_id = ?";
+        $stmt = $this->query($sql, [$status, $userId]);
+        return $stmt !== false;
+    }
 }
 ?>

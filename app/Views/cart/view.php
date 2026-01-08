@@ -45,9 +45,18 @@
                                         <?php echo htmlspecialchars($item['name']); ?>
                                     </h3>
                                     
-                                    <p style="margin: 4px 0; font-size: 12px; color: #666;">
-                                        <strong>Size:</strong> <?php echo htmlspecialchars($item['size']); ?>
-                                    </p>
+                                    <div style="margin: 4px 0 8px 0; padding: 8px; background: #f5f5f5; border-radius: 4px; min-height: 40px;">
+                                        <?php if (isset($item['size']) && !empty($item['size'])): ?>
+                                        <label style="display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; color: #666;">Size:</label>
+                                        <select class="size-select" data-cart-key="<?php echo htmlspecialchars($cartKey); ?>" 
+                                                style="width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 3px; font-size: 12px; cursor: pointer;"
+                                                onchange="changeSize('<?php echo htmlspecialchars($cartKey); ?>', this.value)">
+                                            <option value="Nhỏ" <?php echo $item['size'] === 'Nhỏ' ? 'selected' : ''; ?>>Nhỏ</option>
+                                            <option value="Vừa" <?php echo $item['size'] === 'Vừa' ? 'selected' : ''; ?>>Vừa</option>
+                                            <option value="Lớn" <?php echo $item['size'] === 'Lớn' ? 'selected' : ''; ?>>Lớn</option>
+                                        </select>
+                                        <?php endif; ?>
+                                    </div>
                                     
                                     <!-- Quantity Control -->
                                     <form class="quantity-form" data-cart-key="<?php echo htmlspecialchars($cartKey); ?>"
@@ -307,6 +316,30 @@ function proceedToCheckout() {
             window.location.href = '<?php echo SITE_URL; ?>index.php?action=order&method=checkout';
         } else {
             showToast('Lỗi: ' + (data.error || 'Không thể tiếp tục'), 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('Lỗi kết nối', 'error');
+    });
+}
+
+function changeSize(cartKey, newSize) {
+    const formData = new FormData();
+    formData.append('cart_key', cartKey);
+    formData.append('new_size', newSize);
+    
+    fetch('<?php echo SITE_URL; ?>index.php?action=cart&method=changeSize', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showToast('Đã cập nhật size', 'success');
+            setTimeout(() => location.reload(), 500);
+        } else {
+            showToast(data.error || 'Lỗi cập nhật size', 'error');
         }
     })
     .catch(error => {

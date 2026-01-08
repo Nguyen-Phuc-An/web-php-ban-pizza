@@ -40,22 +40,22 @@
             <table class="admin-table" style=" height: 77%;">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Tên</th>
-                        <th>Giá</th>
-                        <th>Hình ảnh</th>
-                        <th>Danh mục</th>
-                        <th>Hành động</th>
+                        <th style="width: calc(100% / 6);">ID</th>
+                        <th style="width: calc(100% / 6);">Tên</th>
+                        <th style="width: calc(100% / 6);">Giá</th>
+                        <th style="width: calc(100% / 6);">Hình ảnh</th>
+                        <th style="width: calc(100% / 6);">Danh mục</th>
+                        <th style="width: calc(100% / 6);">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($products as $product): ?>
                         <tr>
-                            <td style="text-align: center;"><?php echo $product['product_id']; ?></td>
-                            <td><?php echo htmlspecialchars($product['ten_product']); ?></td>
-                            <td style="text-align: center;"><?php echo number_format($product['gia_product'], 0, ',', '.'); ?>đ</td>
-                            <td style="text-align: center;"><img src="<?php echo SITE_URL; ?>uploads/<?php echo htmlspecialchars($product['hinh_anh_product']); ?>" class="admin-thumb" alt="" style="width: 80px; height: 80px; object-fit: cover;"></td>
-                            <td>
+                            <td style="text-align: center; width: calc(100% / 6);"><?php echo $product['product_id']; ?></td>
+                            <td style="width: calc(100% / 6);"><?php echo htmlspecialchars($product['ten_product']); ?></td>
+                            <td style="text-align: center; width: calc(100% / 6);"><?php echo number_format($product['gia_product'], 0, ',', '.'); ?>đ</td>
+                            <td style="text-align: center; width: calc(100% / 6);"><img src="<?php echo SITE_URL; ?>uploads/<?php echo htmlspecialchars($product['hinh_anh_product']); ?>" class="admin-thumb" alt="" style="width: 80px; height: 80px; object-fit: cover;"></td>
+                            <td style="width: calc(100% / 6);">
                                 <?php 
                                     $catId = $product['danh_muc_product'];
                                     $subCatId = $product['sub_category_id'] ?? null;
@@ -79,7 +79,7 @@
                                     }
                                 ?>
                             </td>
-                            <td style="text-align: center;">
+                            <td style="text-align: center; width: calc(100% / 6);">
                                 <button type="button" class="btn btn-small btn-secondary" style="margin-bottom: 5px;" onclick="openEditProductModal(<?php echo $product['product_id']; ?>, '<?php echo htmlspecialchars(addslashes($product['ten_product'])); ?>', '<?php echo htmlspecialchars($product['gia_product']); ?>', '<?php echo htmlspecialchars($product['danh_muc_product']); ?>', '<?php echo htmlspecialchars(addslashes($product['mo_ta_product'])); ?>', '<?php echo htmlspecialchars($product['sub_category_id'] ?? ''); ?>')">Sửa</button>
                                 <button type="button" class="btn btn-small btn-danger" onclick="openDeleteProductModal(<?php echo $product['product_id']; ?>, '<?php echo htmlspecialchars(addslashes($product['ten_product'])); ?>')">Xóa</button>
                             </td>

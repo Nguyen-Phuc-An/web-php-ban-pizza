@@ -4,12 +4,14 @@ require_once APP_PATH . 'Controllers/Controller.php';
 require_once APP_PATH . 'Models/Order.php';
 require_once APP_PATH . 'Models/OrderItem.php';
 require_once APP_PATH . 'Models/Product.php';
+require_once APP_PATH . 'Models/Cart.php';
 
 class OrderController extends Controller
 {
     private $orderModel;
     private $orderItemModel;
     private $productModel;
+    private $cartModel;
     
     public function __construct()
     {
@@ -17,6 +19,7 @@ class OrderController extends Controller
         $this->orderModel = new Order();
         $this->orderItemModel = new OrderItem();
         $this->productModel = new Product();
+        $this->cartModel = new Cart();
     }
     
     public function checkout()
@@ -30,8 +33,13 @@ class OrderController extends Controller
             $this->redirect(SITE_URL . 'index.php?action=cart&method=view');
         }
         
-        // Get selected items (or use all if none selected)
-        $selectedKeys = $_SESSION['selectedCartItems'] ?? array_keys($_SESSION['cart']);
+        // Get selected items - must have at least one selected
+        $selectedKeys = $_SESSION['selectedCartItems'] ?? [];
+        
+        if (empty($selectedKeys)) {
+            $_SESSION['error'] = 'Vui lòng chọn ít nhất một sản phẩm để thanh toán';
+            $this->redirect(SITE_URL . 'index.php?action=cart&method=view');
+        }
         
         // Calculate total for selected items only
         $total = 0;
@@ -113,9 +121,23 @@ class OrderController extends Controller
             $this->orderItemModel->create($itemData);
         }
         
-        // Clear selected items and cart
-        unset($_SESSION['selectedCartItems']);
-        unset($_SESSION['cart']);
+        // Remove purchased items from session cart
+        if (isset($_SESSION['selectedCartItems'])) {
+            foreach ($_SESSION['selectedCartItems'] as $cartKey) {
+                if (isset($_SESSION['cart'][$cartKey])) {
+                    unset($_SESSION['cart'][$cartKey]);
+                }
+            }
+            unset($_SESSION['selectedCartItems']);
+        }
+        
+        // If cart is empty, clear it completely
+        if (empty($_SESSION['cart'])) {
+            unset($_SESSION['cart']);
+        }
+        
+        // Clear cart from database
+        $this->cartModel->deleteCartByUserId($this->user['user_id']);
         
         $_SESSION['success'] = 'Đơn hàng đã được tạo thành công';
         

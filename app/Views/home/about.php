@@ -5,7 +5,7 @@ include APP_PATH . 'Views/layout/header.php';
 
 <div class="container">
     <div class="page-header">
-        <h1><i class="bi bi-circle"></i> Giới Thiệu Về Pizza Online</h1>
+        <h1>🍕 Giới Thiệu Về Pizza Online</h1>
         <p>Khám phá câu chuyện của chúng tôi</p>
     </div>
 
@@ -28,7 +28,7 @@ include APP_PATH . 'Views/layout/header.php';
 
         <!-- Why Choose Us -->
         <section class="about-section about-reasons">
-            <h2>🌟 Tại Sao Chọn Pizza Online?</h2>
+            <h2><i class="bi bi-star-fill"></i> Tại Sao Chọn Pizza Online?</h2>
             <div class="reasons-grid">
                 <div class="reason-card">
                     <div class="reason-icon">🍕</div>
@@ -36,27 +36,27 @@ include APP_PATH . 'Views/layout/header.php';
                     <p>Tất cả pizza được làm từ nguyên liệu tươi sạch, chọn lọc kỹ lưỡng từ nhà cung cấp đáng tin cậy.</p>
                 </div>
                 <div class="reason-card">
-                    <div class="reason-icon">⚡</div>
+                    <div class="reason-icon"><i class="bi bi-lightning-fill"></i></div>
                     <h3>Giao Hàng Nhanh Chóng</h3>
                     <p>Đặt hàng ngay hôm nay, nhận hàng trong vòng 30 phút tại địa chỉ của bạn. Chỉ giao hàng trong vòng bán kính 5km.</p>
                 </div>
                 <div class="reason-card">
-                    <div class="reason-icon">💰</div>
+                    <div class="reason-icon"><i class="bi bi-cash-coin"></i></div>
                     <h3>Giá Cả Cạnh Tranh</h3>
                     <p>Các khuyến mãi và ưu đãi hấp dẫn dành cho khách hàng thân thiết hàng tuần.</p>
                 </div>
                 <div class="reason-card">
-                    <div class="reason-icon">🎧</div>
+                    <div class="reason-icon"><i class="bi bi-headset"></i></div>
                     <h3>Hỗ Trợ 24/7</h3>
                     <p>Đội ngũ chuyên viên sẵn sàng giúp bạn giải đáp mọi thắc mắc bất cứ lúc nào.</p>
                 </div>
                 <div class="reason-card">
-                    <div class="reason-icon">📱</div>
+                    <div class="reason-icon"><i class="bi bi-phone"></i></div>
                     <h3>Dễ Sử Dụng</h3>
                     <p>Giao diện đơn giản, trực quan, giúp bạn đặt hàng chỉ trong vài cú nhấp chuột.</p>
                 </div>
                 <div class="reason-card">
-                    <div class="reason-icon">✅</div>
+                    <div class="reason-icon"><i class="bi bi-check-circle-fill"></i></div>
                     <h3>Uy Tín & An Toàn</h3>
                     <p>Bảo vệ thông tin cá nhân, thanh toán an toàn, giao dịch minh bạch 100%.</p>
                 </div>

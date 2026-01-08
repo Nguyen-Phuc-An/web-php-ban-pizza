@@ -86,7 +86,7 @@
 .product-actions {
     display: flex;
     gap: var(--spacing-sm);
-    border:1px solid var(--border-color);
+    border:1px solid var(--primary-color); 
     border-radius: 4px;
 }
 
@@ -94,6 +94,11 @@
     flex: 1;
     padding: 8px;
     font-size: 12px;
+}
+
+.wishlist-icon {
+    color: #FFD700;
+    transition: color 0.3s ease;
 }
 
 /* ============ FILTER SECTION ============ */

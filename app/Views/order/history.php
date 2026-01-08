@@ -9,7 +9,7 @@
     <div style="margin-top: 30px;">
         <?php if (empty($orders)): ?>
             <div style="background: white; padding: 40px; border-radius: 12px; text-align: center; border: 1px solid #e0e0e0;">
-                <div style="font-size: 48px; margin-bottom: 15px;">🛒</div>
+                <div style="font-size: 48px; margin-bottom: 15px;"><i class="bi bi-cart-dash" style="color: #666; font-size: 48px;"></i></div>
                 <h3 style="margin: 0 0 10px 0; color: var(--text-dark);">Chưa có đơn hàng nào</h3>
                 <p style="margin: 0 0 20px 0; color: #666;">Bạn chưa đặt hàng. Hãy khám phá bộ sưu tập pizza của chúng tôi!</p>
                 <a href="<?php echo SITE_URL; ?>index.php?action=home" class="btn btn-primary" style="display: inline-block; text-decoration: none; background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%); color: white; padding: 12px 30px; border-radius: 6px; font-weight: 600;">
