@@ -18,7 +18,7 @@
     <!-- Nội dung chính của trang quản trị đơn hàng -->
     <main class="admin-content">
         <div class="container">            
-            <table class="admin-table">
+            <table class="admin-table" style="height: 80vh;">
                 <thead>
                     <tr>
                         <th>Mã đơn</th>

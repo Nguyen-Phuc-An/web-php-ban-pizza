@@ -94,7 +94,7 @@ function loadContactDetail(contactId) {
                 
                 detailDiv.innerHTML = `
                     <div style="padding: var(--spacing-lg); overflow-y: auto; flex: 1;">
-                        <h3 style="margin-top: 0;"><i class="bi bi-chat-dots"></i> Chi tiết liên hệ</h3>
+                        <h3 style="margin-top: 0; margin-bottom: 20px;"><i class="bi bi-chat-dots"></i> Chi tiết liên hệ</h3>
                         
                         <div style="margin-bottom: var(--spacing-lg);">
                             <label style="font-weight: 600; color: var(--text-muted); font-size: 12px;">Tên liên hệ</label>

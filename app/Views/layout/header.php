@@ -27,6 +27,13 @@ if (session_status() === PHP_SESSION_NONE) {
     
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    
+    <!-- JavaScript -->
+    <script src="<?php echo SITE_URL; ?>assets/js/main.js"></script>
+    <script>
+        // Make SITE_URL available globally
+        window.SITE_URL = '<?php echo SITE_URL; ?>';
+    </script>
 </head>
 <body>
     <!-- Toast Notifications Container -->

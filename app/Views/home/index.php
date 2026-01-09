@@ -109,17 +109,37 @@ const categoriesData = <?php
 window.isLoggedIn = <?php echo isset($is_logged_in) && $is_logged_in ? 'true' : 'false'; ?>;
 console.log('User logged in:', window.isLoggedIn);
 
-// Khôi phục trạng thái yêu thích
+// Khôi phục trạng thái yêu thích từ database (nếu đã đăng nhập) hoặc localStorage
 document.addEventListener('DOMContentLoaded', function() {
-    const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
-    wishlist.forEach(productId => {
-        const btn = document.querySelector(`[data-product-id="${productId}"] .wishlist-icon`);
-        if (btn) {
-            btn.classList.remove('bi-heart');
-            btn.classList.add('bi-heart-fill');
-            btn.parentElement.style.color = 'red';
-        }
-    });
+    if (window.isLoggedIn) {
+        // Load từ database
+        fetch('<?php echo SITE_URL; ?>index.php?action=wishlist&method=getList')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.wishlist) {
+                    data.wishlist.forEach(productId => {
+                        const btn = document.querySelector(`[data-product-id="${productId}"] .wishlist-icon`);
+                        if (btn) {
+                            btn.classList.remove('bi-heart');
+                            btn.classList.add('bi-heart-fill');
+                            btn.parentElement.style.color = 'red';
+                        }
+                    });
+                }
+            })
+            .catch(error => console.error('Error loading wishlist:', error));
+    } else {
+        // Load từ localStorage cho user chưa đăng nhập
+        const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+        wishlist.forEach(productId => {
+            const btn = document.querySelector(`[data-product-id="${productId}"] .wishlist-icon`);
+            if (btn) {
+                btn.classList.remove('bi-heart');
+                btn.classList.add('bi-heart-fill');
+                btn.parentElement.style.color = 'red';
+            }
+        });
+    }
 });
 // Hiển thị danh mục con
 function showSubcategories(parentId) {
@@ -206,7 +226,7 @@ function toggleWishlist(productId, button) {
                 showToast('Đã thêm vào yêu thích', 'success');
             }
         } else {
-            showToast(data.message || 'Lỗi cập nhật yêu thích', 'error');
+            showToast(data.message || data.error || 'Lỗi cập nhật yêu thích', 'error');
         }
     })
     .catch(error => {

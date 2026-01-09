@@ -18,7 +18,7 @@ include APP_PATH . 'Views/layout/header.php';
             <!-- Sản phẩm Grid -->
             <div class="products-grid">
                 <?php foreach ($wishlists as $product): ?>
-                    <div class="product-card" onclick="viewProductDetail(<?php echo $product['product_id']; ?>)" style="cursor: pointer;">
+                    <div class="product-card" data-product-id="<?php echo $product['product_id']; ?>" onclick="viewProductDetail(<?php echo $product['product_id']; ?>)" style="cursor: pointer;">
                         <div class="product-image">
                             <img src="<?php echo SITE_URL; ?>uploads/<?php echo htmlspecialchars($product['hinh_anh_product']); ?>" 
                                  alt="<?php echo htmlspecialchars($product['ten_product']); ?>">

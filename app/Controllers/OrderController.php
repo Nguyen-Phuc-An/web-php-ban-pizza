@@ -196,7 +196,7 @@ class OrderController extends Controller
         
         $this->render('order/detail', $data);
     }
-    // Chi tiết đơn hàng thành công (sau khi chuyển khoản)
+    // Chi tiết đơn hàng thành công
     public function success()
     {
         if (!$this->isAuthenticated()) {

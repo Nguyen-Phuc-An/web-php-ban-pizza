@@ -15,7 +15,7 @@ class ProductController extends Controller
         $this->productModel = new Product();
         $this->categoryModel = new Category();
     }
-    // Trang danh sách sản phẩm với phân trang và lọc theo danh mục
+    // Trang danh sách sản phẩm
     public function index()
     {
         $page = $_GET['page'] ?? 1;

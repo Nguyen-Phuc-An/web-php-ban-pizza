@@ -55,8 +55,8 @@
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 51, 0.08);
     height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
+    /* overflow-y: auto;
+    overflow-x: hidden; */
 }
 
 .admin-content h2 {
@@ -114,7 +114,7 @@
 
 .admin-table tbody {
     display: block;
-    max-height: 80%;
+    max-height: 90%;
     overflow-y: auto;
     overflow-x: hidden;
 }

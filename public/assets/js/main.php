@@ -104,12 +104,18 @@ function removeFromWishlist(productId) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            location.reload();
+            showToast('Đã xóa khỏi yêu thích', 'success');
+            setTimeout(() => {
+                location.reload();
+            }, 500);
         } else {
-            alert(data.error);
+            showToast(data.error || 'Lỗi xóa yêu thích', 'error');
         }
     })
-    .catch(error => console.error('Error:', error));
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('Lỗi kết nối', 'error');
+    });
 }
 
 // Form validation

@@ -110,7 +110,7 @@ class HomeController extends Controller
         ];
         $this->render('home/wishlist', $data);
     }
-    // Lấy chi tiết các sản phẩm trong danh sách yêu thích
+    // Lấy sản phẩm trong danh sách yêu thích
     public function getWishlistItems()
     {
         $data = json_decode(file_get_contents('php://input'), true);
@@ -148,7 +148,7 @@ class HomeController extends Controller
         
         $this->jsonResponse(['product' => $product]);
     }
-    // Lấy danh sách sản phẩm với phân trang và lọc theo danh mục
+    // Lấy danh sách sản phẩm
     public function getProducts()
     {
         $categoryId = $_GET['category'] ?? null;

@@ -38,7 +38,7 @@
                 </select>
             </div>
             
-            <table class="admin-table" style=" height: 77%;">
+            <table class="admin-table" style=" height: 60vh;">
                 <thead>
                     <tr>
                         <th style="width: calc(100% / 6);">ID</th>

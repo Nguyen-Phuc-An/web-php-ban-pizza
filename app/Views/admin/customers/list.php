@@ -18,7 +18,7 @@
     <!-- Nội dung chính của trang quản trị khách hàng -->
     <main class="admin-content">
         <div class="container">            
-            <table class="admin-table">
+            <table class="admin-table" style="height: 80vh;">
                 <thead>
                     <tr>
                         <th style="width: calc(100% / 7);">ID</th>
@@ -30,7 +30,7 @@
                         <th style="width: calc(100% / 7);">Hành động</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody style="max-height: 90vh;">
                     <?php foreach ($customers as $customer): ?>
                         <tr onclick="openCustomerModal(<?php echo $customer['user_id']; ?>, '<?php echo htmlspecialchars(addslashes($customer['ten_nguoi_dung'])); ?>', '<?php echo htmlspecialchars($customer['email_user']); ?>', '<?php echo htmlspecialchars($customer['so_dien_thoai_user'] ?? '-'); ?>')" style="cursor: pointer;">
                             <td style="text-align: center; width: calc(100% / 7);"><?php echo $customer['user_id']; ?></td>

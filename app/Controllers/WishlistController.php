@@ -88,5 +88,21 @@ class WishlistController extends Controller
             $this->jsonResponse(['error' => 'Lỗi xóa khỏi danh sách yêu thích'], 500);
         }
     }
+    
+    // Lấy danh sách ID sản phẩm yêu thích (API)
+    public function getList()
+    {
+        if (!$this->isAuthenticated()) {
+            $this->jsonResponse(['wishlist' => []]);
+            return;
+        }
+        
+        $wishlists = $this->wishlistModel->getByUserId($this->user['user_id']);
+        $productIds = array_map(function($item) {
+            return intval($item['product_id']);
+        }, $wishlists);
+        
+        $this->jsonResponse(['success' => true, 'wishlist' => $productIds]);
+    }
 }
 ?>
